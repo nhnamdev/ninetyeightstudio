@@ -58,7 +58,10 @@ export const Footer: React.FC = () => {
                 read and understood our Privacy Policy and that you want to
                 receive the newsletter and other marketing communication as set
                 out therein.
-                  {/* Social Icons */}
+              </p>
+            </div>
+
+            {/* Social Icons */}
             <ul className="footer-mxh">
               <li>
                 <Link
