@@ -48,7 +48,7 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
         <div className="py-8 text-center text-gray-500">
           <p className="mb-4">Hiện chưa có sản phẩm nào trong giỏ hàng.</p>
           <Link
-            href="https://wwyn.vn/cua-hang"
+            href="#"
             className="inline-block px-6 py-2 bg-black text-white text-xs uppercase font-bold tracking-wider hover:bg-neutral-800 transition"
             onClick={onClose}
           >

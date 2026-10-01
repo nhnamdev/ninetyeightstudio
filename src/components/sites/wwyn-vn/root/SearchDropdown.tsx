@@ -26,7 +26,8 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      window.location.href = `https://wwyn.vn/tim-kiem?keyword=${encodeURIComponent(query.trim())}`;
+      setQuery("");
+      onClose();
     }
   };
 

@@ -9,12 +9,12 @@ export interface CategoryItem {
 }
 
 export const CATEGORIES: CategoryItem[] = [
-  { title: "T - SHIRT", href: "https://wwyn.vn/tees" },
-  { title: "SHIRT", href: "https://wwyn.vn/shirts" },
-  { title: "JACKET", href: "https://wwyn.vn/jackets" },
-  { title: "SHORTS", href: "https://wwyn.vn/shorts" },
-  { title: "TROUSERS", href: "https://wwyn.vn/pants" },
-  { title: "ACCESSORIES", href: "https://wwyn.vn/accessories" },
+  { title: "T - SHIRT", href: "#" },
+  { title: "SHIRT", href: "#" },
+  { title: "JACKET", href: "#" },
+  { title: "SHORTS", href: "#" },
+  { title: "TROUSERS", href: "#" },
+  { title: "ACCESSORIES", href: "#" },
 ];
 
 interface MegaMenuProps {

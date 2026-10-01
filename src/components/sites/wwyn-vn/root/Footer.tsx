@@ -58,16 +58,11 @@ export const Footer: React.FC = () => {
                 read and understood our Privacy Policy and that you want to
                 receive the newsletter and other marketing communication as set
                 out therein.
-              </p>
-            </div>
-
-            {/* Social Icons */}
+                  {/* Social Icons */}
             <ul className="footer-mxh">
               <li>
                 <Link
-                  href="https://wwyn.vn/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
                   title="Facebook WWYN"
                 >
                   <img
@@ -78,9 +73,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://www.instagram.com/wwyn.stu/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
                   title="Instagram WWYN"
                 >
                   <img
@@ -91,9 +84,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
                   title="TikTok WWYN"
                 >
                   <img
@@ -111,7 +102,7 @@ export const Footer: React.FC = () => {
             <ul className="footer-list">
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-thanh-toan"
+                  href="#"
                   title="Chính sách thanh toán"
                 >
                   Chính sách thanh toán
@@ -119,7 +110,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-dat-hang"
+                  href="#"
                   title="Chính sách đặt hàng"
                 >
                   Chính sách đặt hàng
@@ -127,7 +118,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-kiem-hang"
+                  href="#"
                   title="Chính sách kiểm hàng"
                 >
                   Chính sách kiểm hàng
@@ -135,7 +126,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-bao-mat"
+                  href="#"
                   title="Chính sách bảo mật"
                 >
                   Chính sách bảo mật
@@ -143,7 +134,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-doi-tra"
+                  href="#"
                   title="Chính sách đổi trả"
                 >
                   Chính sách đổi trả
@@ -151,7 +142,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-bao-ve-thong-tin"
+                  href="#"
                   title="Chính sách bảo vệ thông tin"
                 >
                   Chính sách bảo vệ thông tin
@@ -166,7 +157,7 @@ export const Footer: React.FC = () => {
             <ul className="footer-list">
               <li>
                 <Link
-                  href="https://wwyn.vn/cau-hoi-thuong-gap"
+                  href="#"
                   title="Câu hỏi thường gặp"
                 >
                   Câu hỏi thường gặp
@@ -174,7 +165,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/tra-cuu-don-hang"
+                  href="#"
                   title="Tra cứu đơn hàng"
                 >
                   Tra cứu đơn hàng
@@ -182,7 +173,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-doi-hang"
+                  href="#"
                   title="Chính sách đổi hàng"
                 >
                   Chính sách đổi hàng
@@ -190,7 +181,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="https://wwyn.vn/chinh-sach-giao-hang"
+                  href="#"
                   title="Chính sách giao hàng"
                 >
                   Chính sách giao hàng
@@ -220,32 +211,32 @@ export const Footer: React.FC = () => {
             <h2 className="footer-tit">MENU</h2>
             <ul className="footer-list">
               <li>
-                <Link href="https://wwyn.vn/tees" title="T - SHIRT">
+                <Link href="#" title="T - SHIRT">
                   T - SHIRT
                 </Link>
               </li>
               <li>
-                <Link href="https://wwyn.vn/shirts" title="SHIRT">
+                <Link href="#" title="SHIRT">
                   SHIRT
                 </Link>
               </li>
               <li>
-                <Link href="https://wwyn.vn/jackets" title="JACKET">
+                <Link href="#" title="JACKET">
                   JACKET
                 </Link>
               </li>
               <li>
-                <Link href="https://wwyn.vn/shorts" title="SHORTS">
+                <Link href="#" title="SHORTS">
                   SHORTS
                 </Link>
               </li>
               <li>
-                <Link href="https://wwyn.vn/pants" title="TROUSERS">
+                <Link href="#" title="TROUSERS">
                   TROUSERS
                 </Link>
               </li>
               <li>
-                <Link href="https://wwyn.vn/accessories" title="ACCESSORIES">
+                <Link href="#" title="ACCESSORIES">
                   ACCESSORIES
                 </Link>
               </li>
@@ -259,20 +250,14 @@ export const Footer: React.FC = () => {
         <div className="wwyn-center center-bottom">
           <p className="copyright">
             Copyright © 2026 <span>WWYN</span>. All rights reserved. Designed by{" "}
-            <a
-              href="https://vinasoftware.com.vn/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="#">
               Vinasoftware (VNS)
             </a>
           </p>
 
           <div className="footer-bottom_right">
             <a
-              href="https://maps.app.goo.gl/L4g92zLKqNRQm23B8"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
               className="footer-bottom_right-item"
             >
               <img
@@ -283,9 +268,7 @@ export const Footer: React.FC = () => {
             </a>
 
             <a
-              href="https://maps.app.goo.gl/L4g92zLKqNRQm23B8"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
               className="footer-bottom_right-item"
             >
               <img

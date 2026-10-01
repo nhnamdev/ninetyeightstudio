@@ -8,7 +8,7 @@ export const Hero: React.FC = () => {
     <section className="slideshow" aria-label="Hero Slideshow">
       <div className="slideshow-slide">
         {/* Banner image */}
-        <Link href="https://wwyn.vn/cua-hang" title="WWYN - Wear What You Need">
+        <Link href="#" title="WWYN - Wear What You Need">
           <img
             src="/sites/wwyn-vn/root/images/hero-banner.webp"
             alt="WWYN"
@@ -21,7 +21,7 @@ export const Hero: React.FC = () => {
           <div className="wwyn-center">
             <div className="slideshow-btn">
               <Link
-                href="https://wwyn.vn/cua-hang"
+                href="#"
                 className="btn-slideshow"
                 title="Mua ngay"
               >

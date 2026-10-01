@@ -26,8 +26,8 @@ export default function Home() {
           <li className="h-org">WWYN</li>
           <li className="h-tel">0378026461</li>
           <li>
-            <a className="u-url" href="https://wwyn.vn/">
-              https://wwyn.vn/
+            <a className="u-url" href="/">
+              WWYN Studio
             </a>
           </li>
         </ul>

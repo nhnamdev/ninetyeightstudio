@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
           <ul className="main-menu">
             <li>
               <Link
-                href="https://wwyn.vn/gioi-thieu"
+                href="#"
                 title="Giới thiệu"
                 className="transition"
               >
@@ -76,7 +76,7 @@ export const Navbar: React.FC = () => {
               onMouseLeave={handleMouseLeaveCuahang}
             >
               <Link
-                href="https://wwyn.vn/cua-hang"
+                href="#"
                 title="Cửa hàng"
                 className="transition"
               >
@@ -91,7 +91,7 @@ export const Navbar: React.FC = () => {
 
             <li>
               <Link
-                href="https://wwyn.vn/styling-tip"
+                href="#"
                 title="Styling Tip"
                 className="transition"
               >
@@ -101,7 +101,7 @@ export const Navbar: React.FC = () => {
 
             <li className="bosuutap">
               <Link
-                href="javascript:void(0)"
+                href="#"
                 title="Bộ sưu tập"
                 className="transition"
               >
@@ -111,7 +111,7 @@ export const Navbar: React.FC = () => {
 
             <li>
               <Link
-                href="https://wwyn.vn/lien-he"
+                href="#"
                 title="Liên hệ"
                 className="transition"
               >
@@ -182,7 +182,7 @@ export const Navbar: React.FC = () => {
 
                 {/* User Account */}
                 <div className="user-menu">
-                  <Link href="https://wwyn.vn/account/dang-nhap" title="User">
+                  <Link href="#" title="User">
                     <img
                       src="/sites/wwyn-vn/root/images/user.png"
                       alt="User"
@@ -309,7 +309,7 @@ export const Navbar: React.FC = () => {
 
             {/* User */}
             <div className="user-menu">
-              <Link href="https://wwyn.vn/account/dang-nhap" title="User">
+              <Link href="#" title="User">
                 <img
                   src="/sites/wwyn-vn/root/images/user.png"
                   alt="User"

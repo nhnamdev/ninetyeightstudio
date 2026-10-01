@@ -61,7 +61,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               </Link>
             </li>
             <li>
-              <Link href="https://wwyn.vn/gioi-thieu" onClick={handleClose}>
+              <Link href="#" onClick={handleClose}>
                 Giới thiệu
               </Link>
             </li>
@@ -88,17 +88,17 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               </button>
             </li>
             <li>
-              <Link href="https://wwyn.vn/styling-tip" onClick={handleClose}>
+              <Link href="#" onClick={handleClose}>
                 Styling Tip
               </Link>
             </li>
             <li>
-              <Link href="javascript:void(0)" onClick={handleClose}>
+              <Link href="#" onClick={handleClose}>
                 Bộ sưu tập
               </Link>
             </li>
             <li>
-              <Link href="https://wwyn.vn/lien-he" onClick={handleClose}>
+              <Link href="#" onClick={handleClose}>
                 Liên hệ
               </Link>
             </li>
