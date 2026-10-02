@@ -90,6 +90,17 @@ body {
   display: flex;
   align-items: center;
   height: 54px;
+  text-decoration: none;
+}
+
+#menu .logo .logo-text {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.3s ease-in-out;
 }
 
 #menu .logo img {
@@ -103,6 +114,10 @@ body {
 
 #menu.fixing .logo a {
   height: 58px;
+}
+
+#menu.fixing .logo .logo-text {
+  color: #1a1a1a;
 }
 
 #menu.fixing .logo img {
@@ -419,6 +434,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+#menu-mobile .logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+#menu-mobile .logo .logo-text {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 #menu-mobile .logo img {

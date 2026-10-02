@@ -59,15 +59,7 @@ export const Navbar: React.FC = () => {
           {/* Logo */}
           <div className="logo">
             <Link href="/" title="Ninety Eight Studio">
-              <img
-                src="/sites/wwyn-vn/root/images/logo_98.png"
-                alt="Ninety Eight Studio"
-                width={140}
-                height={32}
-                decoding="async"
-                fetchPriority="high"
-                className="logo-img"
-              />
+              <span className="logo-text">NINETY EIGHT STUDIOS</span>
             </Link>
           </div>
 
@@ -253,14 +245,7 @@ export const Navbar: React.FC = () => {
           {/* Centered Logo */}
           <div className="logo">
             <Link href="/" title="Ninety Eight Studio">
-              <img
-                src="/sites/wwyn-vn/root/images/logo_98.png"
-                alt="Ninety Eight Studio"
-                width={120}
-                height={28}
-                decoding="async"
-                fetchPriority="high"
-              />
+              <span className="logo-text">NINETY EIGHT STUDIOS</span>
             </Link>
           </div>
 
