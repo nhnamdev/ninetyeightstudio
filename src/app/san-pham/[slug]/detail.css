@@ -1,0 +1,63 @@
+/* Product Detail Page Styling */
+
+.detail-container {
+  max-width: 1790px;
+  margin: 0 auto;
+  padding: 30px 20px 80px;
+  width: 100%;
+}
+
+.grid-pro-detail-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+  width: 100%;
+}
+
+.left-pro-detail {
+  width: 52%;
+  position: relative;
+}
+
+.right-pro-detail {
+  width: 44%;
+  position: sticky;
+  top: 90px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-pro-detail {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: #000000;
+  margin: 0 0 12px 0;
+  letter-spacing: 0.02em;
+}
+
+.price-new-pro-detail {
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 700;
+  color: #000000;
+  display: inline-block;
+}
+
+@media (max-width: 1024px) {
+  .grid-pro-detail-wrapper {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .left-pro-detail,
+  .right-pro-detail {
+    width: 100%;
+    position: static;
+  }
+  
+  .detail-container {
+    padding: 20px 15px 60px;
+  }
+}

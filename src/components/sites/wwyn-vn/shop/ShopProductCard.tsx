@@ -25,7 +25,7 @@ export const ShopProductCard: React.FC<ShopProductCardProps> = ({
     <div className="shop-product-card group">
       {/* Product Image Frame */}
       <div className="pic-product">
-        <Link href={`#`} title={product.name}>
+        <Link href={`/san-pham/${product.slug}`} title={product.name}>
           <img
             src={primaryImg}
             alt={product.name}
@@ -66,7 +66,7 @@ export const ShopProductCard: React.FC<ShopProductCardProps> = ({
       {/* Product Details */}
       <div className="content-product">
         <h3 className="name-product">
-          <Link href={`#`} title={product.name}>
+          <Link href={`/san-pham/${product.slug}`} title={product.name}>
             {product.name}
           </Link>
         </h3>

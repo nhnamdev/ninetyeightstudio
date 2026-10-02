@@ -130,7 +130,7 @@ export const ProductSlider: React.FC = () => {
             ALL PRODUCTS
           </h2>
           <Link
-            href="#"
+            href="/cua-hang"
             className="text-[12px] md:text-[13px] text-[#555555] hover:text-black underline underline-offset-4 transition-colors"
           >
             View more
