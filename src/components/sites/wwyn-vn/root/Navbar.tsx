@@ -82,10 +82,10 @@ export const Navbar: React.FC = () => {
             >
               <Link
                 href="/cua-hang"
-                title="Cửa hàng"
+                title="Shop"
                 className={`transition ${isCuahang ? "active" : ""}`}
               >
-                <span>Cửa hàng</span>
+                <span>Shop</span>
                 <img
                   src="/sites/wwyn-vn/root/images/iconhaschild.png"
                   alt="Has Child"

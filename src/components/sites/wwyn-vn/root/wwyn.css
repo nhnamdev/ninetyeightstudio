@@ -197,41 +197,113 @@ body {
   pointer-events: auto;
 }
 
-.mega-menu ul {
-  list-style: none;
+/* Mega Menu Spoiled Style */
+.mega-menu-container {
+  max-width: 1396px;
+  margin: 0 auto;
+  padding: 40px 30px 45px 30px;
+}
+
+.mega-menu-grid {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 80px;
+}
+
+.mega-menu-col {
+  min-width: 190px;
+  flex-shrink: 0;
+}
+
+.mega-col-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #000000;
+  margin: 0 0 20px 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: var(--font-family-sans);
+  line-height: 1.2;
+}
+
+.mega-col-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  justify-content: flex-start;
 }
 
-.mega-menu ul li {
-  width: calc(100% / 4);
-  border-right: 1px solid rgba(26, 26, 26, 0.2);
-  border-bottom: 1px solid rgba(26, 26, 26, 0.2);
-  padding: 12px 15px;
-}
-
-.mega-menu ul li:nth-child(4n) {
+.mega-item-wrap {
+  margin: 0;
+  padding: 0;
+  border: none !important;
   border-right: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-top: none !important;
+  width: auto !important;
+  background: none !important;
 }
 
-.mega-menu ul li a {
-  display: block;
-  width: 100%;
+.mega-col-links .mega-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700 !important;
   color: #000000 !important;
-  text-decoration: none;
-  font-size: 16px !important;
-  font-weight: 500;
-  text-align: center;
-  transition: all 0.2s ease;
+  text-decoration: none !important;
+  letter-spacing: 0.6px;
+  line-height: 1.4;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+  border: none !important;
 }
 
-.mega-menu ul li:hover > a {
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
+.mega-col-links .mega-link:hover {
+  opacity: 0.6;
+  transform: translateX(2px);
+}
+
+.mega-menu-banner {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.mega-banner-link {
+  display: block;
+  text-decoration: none;
+  max-width: 520px;
+  width: 100%;
+}
+
+.mega-banner-img {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  object-position: right center;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.mega-banner-link:hover .mega-banner-img {
+  transform: scale(1.02);
+}
+
+/* Explicit reset for any potential legacy li or ul borders in mega-menu */
+.mega-menu ul,
+.mega-menu li {
+  border: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-top: none !important;
+  padding: 0 !important;
+  width: auto !important;
 }
 
 /* Menu Bar Utility Icons */

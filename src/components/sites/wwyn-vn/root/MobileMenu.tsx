@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CATEGORIES } from "./MegaMenu";
+import { HIGHLIGHT_CATEGORIES, PRODUCT_CATEGORIES } from "./MegaMenu";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -71,7 +71,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 className="nav-btn"
                 onClick={() => setSubpanelOpen(true)}
               >
-                <span>Cửa hàng</span>
+                <span>Shop</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -105,7 +105,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           </ul>
         </div>
 
-        {/* Subpanel for Cửa hàng */}
+        {/* Subpanel for Shop */}
         <div className={`mobile-subpanel ${subpanelOpen ? "open" : ""}`}>
           <div
             className="mobile-subpanel-header"
@@ -124,18 +124,29 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             >
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-            <span>Cửa hàng</span>
+            <span>Shop</span>
           </div>
           <div className="mobile-drawer-nav">
+            <div className="px-5 pt-3 pb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
+              Nổi bật
+            </div>
             <ul>
-              <li>
-                <Link href="/cua-hang" onClick={handleClose} className="font-semibold text-black">
-                  TẤT CẢ SẢN PHẨM
-                </Link>
-              </li>
-              {CATEGORIES.map((cat, idx) => (
-                <li key={idx}>
-                  <Link href="/cua-hang" onClick={handleClose}>
+              {HIGHLIGHT_CATEGORIES.map((cat, idx) => (
+                <li key={`hl-${idx}`}>
+                  <Link href={cat.href} onClick={handleClose}>
+                    {cat.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="px-5 pt-4 pb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
+              Sản phẩm
+            </div>
+            <ul>
+              {PRODUCT_CATEGORIES.map((cat, idx) => (
+                <li key={`prod-${idx}`}>
+                  <Link href={cat.href} onClick={handleClose}>
                     {cat.title}
                   </Link>
                 </li>
