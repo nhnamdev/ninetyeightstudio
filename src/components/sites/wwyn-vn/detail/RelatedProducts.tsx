@@ -12,10 +12,13 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({ products }) =>
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="related-products-section mt-16 pt-12 border-t border-neutral-200">
-      <div className="title-main mb-8 text-center">
-        <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-widest text-black">
-          Sản phẩm cùng loại
+    <section className="related-products-section mt-20 pt-14 border-t border-neutral-200">
+      <div className="mb-10 text-center">
+        <span className="text-[11px] font-semibold uppercase tracking-widest text-neutral-400 block mb-1">
+          NINETY EIGHT STUDIO
+        </span>
+        <h2 className="text-[18px] sm:text-[20px] font-bold uppercase tracking-widest text-neutral-900">
+          YOU MAY ALSO LIKE
         </h2>
       </div>
 

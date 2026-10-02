@@ -10,8 +10,8 @@ import { Footer } from "@/components/sites/wwyn-vn/root/Footer";
 import { ShopBreadcrumbs } from "@/components/sites/wwyn-vn/shop/ShopBreadcrumbs";
 import { ProductGallery } from "@/components/sites/wwyn-vn/detail/ProductGallery";
 import { ProductInfo } from "@/components/sites/wwyn-vn/detail/ProductInfo";
-import { ProductTabs } from "@/components/sites/wwyn-vn/detail/ProductTabs";
 import { RelatedProducts } from "@/components/sites/wwyn-vn/detail/RelatedProducts";
+import { MobileBottomBar } from "@/components/sites/wwyn-vn/detail/MobileBottomBar";
 
 import "@/components/sites/wwyn-vn/root/wwyn.css";
 import "@/app/cua-hang/shop.css";
@@ -88,27 +88,31 @@ export default async function ProductDetailPage({ params }: PageProps) {
       {/* Breadcrumbs Navigation */}
       <ShopBreadcrumbs items={breadcrumbs} />
 
-      {/* Product Detail Main Section */}
-      <section className="detail-container">
-        <div className="grid-pro-detail-wrapper">
-          {/* Left Column: Gallery */}
-          <div className="left-pro-detail">
+      {/* Product Detail Main Section (Stand Oil 2-Column Minimalist Layout) */}
+      <section className="standoil-detail-container" aria-label="Chi tiết sản phẩm">
+        <div className="standoil-detail-grid">
+          {/* Left Column: Stacked / Carousel Gallery */}
+          <div className="standoil-gallery-column">
             <ProductGallery
               images={product.gallery}
               productName={product.name}
             />
           </div>
 
-          {/* Right Column: Information, Selectors & Tabs */}
-          <div className="right-pro-detail">
-            <ProductInfo product={product} />
-            <ProductTabs product={product} />
+          {/* Right Column: Sticky Product Information & Accordions */}
+          <div className="standoil-info-column">
+            <div className="standoil-sticky-box">
+              <ProductInfo product={product} />
+            </div>
           </div>
         </div>
 
-        {/* Related Products */}
+        {/* Related Products Section */}
         <RelatedProducts products={relatedProducts} />
       </section>
+
+      {/* Sticky Mobile Purchase Bar */}
+      <MobileBottomBar product={product} />
 
       {/* Footer Section */}
       <Footer />

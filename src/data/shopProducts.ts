@@ -1,966 +1,455 @@
+export interface ProductColor {
+  name: string;
+  thumbnail: string;
+  slug: string;
+}
+
+export interface ProductDimensions {
+  size: string;
+  strapDrop: string;
+  strapLength?: string;
+  weight: string;
+}
+
 export interface ShopProduct {
   id: number;
   name: string;
   slug: string;
   price: string;
-  category: string;
+  originalPrice?: string;
+  category: "TOTE BAG" | "SHOULDER BAG" | "TRAVEL BAG" | "ACCESSORIES";
   image: string;
   hoverImage: string;
   gallery: string[];
-  sizes: string[];
-  colors: string[];
+  colors?: ProductColor[];
   description: string;
+  highlights?: string[];
+  dimensions?: ProductDimensions;
+  material?: string;
   careInstructions?: string;
   shippingPolicy?: string;
-  sizeChartImage?: string;
+  outOfStock?: boolean;
   page: number;
 }
 
 export const SHOP_PRODUCTS: ShopProduct[] = [
   {
-    "id": 1,
-    "name": "Áo len 98 STUDIO KNIT ZIPPED SWEATER form fit Black / Grey / Baby BLue FALL  ‘25 collection \" New color\"",
-    "slug": "ao-len-98-studio-knit-zipped-sweater-form-fit-black-grey-baby-blue-fall-25-collection-new-color",
-    "price": "850.000đ",
-    "category": "JACKET",
-    "image": "/images/shop/product-1-1.webp",
-    "hoverImage": "/images/shop/product-1-2.webp",
-    "gallery": [
-      "/images/products/knit-zipped-sweater/slide-1.webp",
-      "/images/products/knit-zipped-sweater/slide-2.webp",
-      "/images/products/knit-zipped-sweater/slide-3.webp",
-      "/images/products/knit-zipped-sweater/slide-4.webp",
-      "/images/products/knit-zipped-sweater/slide-5.webp",
-      "/images/products/knit-zipped-sweater/slide-6.webp",
-      "/images/products/knit-zipped-sweater/slide-7.webp",
-      "/images/products/knit-zipped-sweater/slide-8.webp",
-      "/images/products/knit-zipped-sweater/slide-9.webp",
-      "/images/products/knit-zipped-sweater/slide-10.webp"
+    id: 1,
+    name: "Zuni Bag / Black",
+    slug: "zuni-bag-black",
+    price: "2.450.000₫",
+    originalPrice: "2.700.000₫",
+    category: "SHOULDER BAG",
+    image: "/images/products/zuni-bag/thumb-1.png",
+    hoverImage: "/images/products/zuni-bag/thumb-2.jpg",
+    gallery: [
+      "/images/products/zuni-bag/thumb-1.png",
+      "/images/products/zuni-bag/thumb-2.jpg",
+      "/images/products/zuni-bag/slide-1.jpg",
+      "/images/products/zuni-bag/slide-2.jpg",
+      "/images/products/zuni-bag/slide-3.jpg",
+      "/images/products/zuni-bag/slide-4.jpg",
+      "/images/products/zuni-bag/slide-5.jpg",
+      "/images/products/zuni-bag/slide-6.jpg",
+      "/images/products/zuni-bag/slide-7.jpg",
+      "/images/products/zuni-bag/slide-8.jpg",
+      "/images/products/zuni-bag/slide-9.jpg",
+      "/images/products/zuni-bag/spec-detail.jpg",
     ],
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
+    colors: [
+      { name: "Black", thumbnail: "/images/products/zuni-bag/thumb-1.png", slug: "zuni-bag-black" },
+      { name: "Gray", thumbnail: "/images/products/zuni-bag/swatch-gray.png", slug: "zuni-bag-gray" },
+      { name: "Mustard", thumbnail: "/images/products/zuni-bag/swatch-mustard.png", slug: "zuni-bag-mustard" },
+      { name: "Olive", thumbnail: "/images/products/zuni-bag/swatch-olive.png", slug: "zuni-bag-olive" },
     ],
-    "colors": [
-      "Black",
-      "Grey",
-      "Baby Blue",
-      "Yellow"
+    description: "Zuni Bag mang phong cách casual hiện đại với độ rủ tự nhiên cuốn hút và phom dáng mềm mại linh hoạt, là sự kết hợp hoàn hảo giữa tính thẩm mỹ thời thượng và công năng sử dụng hàng ngày.",
+    highlights: [
+      "Chất liệu da thuần chay (Faux leather) cao cấp với độ bóng tự nhiên, mềm mại và chống trầy xước nhẹ",
+      "Phom túi Bowling cấu trúc mềm, thoải mái khi đeo vai hoặc cầm tay",
+      "Chi tiết khóa gài kim loại bên hông cá tính tạo điểm nhấn độc đáo",
+      "Dây cố định quai đeo (Handle holder) giữ hai quai luôn vào nếp gọn gàng trên vai",
+      "Khóa kéo zip kim loại YKK trơn tru, bền bỉ",
+      "Hệ thống ngăn tiện dụng: 1 ngăn kéo mặt ngoài, 2 ngăn phụ bên trong, 1 ngăn khóa zip an toàn",
     ],
-    "description": "*CÁC BẠN NÊN ĐỌC MÔ TẢ ĐỂ CHỌN SIZE, MÀU CHO PHÙ HỢP NHÉ!\n98 STUDIO KNIT ZIPPED SWEATER\n+ Chất liệu: 50% viscose 28% nylon và 22% polyester\n+ Kiểu dáng: Form fit\n+ Kiểu dệt: jacquard cao cấp, đã qua xử lý co rút có thể giặt máy (khuyên dùng túi giặt để bảo quản tối ưu).\n+ Dây kéo: Khóa kéo YKK chính hãng mượt mà, bền bỉ.\n+ Bảng size: XS / S / M / L\n* Mẫu nam cao 1m83, 70kg mặc size M form fit tôn dáng chuẩn streetwear.\n\n* Thông tin người mẫu được cung cấp mang tính chất THAM KHẢO giúp bạn dễ dàng chọn size vừa vặn.\n* Toàn bộ sản phẩm được kiểm tra tỉ mỉ, gắn tem tag đầy đủ và đóng gói chỉn chu trong hộp Ninety Eight Studio trước khi gửi đi.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "34 × 17 × 13 cm",
+      strapDrop: "26 cm",
+      strapLength: "59 cm",
+      weight: "570g",
+    },
+    material: "Thân túi: 55% Polyester, 45% Da PU cao cấp (Non-animal Vegan Leather). Lớp lót: 100% Polyester dệt mật độ cao.",
+    careInstructions: "- Không giặt bằng máy giặt hoặc ngâm nước.\n- Khi bị bám bẩn hoặc dính nước, lau nhẹ bằng khăn mềm khô hoặc khăn ẩm vắt ráo.\n- Để khô tự nhiên ở nơi thoáng mát, trong bóng râm, tránh ánh nắng trực tiếp hoặc nguồn nhiệt mạnh làm hỏng bề mặt da.\n- Nhồi giấy hoặc túi khí giữ phom khi không sử dụng.",
+    shippingPolicy: "- Đóng gói chỉn chu hộp cứng chống va đập Ninety Eight Studio kèm túi vải dustbag bảo vệ.\n- Giao hàng toàn quốc từ 1 - 3 ngày làm việc.\n- Hỗ trợ đổi sản phẩm trong vòng 7 ngày kể từ khi nhận hàng (còn nguyên tem tag, chưa qua sử dụng).\n- Bảo hành phụ kiện khóa kéo trong vòng 6 tháng.",
+    page: 1,
   },
   {
-    "id": 2,
-    "name": "Áo polo 98 STUDIO Striped Knit Polo form regular fit Mint / Red / Black summer ‘26 collection",
-    "slug": "ao-polo-98-studio-striped-knit-polo-form-regular-fit-mint-red-black-summer-26-collection",
-    "price": "690.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-2-1.webp",
-    "hoverImage": "/images/shop/product-2-2.webp",
-    "gallery": [
-      "/images/shop/product-2-1.webp",
-      "/images/shop/product-2-2.webp"
+    id: 2,
+    name: "Zuni Bag / Gray",
+    slug: "zuni-bag-gray",
+    price: "2.450.000₫",
+    originalPrice: "2.700.000₫",
+    category: "SHOULDER BAG",
+    image: "/images/products/zuni-bag/swatch-gray.png",
+    hoverImage: "/images/products/zuni-bag/slide-3.jpg",
+    gallery: [
+      "/images/products/zuni-bag/swatch-gray.png",
+      "/images/products/zuni-bag/slide-3.jpg",
+      "/images/products/zuni-bag/slide-4.jpg",
+      "/images/products/zuni-bag/slide-5.jpg",
+      "/images/products/zuni-bag/spec-detail.jpg",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    colors: [
+      { name: "Black", thumbnail: "/images/products/zuni-bag/thumb-1.png", slug: "zuni-bag-black" },
+      { name: "Gray", thumbnail: "/images/products/zuni-bag/swatch-gray.png", slug: "zuni-bag-gray" },
+      { name: "Mustard", thumbnail: "/images/products/zuni-bag/swatch-mustard.png", slug: "zuni-bag-mustard" },
+      { name: "Olive", thumbnail: "/images/products/zuni-bag/swatch-olive.png", slug: "zuni-bag-olive" },
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
+    description: "Phiên bản Zuni Bag màu xám khói hiện đại, tôn vinh nét đẹp tối giản và tinh tế, dễ dàng phối hợp với mọi trang phục thường nhật hay công sở.",
+    highlights: [
+      "Gam màu xám khói trung tính sang trọng, bề mặt da mềm mịn tự nhiên",
+      "Phom dáng Bowling mềm mại với đường xếp nếp rủ tự nhiên",
+      "Khóa gài kim loại và khóa zip mạ bạc sáng bóng cao cấp",
+      "Quai đeo êm ái chống tuột vai",
     ],
-    "description": "Sản phẩm Áo polo 98 STUDIO Striped Knit Polo form regular fit Mint / Red / Black summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "34 × 17 × 13 cm",
+      strapDrop: "26 cm",
+      strapLength: "59 cm",
+      weight: "570g",
+    },
+    material: "Thân túi: 55% Polyester, 45% Da PU cao cấp (Vegan Leather). Lớp lót: 100% Polyester.",
+    careInstructions: "- Không giặt bằng máy giặt hoặc ngâm nước.\n- Lau sạch vết bẩn bằng khăn ẩm mềm và phơi nơi khô thoáng.",
+    shippingPolicy: "- Giao hàng từ 1 - 3 ngày làm việc.\n- Hỗ trợ đổi trả trong 7 ngày đối với sản phẩm còn nguyên tem mác.",
+    page: 1,
   },
   {
-    "id": 3,
-    "name": "Áo thun 98 STUDIO PRIME TEE form regular cánh dơi Black / White / Sand / Faded summer ‘26 collection",
-    "slug": "ao-thun-98-studio-prime-tee-form-regular-canh-doi-black-white-sand-faded-summer-26-collection",
-    "price": "380.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-3-1.webp",
-    "hoverImage": "/images/shop/product-3-2.webp",
-    "gallery": [
-      "/images/shop/product-3-1.webp",
-      "/images/shop/product-3-2.webp"
+    id: 3,
+    name: "Zuni Bag / Mustard",
+    slug: "zuni-bag-mustard",
+    price: "2.450.000₫",
+    originalPrice: "2.700.000₫",
+    category: "SHOULDER BAG",
+    image: "/images/products/zuni-bag/swatch-mustard.png",
+    hoverImage: "/images/products/zuni-bag/slide-6.jpg",
+    gallery: [
+      "/images/products/zuni-bag/swatch-mustard.png",
+      "/images/products/zuni-bag/slide-6.jpg",
+      "/images/products/zuni-bag/slide-7.jpg",
+      "/images/products/zuni-bag/spec-detail.jpg",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    colors: [
+      { name: "Black", thumbnail: "/images/products/zuni-bag/thumb-1.png", slug: "zuni-bag-black" },
+      { name: "Gray", thumbnail: "/images/products/zuni-bag/swatch-gray.png", slug: "zuni-bag-gray" },
+      { name: "Mustard", thumbnail: "/images/products/zuni-bag/swatch-mustard.png", slug: "zuni-bag-mustard" },
+      { name: "Olive", thumbnail: "/images/products/zuni-bag/swatch-olive.png", slug: "zuni-bag-olive" },
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
+    description: "Sắc vàng mù tạt ấm áp, tạo điểm nhấn nổi bật đầy cá tính cho phong cách thời trang của bạn.",
+    highlights: [
+      "Tone màu Mustard nổi bật, bắt mắt",
+      "Chất liệu da thuần chay cao cấp bóng nhẹ tự nhiên",
+      "Cấu trúc túi mềm linh hoạt với quai đeo cố định gọn gàng",
     ],
-    "description": "Sản phẩm Áo thun 98 STUDIO PRIME TEE form regular cánh dơi Black / White / Sand / Faded summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "34 × 17 × 13 cm",
+      strapDrop: "26 cm",
+      strapLength: "59 cm",
+      weight: "570g",
+    },
+    material: "Thân túi: 55% Polyester, 45% Da PU cao cấp. Lớp lót: 100% Polyester.",
+    careInstructions: "- Tránh ánh nắng gắt chiếu trực tiếp trong thời gian dài.\n- Lau nhẹ bằng khăn mềm khô.",
+    shippingPolicy: "- Giao hàng toàn quốc 1 - 3 ngày làm việc.\n- Đổi trả trong vòng 7 ngày.",
+    page: 1,
   },
   {
-    "id": 4,
-    "name": "Quần Jeans 98 STUDIO CLOUD FADE Baggy denim 100% cotton 14.5oz SUMMER ‘25 collection",
-    "slug": "quan-jeans-98-studio-cloud-fade-baggy-denim-100-cotton-145oz-summer-25-collection",
-    "price": "890.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-4-1.webp",
-    "hoverImage": "/images/shop/product-4-2.webp",
-    "gallery": [
-      "/images/shop/product-4-1.webp",
-      "/images/shop/product-4-2.webp"
+    id: 4,
+    name: "Zuni Bag Stud / Olive",
+    slug: "zuni-bag-olive",
+    price: "2.550.000₫",
+    originalPrice: "2.800.000₫",
+    category: "SHOULDER BAG",
+    image: "/images/products/zuni-bag/swatch-olive.png",
+    hoverImage: "/images/products/zuni-bag/slide-8.jpg",
+    gallery: [
+      "/images/products/zuni-bag/swatch-olive.png",
+      "/images/products/zuni-bag/slide-8.jpg",
+      "/images/products/zuni-bag/slide-9.jpg",
+      "/images/products/zuni-bag/spec-detail.jpg",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    colors: [
+      { name: "Black", thumbnail: "/images/products/zuni-bag/thumb-1.png", slug: "zuni-bag-black" },
+      { name: "Gray", thumbnail: "/images/products/zuni-bag/swatch-gray.png", slug: "zuni-bag-gray" },
+      { name: "Mustard", thumbnail: "/images/products/zuni-bag/swatch-mustard.png", slug: "zuni-bag-mustard" },
+      { name: "Olive", thumbnail: "/images/products/zuni-bag/swatch-olive.png", slug: "zuni-bag-olive" },
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
+    description: "Phiên bản Zuni Bag Stud màu Olive đính đinh tán kim loại sành điệu, kết hợp hoàn hảo giữa nét cổ điển và phong cách streetwear cá tính.",
+    highlights: [
+      "Chi tiết đinh tán kim loại (Studs) được gia công tỉ mỉ, chống gỉ sét",
+      "Tone xanh olive thời thượng, dễ phối cùng các trang phục phong cách Y2K hoặc Streetwear",
+      "Phom túi mềm tự nhiên, sức chứa rộng rãi",
     ],
-    "description": "Sản phẩm Quần Jeans 98 STUDIO CLOUD FADE Baggy denim 100% cotton 14.5oz SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "34 × 17 × 13 cm",
+      strapDrop: "26 cm",
+      strapLength: "59 cm",
+      weight: "590g",
+    },
+    material: "Thân túi: Da PU cao cấp kết hợp chi tiết đinh tán hợp kim. Lớp lót: 100% Polyester.",
+    careInstructions: "- Tránh để kim loại tiếp xúc hóa chất tẩy rửa mạnh.\n- Lau bằng khăn mềm khô khi vệ sinh.",
+    shippingPolicy: "- Đóng gói hộp cao cấp Ninety Eight Studio.\n- Giao hàng 1 - 3 ngày làm việc.",
+    page: 1,
   },
   {
-    "id": 5,
-    "name": "Áo thun 98 STUDIO CALIFORNIA SLUB TEE form regular Summer ‘26 collection",
-    "slug": "ao-thun-98-studio-california-slub-tee-form-regular-summer-26-collection",
-    "price": "380.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-5-1.webp",
-    "hoverImage": "/images/shop/product-5-2.webp",
-    "gallery": [
-      "/images/shop/product-5-1.webp",
-      "/images/shop/product-5-2.webp"
+    id: 5,
+    name: "YACHT TOTE | CAMO",
+    slug: "yacht-tote-camo",
+    price: "950.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/yacht-tote-camo.webp",
+    hoverImage: "/images/products/yacht-tote-camo.webp",
+    gallery: [
+      "/images/products/yacht-tote-camo.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Túi Yacht Tote với họa tiết Camo kinh điển từ Ninety Eight Studio. Thiết kế form lớn đa năng, phù hợp cho cả đi làm, đi học lẫn những chuyến du lịch cuối tuần.",
+    highlights: [
+      "Chất liệu vải Canvas dệt rằn ri (Camo) 16oz dày dặn đứng form",
+      "Quai xách bằng sợi dù dệt chịu lực cao cấp, êm ái khi đeo vai",
+      "Ngăn chứa siêu rộng, đựng vừa laptop 15.6 inch, tập sách và đồ dùng cá nhân",
+      "Ngăn phụ tiện dụng bên trong có khóa kéo bảo mật",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun 98 STUDIO CALIFORNIA SLUB TEE form regular Summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "42 × 36 × 14 cm",
+      strapDrop: "28 cm",
+      weight: "480g",
+    },
+    material: "100% Heavyweight Cotton Canvas 16oz. Quai dù quân đội chịu lực.",
+    careInstructions: "- Giặt tay bằng nước lạnh và xà phòng pha loãng.\n- Không dùng thuốc tẩy hoặc vắt xoắn mạnh.\n- Phơi trong bóng râm, tránh nắng gắt trực tiếp.",
+    shippingPolicy: "- Đóng gói túi chống sốc kèm tem mác Ninety Eight Studio.\n- Giao hàng toàn quốc từ 1 - 3 ngày làm việc.\n- Đổi trả trong vòng 7 ngày.",
+    page: 1,
   },
   {
-    "id": 6,
-    "name": "Quần Jeans 98 STUDIO MID BLUE Baggy denim 100% cotton 14.5oz SUMMER ‘25 collection",
-    "slug": "quan-jeans-98-studio-mid-blue-baggy-denim-100-cotton-145oz-summer-25-collection",
-    "price": "890.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-6-1.webp",
-    "hoverImage": "/images/shop/product-6-2.webp",
-    "gallery": [
-      "/images/shop/product-6-1.webp",
-      "/images/shop/product-6-2.webp"
+    id: 6,
+    name: "SPORTY TRAVEL BAG | CAMO",
+    slug: "sporty-travel-bag-camo",
+    price: "1.170.000₫",
+    category: "TRAVEL BAG",
+    image: "/images/products/sporty-travel-bag-camo.webp",
+    hoverImage: "/images/products/sporty-travel-bag-camo.webp",
+    gallery: [
+      "/images/products/sporty-travel-bag-camo.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Túi du lịch thể thao Sporty Travel Bag Camo được thiết kế tối ưu hóa dung tích chứa, đi kèm quai xách tay và dây đeo chéo tháo rời tiện lợi.",
+    highlights: [
+      "Dung tích lớn thích hợp cho chuyến đi 2 - 4 ngày hoặc hoạt động thể thao/gym",
+      "Vải Canvas dệt phủ tráng chống thấm nước nhẹ bề mặt",
+      "Khóa kéo kim loại hai chiều trơn tru",
+      "Kèm quai đeo chéo có đệm vai êm ái, có thể điều chỉnh độ dài",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần Jeans 98 STUDIO MID BLUE Baggy denim 100% cotton 14.5oz SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "50 × 28 × 25 cm",
+      strapDrop: "Quai xách tay 20 cm, Dây đeo chéo tùy chỉnh 80 - 140 cm",
+      weight: "720g",
+    },
+    material: "Heavyweight Canvas kết hợp đáy túi gia cố da PU chống mài mòn.",
+    careInstructions: "- Lau bằng khăn ẩm mềm khi dính bẩn.\n- Không giặt bằng máy giặt công nghiệp.",
+    shippingPolicy: "- Giao hàng toàn quốc 1 - 3 ngày làm việc.\n- Hỗ trợ đổi trả miễn phí nếu có lỗi kỹ thuật.",
+    page: 1,
   },
   {
-    "id": 7,
-    "name": "Quần Jeans 98 STUDIO VINTAGE DISSTRED Baggy denim 100% cotton 14.5oz SUMMER ‘25 collection",
-    "slug": "quan-jeans-98-studio-vintage-disstred-baggy-denim-100-cotton-145oz-summer-25-collection",
-    "price": "1.190.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-7-1.webp",
-    "hoverImage": "/images/shop/product-7-2.webp",
-    "gallery": [
-      "/images/shop/product-7-1.webp",
-      "/images/shop/product-7-2.webp"
+    id: 7,
+    name: "GOOD BYE MY WORK TOTE BAG | RED",
+    slug: "good-bye-my-work-tote-red",
+    price: "200.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/good-bye-my-work-tote-red.webp",
+    hoverImage: "/images/products/good-bye-my-work-tote-red.webp",
+    gallery: [
+      "/images/products/good-bye-my-work-tote-red.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Túi tote vải Canvas đỏ cá tính với typography slogan 'GOOD BYE MY WORK' đặc trưng của Ninety Eight Studio, mang thông điệp thư giãn và tự do.",
+    highlights: [
+      "Vải canvas 10oz mộc tự nhiên, thân thiện với môi trường",
+      "Họa tiết in lụa sắc nét, không bong tróc khi giặt",
+      "Trọng lượng siêu nhẹ, có thể gấp gọn trong balo",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần Jeans 98 STUDIO VINTAGE DISSTRED Baggy denim 100% cotton 14.5oz SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "38 × 40 × 8 cm",
+      strapDrop: "30 cm",
+      weight: "220g",
+    },
+    material: "100% Eco Cotton Canvas.",
+    careInstructions: "- Giặt tay bằng nước lạnh, lộn trái khi giặt để bảo vệ họa tiết in.",
+    shippingPolicy: "- Giao hàng toàn quốc từ 1 - 3 ngày làm việc.",
+    page: 1,
   },
   {
-    "id": 8,
-    "name": "Quần Jeans 98 STUDIO LEATHER TAB Baggy denim 100% cotton màu trắng 14.5oz SUMMER ‘25 collection",
-    "slug": "quan-jeans-98-studio-leather-tab-baggy-denim-100-cotton-mau-trang-145oz-summer-25-collection",
-    "price": "890.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-8-1.webp",
-    "hoverImage": "/images/shop/product-8-2.webp",
-    "gallery": [
-      "/images/shop/product-8-1.webp",
-      "/images/shop/product-8-2.webp"
+    id: 8,
+    name: "GOOD BYE MY WORK TOTE BAG | BLUE",
+    slug: "good-bye-my-work-tote-blue",
+    price: "200.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/good-bye-my-work-tote-blue.webp",
+    hoverImage: "/images/products/good-bye-my-work-tote-blue.webp",
+    gallery: [
+      "/images/products/good-bye-my-work-tote-blue.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Phiên bản màu xanh cobalt tươi mát của chiếc túi tote 'GOOD BYE MY WORK', thích hợp mang theo mỗi ngày.",
+    highlights: [
+      "Chất liệu vải canvas mềm mại, bền chắc",
+      "Slogan in nổi bật mang tinh thần phóng khoáng",
+      "Đựng vừa tập A4, ipad và vật dụng cá nhân",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần Jeans 98 STUDIO LEATHER TAB Baggy denim 100% cotton màu trắng 14.5oz SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "38 × 40 × 8 cm",
+      strapDrop: "30 cm",
+      weight: "220g",
+    },
+    material: "100% Eco Cotton Canvas.",
+    careInstructions: "- Giặt tay bằng nước thường, không sấy nhiệt độ cao.",
+    shippingPolicy: "- Giao hàng toàn quốc từ 1 - 3 ngày làm việc.",
+    page: 1,
   },
   {
-    "id": 9,
-    "name": "Áo khoác knit 98 STUDIO SOFT RELAXED CARDIGAN grey / tiffany vải đã xử lý co rút SUMMER ‘25 collection",
-    "slug": "ao-khoac-knit-98-studio-soft-relaxed-cardigan-grey-tiffany-vai-da-xu-lu-co-rut-summer-25-collection",
-    "price": "890.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-9-1.webp",
-    "hoverImage": "/images/shop/product-9-2.webp",
-    "gallery": [
-      "/images/shop/product-9-1.webp",
-      "/images/shop/product-9-2.webp"
+    id: 9,
+    name: "LEAGUE V2 TOTE BAG | SAND",
+    slug: "league-v2-tote-sand",
+    price: "790.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/league-v2-tote-sand.webp",
+    hoverImage: "/images/products/league-v2-tote-sand.webp",
+    gallery: [
+      "/images/products/league-v2-tote-sand.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Túi League V2 Tote Bag tông màu cát (Sand) phong cách Minimalist Nhật Bản, điểm xuyết các đường may tinh xảo cùng phom dáng hình học thanh thoát.",
+    highlights: [
+      "Gam màu Sand ấm áp nhẹ nhàng, dễ phối trang phục",
+      "Chất vải dệt cao cấp chống xù lông và giữ phom tốt",
+      "Có ngăn chống sốc chuyên dụng đựng vừa laptop 14 inch",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo khoác knit 98 STUDIO SOFT RELAXED CARDIGAN grey / tiffany vải đã xử lý co rút SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "40 × 34 × 12 cm",
+      strapDrop: "27 cm",
+      weight: "420g",
+    },
+    material: "Premium Canvas kết hợp quai da PU cao cấp.",
+    careInstructions: "- Vệ sinh bằng khăn ẩm và phơi khô râm mát.",
+    shippingPolicy: "- Giao hàng 1 - 3 ngày. Đổi trả trong vòng 7 ngày.",
+    page: 2,
   },
   {
-    "id": 10,
-    "name": "Áo thun 98 STUDIO SOFT STRIPED TEE form regular fit vải slub Summer ‘26 collection",
-    "slug": "ao-thun-98-studio-soft-striped-tee-form-regular-fit-vai-slub-summer-26-collection",
-    "price": "480.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-10-1.webp",
-    "hoverImage": "/images/shop/product-10-2.webp",
-    "gallery": [
-      "/images/shop/product-10-1.webp",
-      "/images/shop/product-10-2.webp"
+    id: 10,
+    name: "LEAGUE V2 TOTE BAG | DEEP BLUE",
+    slug: "league-v2-tote-deep-blue",
+    price: "790.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/league-v2-tote-deep-blue.webp",
+    hoverImage: "/images/products/league-v2-tote-deep-blue.webp",
+    gallery: [
+      "/images/products/league-v2-tote-deep-blue.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Sắc xanh thẳm Deep Blue trầm tĩnh mang lại vẻ ngoài lịch lãm và bí ẩn cho dòng túi League V2.",
+    highlights: [
+      "Màu sắc sâu lắng, bền màu theo thời gian",
+      "Thiết kế quai xách công thái học giảm áp lực lên vai",
+      "Đầy đủ ngăn phụ tiện dụng",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun 98 STUDIO SOFT STRIPED TEE form regular fit vải slub Summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "40 × 34 × 12 cm",
+      strapDrop: "27 cm",
+      weight: "420g",
+    },
+    material: "Premium Canvas dệt mật độ cao.",
+    careInstructions: "- Giặt nhẹ bằng tay, tránh dùng hóa chất tẩy.",
+    shippingPolicy: "- Giao hàng từ 1 - 3 ngày làm việc.",
+    page: 2,
   },
   {
-    "id": 11,
-    "name": "Áo thun 98 STUDIO CONTINENTAL MOTOR SLUB TEE form regular Summer ‘26 collection",
-    "slug": "ao-thun-98-studio-continental-motor-slub-tee-form-regular-summer-26-collection",
-    "price": "420.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-11-1.webp",
-    "hoverImage": "/images/shop/product-11-2.webp",
-    "gallery": [
-      "/images/shop/product-11-1.webp",
-      "/images/shop/product-11-2.webp"
+    id: 11,
+    name: "LEAGUE V2 TOTE BAG | DUST BLACK",
+    slug: "league-v2-tote-dust-black",
+    price: "790.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/league-v2-tote-dust-black.webp",
+    hoverImage: "/images/products/league-v2-tote-dust-black.webp",
+    gallery: [
+      "/images/products/league-v2-tote-dust-black.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    outOfStock: true,
+    description: "Màu Dust Black với hiệu ứng wash cổ điển, mang đậm tinh thần Grunge và Streetwear cá tính.",
+    highlights: [
+      "Hiệu ứng màu wash vintage cá tính",
+      "Phom đứng chắc chắn, đường chỉ may đôi gia cường",
+      "Ngăn chứa rộng rãi tối ưu",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun 98 STUDIO CONTINENTAL MOTOR SLUB TEE form regular Summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "40 × 34 × 12 cm",
+      strapDrop: "27 cm",
+      weight: "420g",
+    },
+    material: "Vintage Washed Cotton Canvas.",
+    careInstructions: "- Lộn trái túi khi giặt để giữ hiệu ứng màu sắc.",
+    shippingPolicy: "- Đổi trả trong 7 ngày đối với hàng lỗi sản xuất.",
+    page: 2,
   },
   {
-    "id": 12,
-    "name": "Áo thun 98 STUDIO VINTAGE GOLF SLUB TEE form regular Summer ‘26 collection",
-    "slug": "ao-thun-98-studio-vintage-golf-slub-tee-form-regular-summer-26-collection",
-    "price": "420.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-12-1.webp",
-    "hoverImage": "/images/shop/product-12-2.webp",
-    "gallery": [
-      "/images/shop/product-12-1.webp",
-      "/images/shop/product-12-2.webp"
+    id: 12,
+    name: "LEAGUE V2 TOTE BAG | STONE BLUE",
+    slug: "league-v2-tote-stone-blue",
+    price: "790.000₫",
+    category: "TOTE BAG",
+    image: "/images/products/league-v2-tote-stone-blue.webp",
+    hoverImage: "/images/products/league-v2-tote-stone-blue.webp",
+    gallery: [
+      "/images/products/league-v2-tote-stone-blue.webp",
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Sắc xanh đá Stone Blue độc đáo, điểm nhấn hoàn hảo cho những bạn trẻ yêu thích sự mới lạ và phong cách năng động.",
+    highlights: [
+      "Tông màu Stone Blue hiện đại, trẻ trung",
+      "Quai xách êm ái, chống trượt khi đeo vai",
+      "Cấu trúc các ngăn bố trí khoa học",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun 98 STUDIO VINTAGE GOLF SLUB TEE form regular Summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "40 × 34 × 12 cm",
+      strapDrop: "27 cm",
+      weight: "420g",
+    },
+    material: "Premium High-density Canvas.",
+    careInstructions: "- Phơi trong bóng râm, tránh phơi trực tiếp dưới ánh nắng gay gắt.",
+    shippingPolicy: "- Đóng gói cẩn thận, giao hàng nhanh 1 - 3 ngày.",
+    page: 2,
   },
   {
-    "id": 13,
-    "name": "Áo khoác 98 STUDIO FUR JACKET form regular Black / BLUE chất liệu da lộn lót lông thỏ ''26 collection",
-    "slug": "ao-khoac-98-studio-fur-jacket-form-regular-black-blue-chat-lieu-da-lon-lot-long-tho-26-collection",
-    "price": "1.290.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-14-1.webp",
-    "hoverImage": "/images/shop/product-14-2.webp",
-    "gallery": [
-      "/images/shop/product-13-1.webp",
-      "/images/shop/product-13-1.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo khoác 98 STUDIO FUR JACKET form regular Black / BLUE chất liệu da lộn lót lông thỏ ''26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 14,
-    "name": "Áo thun 98 STUDIO CONTRAST HENLY TEE  form regular cánh dơi summer ‘26 collection",
-    "slug": "ao-thun-98-studio-contrast-henly-tee-form-regular-canh-doi-summer-26-collection",
-    "price": "690.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-14-1.webp",
-    "hoverImage": "/images/shop/product-14-2.webp",
-    "gallery": [
-      "/images/shop/product-14-1.webp",
-      "/images/shop/product-14-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun 98 STUDIO CONTRAST HENLY TEE  form regular cánh dơi summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 15,
-    "name": "Quần jeans 98 STUDIO INDIGO Baggy Denim chất liệu 100% cotton 13oz SUMMER ‘26 collection",
-    "slug": "quan-jeans-98-studio-indigo-baggy-denim-chat-lieu-100-cotton-13oz-summer-26-collection",
-    "price": "720.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-15-1.webp",
-    "hoverImage": "/images/shop/product-15-2.webp",
-    "gallery": [
-      "/images/shop/product-15-1.webp",
-      "/images/shop/product-15-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần jeans 98 STUDIO INDIGO Baggy Denim chất liệu 100% cotton 13oz SUMMER ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 16,
-    "name": "Quần Jeans 98 STUDIO WHITE NOISE SHORT 100% cotton 12.5oz SUMMER ‘25 collection",
-    "slug": "quan-jeans-98-studio-white-noise-short-100-cotton-125oz-summer-25-collection",
-    "price": "550.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-16-1.webp",
-    "hoverImage": "/images/shop/product-16-2.webp",
-    "gallery": [
-      "/images/shop/product-16-1.webp",
-      "/images/shop/product-16-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần Jeans 98 STUDIO WHITE NOISE SHORT 100% cotton 12.5oz SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 17,
-    "name": "Quần short nữ 98 STUDIO SILK SHORT chất liệu lụa cao cấp dày dặn SUMMER ‘26 collection",
-    "slug": "quan-short-nu-98-studio-silk-short-chat-lieu-lua-cao-cap-day-dan-summer-26-collection",
-    "price": "480.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-17-1.webp",
-    "hoverImage": "/images/shop/product-17-2.webp",
-    "gallery": [
-      "/images/shop/product-17-1.webp",
-      "/images/shop/product-17-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần short nữ 98 STUDIO SILK SHORT chất liệu lụa cao cấp dày dặn SUMMER ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 18,
-    "name": "Quần short 98 STUDIO Pleated Trousers short form trên gối summer ‘26 collection",
-    "slug": "quan-short-98-studio-pleated-trousers-short-form-tren-goi-summer-26-collection",
-    "price": "480.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-18-1.webp",
-    "hoverImage": "/images/shop/product-18-2.webp",
-    "gallery": [
-      "/images/shop/product-18-1.webp",
-      "/images/shop/product-18-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần short 98 STUDIO Pleated Trousers short form trên gối summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 19,
-    "name": "Túi xách da PU khoá gài kim loại 98 STUDIO ARCHIVE BAG unisex đeo vai cầm tay",
-    "slug": "tui-xach-da-pu-khoa-gai-kim-loai-98-studio-archive-bag-unisex-deo-vai-cam-tay",
-    "price": "590.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-19-1.webp",
-    "hoverImage": "/images/shop/product-19-1.webp",
-    "gallery": [
+    id: 13,
+    name: "ARCHIVE BAG | BLACK",
+    slug: "archive-bag-black",
+    price: "850.000₫",
+    category: "SHOULDER BAG",
+    image: "/images/shop/product-19-1.webp",
+    hoverImage: "/images/shop/product-19-1.webp",
+    gallery: [
       "/images/shop/product-19-1.webp",
-      "/images/shop/product-19-1.webp"
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
+    description: "Túi xách da PU unisex khóa gài kim loại Ninety Eight Archive Bag đeo vai hoặc cầm tay, phom dáng cổ điển kết hợp phong cách hiện đại.",
+    highlights: [
+      "Chất liệu da PU vân mịn cao cấp, bề mặt chống nước tốt",
+      "Khóa gài kim loại mạ sáng bóng, đóng mở chắc chắn",
+      "Form cứng cáp, tôn dáng khi phối cùng mọi trang phục",
     ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Túi xách da PU khoá gài kim loại 98 STUDIO ARCHIVE BAG unisex đeo vai cầm tay từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
+    dimensions: {
+      size: "32 × 20 × 9 cm",
+      strapDrop: "25 cm",
+      weight: "460g",
+    },
+    material: "Premium PU Leather. Khóa hợp kim kẽm mạ crom.",
+    careInstructions: "- Lau bằng khăn mềm khô hoặc xi dưỡng chuyên dụng cho đồ da.",
+    shippingPolicy: "- Bảo hành phụ kiện 6 tháng. Đổi trả 7 ngày.",
+    page: 2,
   },
-  {
-    "id": 20,
-    "name": "Quần short 98 STUDIO BERMUDA SHORT form trên gối summer ‘26 collection",
-    "slug": "quan-short-98-studio-bermuda-short-form-tren-goi-summer-26-collection",
-    "price": "720.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-20-1.webp",
-    "hoverImage": "/images/shop/product-20-2.webp",
-    "gallery": [
-      "/images/shop/product-20-1.webp",
-      "/images/shop/product-20-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần short 98 STUDIO BERMUDA SHORT form trên gối summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 21,
-    "name": "Áo khoác 98 STUDIO Sand Jacket form oversize chất liệu canvas 100% cotton SUMMER ‘26 collection",
-    "slug": "ao-khoac-98-studio-sand-jacket-form-oversize-chat-lieu-canvas-100-cotton-summer-26-collection",
-    "price": "840.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-21-1.webp",
-    "hoverImage": "/images/shop/product-21-2.webp",
-    "gallery": [
-      "/images/shop/product-21-1.webp",
-      "/images/shop/product-21-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo khoác 98 STUDIO Sand Jacket form oversize chất liệu canvas 100% cotton SUMMER ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 22,
-    "name": "Quần dài 98 STUDIO STRIPED TROUSERS form suông summer ‘26 collection",
-    "slug": "quan-dai-98-studio-striped-trousers-form-suong-summer-26-collection",
-    "price": "550.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-22-1.webp",
-    "hoverImage": "/images/shop/product-22-2.webp",
-    "gallery": [
-      "/images/shop/product-22-1.webp",
-      "/images/shop/product-22-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần dài 98 STUDIO STRIPED TROUSERS form suông summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 23,
-    "name": "Áo sơ mi tay dài 98 STUDIO Black Linen Shirt form regular summer ‘26 collection",
-    "slug": "ao-so-mi-tay-dai-98-studio-black-linen-shirt-form-regular-summer-26-collection",
-    "price": "550.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-23-1.webp",
-    "hoverImage": "/images/shop/product-23-2.webp",
-    "gallery": [
-      "/images/shop/product-23-1.webp",
-      "/images/shop/product-23-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo sơ mi tay dài 98 STUDIO Black Linen Shirt form regular summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 24,
-    "name": "Áo sơ mi vintage 98 STUDIO Plaid Shirt form regular summer ‘26 collection",
-    "slug": "ao-so-mi-vintage-98-studio-plaid-shirt-form-regular-summer-26-collection",
-    "price": "620.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-24-1.webp",
-    "hoverImage": "/images/shop/product-24-2.webp",
-    "gallery": [
-      "/images/shop/product-24-1.webp",
-      "/images/shop/product-24-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo sơ mi vintage 98 STUDIO Plaid Shirt form regular summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 1
-  },
-  {
-    "id": 25,
-    "name": "Quần dài 98 STUDIO STRAIGHT TROUSERS form suông summer ‘26 collection",
-    "slug": "quan-dai-98-studio-straight-trousers-form-suong-summer-26-collection",
-    "price": "550.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-25-1.webp",
-    "hoverImage": "/images/shop/product-25-2.webp",
-    "gallery": [
-      "/images/shop/product-25-1.webp",
-      "/images/shop/product-25-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần dài 98 STUDIO STRAIGHT TROUSERS form suông summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 26,
-    "name": "Áo thun tay ngắn 98 STUDIO Striped T-Shirt form ôm THE INTERLUDE ‘26 collection",
-    "slug": "ao-thun-tay-ngan-98-studio-striped-t-shirt-form-om-the-interlude-26-collection",
-    "price": "380.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-26-1.webp",
-    "hoverImage": "/images/shop/product-26-2.webp",
-    "gallery": [
-      "/images/shop/product-26-1.webp",
-      "/images/shop/product-26-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun tay ngắn 98 STUDIO Striped T-Shirt form ôm THE INTERLUDE ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 27,
-    "name": "Áo thun tay dài 98 STUDIO SKY CLASSIC RAGLAN form regular Summer ‘26 collection",
-    "slug": "ao-thun-tay-dai-98-studio-sky-classic-raglan-form-regular-summer-26-collection",
-    "price": "380.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-27-1.webp",
-    "hoverImage": "/images/shop/product-27-2.webp",
-    "gallery": [
-      "/images/shop/product-27-1.webp",
-      "/images/shop/product-27-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun tay dài 98 STUDIO SKY CLASSIC RAGLAN form regular Summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 28,
-    "name": "Quần Jeans 98 STUDIO RAW STRAIGHT DENIM 100% cotton 14oz SUMMER ‘25 collection",
-    "slug": "quan-jeans-98-studio-raw-straight-denim-100-cotton-14oz-summer-25-collection",
-    "price": "890.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-28-1.webp",
-    "hoverImage": "/images/shop/product-28-2.webp",
-    "gallery": [
-      "/images/shop/product-28-1.webp",
-      "/images/shop/product-28-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần Jeans 98 STUDIO RAW STRAIGHT DENIM 100% cotton 14oz SUMMER ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 29,
-    "name": "Áo thun henley 98 STUDIO WAFFLE TEE form oversize Summer ‘26 collection",
-    "slug": "ao-thun-henley-98-studio-waffle-tee-form-oversize-summer-26-collection",
-    "price": "380.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-29-1.webp",
-    "hoverImage": "/images/shop/product-29-1.webp",
-    "gallery": [
-      "/images/shop/product-29-1.webp",
-      "/images/shop/product-29-1.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun henley 98 STUDIO WAFFLE TEE form oversize Summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 30,
-    "name": "Áo khoác 98 STUDIO Lable Jacket form crop Black / Olive chất liệu da lộn SUMMER ‘26 collection",
-    "slug": "ao-khoac-98-studio-lable-jacket-form-crop-black-olive-chat-lieu-da-lon-summer-26-collection",
-    "price": "750.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-30-1.webp",
-    "hoverImage": "/images/shop/product-30-2.webp",
-    "gallery": [
-      "/images/shop/product-30-1.webp",
-      "/images/shop/product-30-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo khoác 98 STUDIO Lable Jacket form crop Black / Olive chất liệu da lộn SUMMER ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 31,
-    "name": "Quần dài 98 STUDIO PLEATE TROUSERS  form suông chất liệu vải WOOL dày dặn đứng form FALL ‘25 collection",
-    "slug": "quan-dai-98-studio-pleate-trousers-form-suong-chat-lieu-vai-wool-day-dan-dung-form-fall-25-collection",
-    "price": "550.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-31-1.webp",
-    "hoverImage": "/images/shop/product-31-1.webp",
-    "gallery": [
-      "/images/shop/product-31-1.webp",
-      "/images/shop/product-31-1.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Quần dài 98 STUDIO PLEATE TROUSERS  form suông chất liệu vải WOOL dày dặn đứng form FALL ‘25 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  },
-  {
-    "id": 32,
-    "name": "Áo thun 98 STUDIO BLUE SHIRT form fit Black / White  summer ‘26 collection",
-    "slug": "ao-thun-98-studio-blue-shirt-form-fit-black-white-summer-26-collection",
-    "price": "380.000đ",
-    "category": "CLOTHING",
-    "image": "/images/shop/product-32-1.webp",
-    "hoverImage": "/images/shop/product-32-2.webp",
-    "gallery": [
-      "/images/shop/product-32-1.webp",
-      "/images/shop/product-32-2.webp"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Black",
-      "White",
-      "Grey"
-    ],
-    "description": "Sản phẩm Áo thun 98 STUDIO BLUE SHIRT form fit Black / White  summer ‘26 collection từ bộ sưu tập mới nhất của 98 STUDIO. Thiết kế tinh tế, chất liệu cao cấp mang phong cách streetwear năng động và cá tính.",
-    "careInstructions": "HƯỚNG DẪN BẢO QUẢN\n- Giặt bằng nước lạnh hoặc nhiệt độ thường để giữ sợi vải len mềm mại.\n- Không sử dụng thuốc tẩy hoặc bột giặt có tính tẩy rửa mạnh.\n- Phơi sản phẩm trong bóng râm, tránh ánh nắng gắt trực tiếp làm phai màu.\n- Lộn trái sản phẩm trước khi giặt và nên sử dụng túi giặt chuyên dụng.",
-    "shippingPolicy": "CHÍNH SÁCH GIAO HÀNG & ĐỔI TRẢ\n- Thời gian chuẩn bị đơn: 1 - 2 ngày làm việc.\n- Khu vực TP.HCM: Nhận hàng sau 1 - 2 ngày.\n- Các tỉnh thành khác: Nhận hàng sau 2 - 4 ngày.\n- Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng (sản phẩm còn nguyên tem mác, chưa qua sử dụng).\n- Đổi mới 100% nếu phát sinh lỗi từ nhà sản xuất.",
-    "sizeChartImage": "/images/products/knit-zipped-sweater/size-chart.webp",
-    "page": 2
-  }
 ];
 
 export function getProductBySlug(slug: string): ShopProduct | undefined {
-  const decoded = decodeURIComponent(slug).toLowerCase();
-  return SHOP_PRODUCTS.find((p) => p.slug === decoded || p.slug.includes(decoded) || decoded.includes(p.slug));
+  return SHOP_PRODUCTS.find((p) => p.slug === slug);
 }
 
-export function getRelatedProducts(currentId: number, limit: number = 4): ShopProduct[] {
+export function getRelatedProducts(currentId: number, limit = 4): ShopProduct[] {
   return SHOP_PRODUCTS.filter((p) => p.id !== currentId).slice(0, limit);
 }

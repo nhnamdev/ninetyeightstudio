@@ -9,11 +9,11 @@ import "./shop.css";
 export const metadata = {
   title: "Cửa hàng | Ninety Eight Studio",
   description:
-    "Khám phá các sản phẩm thời trang, áo thun, sơ mi, áo khoác, quần jeans cá tính tại Ninety Eight Studio.",
+    "Khám phá các sản phẩm túi xách, tote bag, shoulder bag, travel bag cá tính tại Ninety Eight Studio.",
   openGraph: {
     title: "Cửa hàng | Ninety Eight Studio",
     description:
-      "Khám phá các sản phẩm thời trang, áo thun, sơ mi, áo khoác, quần jeans cá tính tại Ninety Eight Studio.",
+      "Khám phá các sản phẩm túi xách, tote bag, shoulder bag, travel bag cá tính tại Ninety Eight Studio.",
     images: ["/sites/wwyn-vn/root/images/hero-banner.webp"],
   },
 };
