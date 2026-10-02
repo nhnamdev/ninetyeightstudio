@@ -4,7 +4,7 @@ export const TopBar: React.FC = () => {
   return (
     <div
       id="top-bar"
-      className="header-top hide-for-sticky nav-dark flex-has-center bg-[#9c0b13] text-white py-2 px-4 transition-colors z-40 w-full"
+      className="header-top hide-for-sticky nav-dark flex-has-center bg-[#000000] text-white py-2 px-4 transition-colors z-40 w-full"
     >
       <div className="flex-row container mx-auto flex items-center justify-center text-center">
         <div className="flex-col flex-center">
