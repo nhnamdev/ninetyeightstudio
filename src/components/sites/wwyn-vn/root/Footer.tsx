@@ -71,6 +71,10 @@ export const Footer: React.FC = () => {
                   <img
                     src="/sites/wwyn-vn/root/images/facebook.webp"
                     alt="Ninety Eight Studio Facebook"
+                    width={24}
+                    height={24}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </Link>
               </li>
@@ -82,6 +86,10 @@ export const Footer: React.FC = () => {
                   <img
                     src="/sites/wwyn-vn/root/images/instagram.webp"
                     alt="Ninety Eight Studio Instagram"
+                    width={24}
+                    height={24}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </Link>
               </li>
@@ -93,6 +101,10 @@ export const Footer: React.FC = () => {
                   <img
                     src="/sites/wwyn-vn/root/images/tiktok.webp"
                     alt="Ninety Eight Studio TikTok"
+                    width={24}
+                    height={24}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </Link>
               </li>

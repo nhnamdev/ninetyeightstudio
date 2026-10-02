@@ -12,6 +12,11 @@ export const Hero: React.FC = () => {
           <img
             src="/sites/wwyn-vn/root/images/hero-banner.webp"
             alt="Ninety Eight Studio"
+            width={1920}
+            height={1080}
+            fetchPriority="high"
+            decoding="async"
+            loading="eager"
             className="w-full object-cover"
           />
         </Link>

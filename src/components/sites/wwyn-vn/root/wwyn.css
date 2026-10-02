@@ -16,6 +16,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 /* Center Containers */
 .wwyn-center {
   position: relative;

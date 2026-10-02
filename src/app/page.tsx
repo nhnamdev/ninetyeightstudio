@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "@/components/sites/wwyn-vn/root/Navbar";
 import { Hero } from "@/components/sites/wwyn-vn/root/Hero";
+import { ProductSlider } from "@/components/sites/wwyn-vn/root/ProductSlider";
 import { Footer } from "@/components/sites/wwyn-vn/root/Footer";
 import "@/components/sites/wwyn-vn/root/wwyn.css";
 
@@ -39,6 +40,9 @@ export default function Home() {
 
       {/* Hero Banner Section */}
       <Hero />
+
+      {/* All Products Slider Section */}
+      <ProductSlider />
 
       {/* Footer Section */}
       <Footer />

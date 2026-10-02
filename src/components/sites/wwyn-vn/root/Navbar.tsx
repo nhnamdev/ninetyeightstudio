@@ -57,6 +57,10 @@ export const Navbar: React.FC = () => {
               <img
                 src="/sites/wwyn-vn/root/images/logo_98.png"
                 alt="Ninety Eight Studio"
+                width={140}
+                height={32}
+                decoding="async"
+                fetchPriority="high"
                 className="logo-img"
               />
             </Link>
@@ -247,6 +251,10 @@ export const Navbar: React.FC = () => {
               <img
                 src="/sites/wwyn-vn/root/images/logo_98.png"
                 alt="Ninety Eight Studio"
+                width={120}
+                height={28}
+                decoding="async"
+                fetchPriority="high"
               />
             </Link>
           </div>
