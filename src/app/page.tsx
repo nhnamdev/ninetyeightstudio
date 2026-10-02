@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/sites/wwyn-vn/root/Navbar";
 import { Hero } from "@/components/sites/wwyn-vn/root/Hero";
 import { ProductSlider } from "@/components/sites/wwyn-vn/root/ProductSlider";
@@ -27,9 +28,9 @@ export default function Home() {
           <li className="h-org">Ninety Eight Studio</li>
           <li className="h-tel">0378026461</li>
           <li>
-            <a className="u-url" href="/">
+            <Link className="u-url" href="/">
               Ninety Eight Studio
-            </a>
+            </Link>
           </li>
         </ul>
         <h1>Ninety Eight Studio</h1>

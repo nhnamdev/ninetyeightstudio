@@ -2,13 +2,6 @@ import fs from 'fs';
 
 const html = fs.readFileSync('docs/research/wwyn-vn/root/rendered_page.html', 'utf-8');
 
-function extractTag(html, startTag, endTag) {
-  const startIdx = html.indexOf(startTag);
-  if (startIdx === -1) return null;
-  const endIdx = html.indexOf(endTag, startIdx);
-  if (endIdx === -1) return null;
-  return html.slice(startIdx, endIdx + endTag.length);
-}
 
 // Write out all individual pieces to inspection files
 const menuDesktop = html.match(/<div id="menu"[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/)?.[0] || 'not found';
