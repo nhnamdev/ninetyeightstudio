@@ -12,6 +12,8 @@ import { TopBar } from "./TopBar";
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const isCuahang = pathname?.startsWith("/cua-hang");
+  const isGioithieu = pathname?.startsWith("/gioi-thieu");
+  const isLienhe = pathname?.startsWith("/lien-he");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -73,9 +75,9 @@ export const Navbar: React.FC = () => {
           <ul className="main-menu">
             <li>
               <Link
-                href="#"
+                href="/gioi-thieu"
                 title="Giới thiệu"
-                className="transition"
+                className={`transition ${isGioithieu ? "active" : ""}`}
               >
                 Giới thiệu
               </Link>
@@ -122,9 +124,9 @@ export const Navbar: React.FC = () => {
 
             <li>
               <Link
-                href="#"
+                href="/lien-he"
                 title="Liên hệ"
-                className="transition"
+                className={`transition ${isLienhe ? "active" : ""}`}
               >
                 Liên hệ
               </Link>

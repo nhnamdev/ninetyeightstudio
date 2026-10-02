@@ -61,7 +61,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               </Link>
             </li>
             <li>
-              <Link href="#" onClick={handleClose}>
+              <Link href="/gioi-thieu" onClick={handleClose}>
                 Giới thiệu
               </Link>
             </li>
@@ -98,7 +98,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               </Link>
             </li>
             <li>
-              <Link href="#" onClick={handleClose}>
+              <Link href="/lien-he" onClick={handleClose}>
                 Liên hệ
               </Link>
             </li>

@@ -1,0 +1,97 @@
+/* About Us Page Styles - Matching WWYN editorial aesthetic */
+
+.about-container {
+  padding: 40px 15px 80px;
+  width: 100%;
+}
+
+.about-center900 {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+
+.about-title-main {
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+.about-title-main h1 {
+  display: inline-block;
+  text-transform: uppercase;
+  color: #000000;
+  font-weight: 500;
+  font-size: clamp(24px, 2.5vw, 30px);
+  letter-spacing: 0.08em;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.about-content {
+  color: #000000;
+  font-size: 15px;
+  line-height: 1.9;
+  text-align: center;
+}
+
+.about-lang-tag {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #777777;
+  text-transform: uppercase;
+  margin: 25px 0 10px;
+  display: block;
+}
+
+.about-text-vi,
+.about-text-en {
+  font-family: var(--font-family-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.9;
+  color: #1a1a1a;
+  max-width: 820px;
+  margin: 0 auto 30px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.about-poster-wrapper {
+  margin-top: 45px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.about-poster-img {
+  width: 100%;
+  max-width: 840px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 25px 15px 50px;
+  }
+  
+  .about-title-main {
+    margin-bottom: 25px;
+  }
+  
+  .about-text-vi,
+  .about-text-en {
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .about-poster-wrapper {
+    margin-top: 30px;
+  }
+}
