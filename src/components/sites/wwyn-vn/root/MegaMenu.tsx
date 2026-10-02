@@ -9,12 +9,12 @@ export interface CategoryItem {
 }
 
 export const CATEGORIES: CategoryItem[] = [
-  { title: "T - SHIRT", href: "#" },
-  { title: "SHIRT", href: "#" },
-  { title: "JACKET", href: "#" },
-  { title: "SHORTS", href: "#" },
-  { title: "TROUSERS", href: "#" },
-  { title: "ACCESSORIES", href: "#" },
+  { title: "T - SHIRT", href: "/cua-hang" },
+  { title: "SHIRT", href: "/cua-hang" },
+  { title: "JACKET", href: "/cua-hang" },
+  { title: "SHORTS", href: "/cua-hang" },
+  { title: "TROUSERS", href: "/cua-hang" },
+  { title: "ACCESSORIES", href: "/cua-hang" },
 ];
 
 interface MegaMenuProps {

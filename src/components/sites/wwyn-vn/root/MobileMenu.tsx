@@ -128,9 +128,14 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           </div>
           <div className="mobile-drawer-nav">
             <ul>
+              <li>
+                <Link href="/cua-hang" onClick={handleClose} className="font-semibold text-black">
+                  TẤT CẢ SẢN PHẨM
+                </Link>
+              </li>
               {CATEGORIES.map((cat, idx) => (
                 <li key={idx}>
-                  <Link href={cat.href} onClick={handleClose}>
+                  <Link href="/cua-hang" onClick={handleClose}>
                     {cat.title}
                   </Link>
                 </li>

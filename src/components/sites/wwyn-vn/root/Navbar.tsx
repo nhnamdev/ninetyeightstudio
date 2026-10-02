@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
 import { SearchDropdown } from "./SearchDropdown";
@@ -9,6 +10,8 @@ import { CartModal } from "./CartModal";
 import { TopBar } from "./TopBar";
 
 export const Navbar: React.FC = () => {
+  const pathname = usePathname();
+  const isCuahang = pathname?.startsWith("/cua-hang");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -84,9 +87,9 @@ export const Navbar: React.FC = () => {
               onMouseLeave={handleMouseLeaveCuahang}
             >
               <Link
-                href="#"
+                href="/cua-hang"
                 title="Cửa hàng"
-                className="transition"
+                className={`transition ${isCuahang ? "active" : ""}`}
               >
                 <span>Cửa hàng</span>
                 <img
