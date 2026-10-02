@@ -7,6 +7,7 @@ import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
 import { SearchDropdown } from "./SearchDropdown";
 import { CartModal } from "./CartModal";
+import { AuthModal } from "./AuthModal";
 import { TopBar } from "./TopBar";
 
 export const Navbar: React.FC = () => {
@@ -18,6 +19,7 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [megaMenuHover, setMegaMenuHover] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<"VN" | "EN">("VN");
@@ -187,13 +189,19 @@ export const Navbar: React.FC = () => {
 
                 {/* User Account */}
                 <div className="user-menu">
-                  <Link href="#" title="User">
+                  <button
+                    type="button"
+                    onClick={() => setAuthModalOpen(true)}
+                    title="Tài khoản"
+                    className="p-0 border-none bg-transparent cursor-pointer flex items-center justify-center"
+                    aria-label="Tài khoản"
+                  >
                     <img
                       src="/sites/wwyn-vn/root/images/user.png"
-                      alt="User"
+                      alt="Tài khoản"
                       className="menu-icon"
                     />
-                  </Link>
+                  </button>
                 </div>
 
                 {/* Cart Button */}
@@ -311,13 +319,19 @@ export const Navbar: React.FC = () => {
 
             {/* User */}
             <div className="user-menu">
-              <Link href="#" title="User">
+              <button
+                type="button"
+                onClick={() => setAuthModalOpen(true)}
+                title="Tài khoản"
+                className="p-0 border-none bg-transparent cursor-pointer flex items-center justify-center"
+                aria-label="Tài khoản"
+              >
                 <img
                   src="/sites/wwyn-vn/root/images/user.png"
-                  alt="User"
+                  alt="Tài khoản"
                   className="menu-icon"
                 />
-              </Link>
+              </button>
             </div>
 
             {/* Cart */}
@@ -348,6 +362,12 @@ export const Navbar: React.FC = () => {
 
       {/* Cart Modal */}
       <CartModal isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+
+      {/* Auth Modal (Login / Register) */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+      />
     </>
   );
 };
