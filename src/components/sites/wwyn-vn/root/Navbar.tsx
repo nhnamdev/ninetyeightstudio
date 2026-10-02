@@ -189,19 +189,18 @@ export const Navbar: React.FC = () => {
 
                 {/* User Account */}
                 <div className="user-menu">
-                  <button
-                    type="button"
-                    onClick={() => setAuthModalOpen(true)}
-                    title="Tài khoản"
+                  <Link
+                    href="/my-account"
+                    title="Tài khoản của tôi"
                     className="p-0 border-none bg-transparent cursor-pointer flex items-center justify-center"
-                    aria-label="Tài khoản"
+                    aria-label="Tài khoản của tôi"
                   >
                     <img
                       src="/sites/wwyn-vn/root/images/user.png"
                       alt="Tài khoản"
                       className="menu-icon"
                     />
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Cart Button */}
@@ -319,19 +318,18 @@ export const Navbar: React.FC = () => {
 
             {/* User */}
             <div className="user-menu">
-              <button
-                type="button"
-                onClick={() => setAuthModalOpen(true)}
-                title="Tài khoản"
+              <Link
+                href="/my-account"
+                title="Tài khoản của tôi"
                 className="p-0 border-none bg-transparent cursor-pointer flex items-center justify-center"
-                aria-label="Tài khoản"
+                aria-label="Tài khoản của tôi"
               >
                 <img
                   src="/sites/wwyn-vn/root/images/user.png"
                   alt="Tài khoản"
                   className="menu-icon"
                 />
-              </button>
+              </Link>
             </div>
 
             {/* Cart */}

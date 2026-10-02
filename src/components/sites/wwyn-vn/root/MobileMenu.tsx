@@ -102,6 +102,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 Liên hệ
               </Link>
             </li>
+            <li>
+              <Link href="/my-account" onClick={handleClose}>
+                Tài khoản của tôi
+              </Link>
+            </li>
           </ul>
         </div>
 

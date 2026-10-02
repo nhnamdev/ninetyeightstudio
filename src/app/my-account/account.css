@@ -1,0 +1,46 @@
+/* My Account Minimalist Styling - Ninety Eight Studio */
+
+.account-page-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+  width: 100%;
+}
+
+.account-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Sidebar */
+.account-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 95px;
+}
+
+/* Main Content Area */
+.account-main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .account-layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .account-sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .account-page-container {
+    padding: 16px 16px 60px;
+  }
+}

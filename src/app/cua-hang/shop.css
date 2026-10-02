@@ -1,52 +1,8 @@
-/* Shop Page Styling - Exact layout matching WWYN */
+/* Shop Page Styling */
 
 .shop-breadcrumbs {
-  background-color: #eee;
-  padding: 12px 0;
+  background-color: transparent;
   width: 100%;
-}
-
-.shop-breadcrumbs .wwyn-center {
-  display: flex;
-  align-items: center;
-}
-
-.shop-breadcrumbs ol {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.shop-breadcrumbs li {
-  display: flex;
-  align-items: center;
-}
-
-.shop-breadcrumbs li a {
-  color: #212529;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.shop-breadcrumbs li a:hover {
-  color: #9c0b13;
-}
-
-.shop-breadcrumbs li.active span {
-  color: #888888;
-  pointer-events: none;
-}
-
-.shop-breadcrumbs li:not(:last-child)::after {
-  content: "/";
-  margin: 0 10px;
-  color: #aaa;
-  font-size: 11px;
 }
 
 /* Shop Main Container */
