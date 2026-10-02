@@ -6,6 +6,7 @@ import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
 import { SearchDropdown } from "./SearchDropdown";
 import { CartModal } from "./CartModal";
+import { TopBar } from "./TopBar";
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,15 +45,18 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
+      {/* Top Announcement Bar */}
+      <TopBar />
+
       {/* ================= DESKTOP HEADER ================= */}
       <header id="menu" className={isScrolled ? "fixing" : ""}>
         <div className="wwyn-center center-header">
           {/* Logo */}
           <div className="logo">
-            <Link href="/" title="WWYN">
+            <Link href="/" title="Ninety Eight Studio">
               <img
                 src="/sites/wwyn-vn/root/images/logo_98.png"
-                alt="WWYN"
+                alt="Ninety Eight Studio"
                 className="logo-img"
               />
             </Link>
@@ -239,10 +243,10 @@ export const Navbar: React.FC = () => {
 
           {/* Centered Logo */}
           <div className="logo">
-            <Link href="/" title="WWYN">
+            <Link href="/" title="Ninety Eight Studio">
               <img
                 src="/sites/wwyn-vn/root/images/logo_98.png"
-                alt="WWYN"
+                alt="Ninety Eight Studio"
               />
             </Link>
           </div>

@@ -8,10 +8,10 @@ export const Hero: React.FC = () => {
     <section className="slideshow" aria-label="Hero Slideshow">
       <div className="slideshow-slide">
         {/* Banner image */}
-        <Link href="#" title="WWYN - Wear What You Need">
+        <Link href="#" title="Ninety Eight Studio">
           <img
             src="/sites/wwyn-vn/root/images/hero-banner.webp"
-            alt="WWYN"
+            alt="Ninety Eight Studio"
             className="w-full object-cover"
           />
         </Link>

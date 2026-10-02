@@ -66,33 +66,33 @@ export const Footer: React.FC = () => {
               <li>
                 <Link
                   href="#"
-                  title="Facebook WWYN"
+                  title="Facebook Ninety Eight Studio"
                 >
                   <img
                     src="/sites/wwyn-vn/root/images/facebook.webp"
-                    alt="WWYN Facebook"
+                    alt="Ninety Eight Studio Facebook"
                   />
                 </Link>
               </li>
               <li>
                 <Link
                   href="#"
-                  title="Instagram WWYN"
+                  title="Instagram Ninety Eight Studio"
                 >
                   <img
                     src="/sites/wwyn-vn/root/images/instagram.webp"
-                    alt="WWYN Instagram"
+                    alt="Ninety Eight Studio Instagram"
                   />
                 </Link>
               </li>
               <li>
                 <Link
                   href="#"
-                  title="TikTok WWYN"
+                  title="TikTok Ninety Eight Studio"
                 >
                   <img
                     src="/sites/wwyn-vn/root/images/tiktok.webp"
-                    alt="WWYN TikTok"
+                    alt="Ninety Eight Studio TikTok"
                   />
                 </Link>
               </li>
@@ -195,7 +195,7 @@ export const Footer: React.FC = () => {
 
           {/* Column 4: Store Info */}
           <div className="footer-4">
-            <h2 className="footer-tit">WWYN STU</h2>
+            <h2 className="footer-tit">NINETY EIGHT STUDIO</h2>
             <div className="footer-content">
               <p>
                 WARDROBE ARC, 351/44 Le Van Sy, Nhieu Loc Ward, District 3, Ho
@@ -252,7 +252,7 @@ export const Footer: React.FC = () => {
       <div className="footer-bottom">
         <div className="wwyn-center center-bottom">
           <p className="copyright">
-            Copyright © 2026 <span>WWYN</span>. All rights reserved. Designed by{" "}
+            Copyright © 2026 <span>Ninety Eight Studio</span>. All rights reserved. Designed by{" "}
             <a href="#">
               Vinasoftware (VNS)
             </a>
