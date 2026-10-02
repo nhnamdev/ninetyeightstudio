@@ -20,7 +20,9 @@ export const metadata: Metadata = {
   description:
     "Ninety Eight Studio là local brand thời trang Việt Nam, mang phong cách streetwear trẻ trung, cá tính. Thiết kế hiện đại, chất lượng cao, dành cho giới trẻ yêu thời trang.",
   icons: {
-    icon: "/sites/wwyn-vn/root/images/favicon.jpg",
+    icon: "/images/favicon.png",
+    shortcut: "/favicon.ico",
+    apple: "/images/favicon.png",
   },
 };
 
