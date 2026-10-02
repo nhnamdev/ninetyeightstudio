@@ -12,7 +12,7 @@ export const TopBar: React.FC = () => {
             <li className="html custom html_topbar_right">
               <div className="rotate-top-bar">
                 <p className="text-center block text-[11.5px] sm:text-[12.5px] md:text-[13px] font-normal leading-snug tracking-wide text-white m-0">
-                  Đăng ký thành viên Spoiled Club để nhận Letter Charm cho đơn hàng đầu tiên
+                  Đăng ký thành viên Ninety Eight Studio để nhận Letter Charm cho đơn hàng đầu tiên
                 </p>
               </div>
             </li>
