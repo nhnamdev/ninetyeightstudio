@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Navbar } from "@/components/sites/wwyn-vn/root/Navbar";
 import { Footer } from "@/components/sites/wwyn-vn/root/Footer";
 import { ShopBreadcrumbs } from "@/components/sites/wwyn-vn/shop/ShopBreadcrumbs";
@@ -49,7 +49,15 @@ export default function ShopPage() {
         </div>
 
         {/* Product Grid with Pagination */}
-        <ShopProductGrid initialPage={1} />
+        <Suspense
+          fallback={
+            <div className="py-20 text-center text-xs text-neutral-400">
+              Đang tải danh sách sản phẩm...
+            </div>
+          }
+        >
+          <ShopProductGrid initialPage={1} />
+        </Suspense>
       </section>
 
       {/* Footer Section */}

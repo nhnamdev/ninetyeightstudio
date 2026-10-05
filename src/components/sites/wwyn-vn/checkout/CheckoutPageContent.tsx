@@ -209,6 +209,19 @@ export const CheckoutPageContent: React.FC = () => {
       };
 
       setCompletedOrder(order);
+
+      // Persist order to localStorage for /my-account and order tracking
+      try {
+        const existingOrdersStr = localStorage.getItem("ninetyeight_orders_v1");
+        const existingOrders = existingOrdersStr ? JSON.parse(existingOrdersStr) : [];
+        localStorage.setItem(
+          "ninetyeight_orders_v1",
+          JSON.stringify([order, ...existingOrders])
+        );
+      } catch (err) {
+        console.error("Lỗi khi lưu đơn hàng vào localStorage:", err);
+      }
+
       clearCart();
       setIsSubmitting(false);
       window.scrollTo({ top: 0, behavior: "smooth" });

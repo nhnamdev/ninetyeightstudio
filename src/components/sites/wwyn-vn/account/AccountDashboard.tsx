@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -92,11 +92,68 @@ const SAMPLE_ORDERS: Order[] = [
   },
 ];
 
+interface StoredOrderItem {
+  id: string | number;
+  name: string;
+  slug: string;
+  image: string;
+  price: number | string;
+  priceFormatted?: string;
+  quantity: number;
+}
+
+interface StoredOrder {
+  orderId: string;
+  date?: string;
+  total: number;
+  paymentMethod: "vietqr" | "cod" | string;
+  items: StoredOrderItem[];
+}
+
 export const AccountDashboard: React.FC = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"orders" | "profile">("orders");
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>(SAMPLE_ORDERS);
+
+  // Load real orders from localStorage if available
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        const saved = localStorage.getItem("ninetyeight_orders_v1");
+        if (saved) {
+          const parsed: StoredOrder[] = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const formattedOrders: Order[] = parsed.map((o) => ({
+              id: `#NES-${o.orderId}`,
+              date: o.date || new Date().toLocaleDateString("vi-VN"),
+              total: new Intl.NumberFormat("vi-VN").format(o.total) + "₫",
+              paymentMethod:
+                o.paymentMethod === "vietqr"
+                  ? "Chuyển khoản VietQR"
+                  : "Thanh toán khi nhận hàng (COD)",
+              items: o.items.map((it, idx) => ({
+                id: typeof it.id === "number" ? it.id : idx + 1000,
+                name: it.name,
+                slug: it.slug,
+                image: it.image,
+                price:
+                  it.priceFormatted ||
+                  new Intl.NumberFormat("vi-VN").format(Number(it.price) || 0) + "₫",
+                quantity: it.quantity,
+              })),
+            }));
+            setOrders([...formattedOrders, ...SAMPLE_ORDERS]);
+          }
+        }
+      } catch (e) {
+        console.error("Lỗi đọc đơn hàng từ localStorage:", e);
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Profile Form State
   const [profileData, setProfileData] = useState({
@@ -242,7 +299,7 @@ export const AccountDashboard: React.FC = () => {
 
               {/* Order Cards List */}
               <div className="space-y-4">
-                {SAMPLE_ORDERS.map((order) => (
+                {orders.map((order) => (
                   <div
                     key={order.id}
                     className="border border-neutral-200 rounded-[3px] bg-white overflow-hidden shadow-sm hover:border-neutral-300 transition-colors"

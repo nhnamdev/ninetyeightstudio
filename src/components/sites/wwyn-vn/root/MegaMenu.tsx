@@ -9,16 +9,16 @@ export interface CategoryItem {
 }
 
 export const HIGHLIGHT_CATEGORIES: CategoryItem[] = [
-  { title: "NEW ARRIVAL", href: "/cua-hang" },
+  { title: "NEW ARRIVAL", href: "/cua-hang?filter=new-arrival" },
   { title: "TẤT CẢ SẢN PHẨM", href: "/cua-hang" },
-  { title: "BEST SELLER", href: "/cua-hang" },
+  { title: "BEST SELLER", href: "/cua-hang?filter=best-seller" },
 ];
 
 export const PRODUCT_CATEGORIES: CategoryItem[] = [
-  { title: "TÚI TO", href: "/cua-hang" },
-  { title: "TÚI VỪA", href: "/cua-hang" },
-  { title: "TÚI NHỎ", href: "/cua-hang" },
-  { title: "PHỤ KIỆN", href: "/cua-hang" },
+  { title: "TÚI TO", href: "/cua-hang?category=TOTE+BAG" },
+  { title: "TÚI VỪA", href: "/cua-hang?category=SHOULDER+BAG" },
+  { title: "TÚI DU LỊCH", href: "/cua-hang?category=TRAVEL+BAG" },
+  { title: "PHỤ KIỆN", href: "/cua-hang?category=ACCESSORIES" },
 ];
 
 // For backward compatibility

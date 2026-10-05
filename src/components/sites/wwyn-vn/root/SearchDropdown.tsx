@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface SearchDropdownProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
 }) => {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
@@ -24,9 +26,10 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      setQuery("");
+    const q = query.trim();
+    if (q) {
       onClose();
+      router.push(`/cua-hang?q=${encodeURIComponent(q)}`);
     }
   };
 

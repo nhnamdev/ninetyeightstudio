@@ -223,36 +223,36 @@ export const Footer: React.FC = () => {
 
           {/* Column 5: Menu Links */}
           <div className="footer-5">
-            <h2 className="footer-tit">MENU</h2>
+            <h2 className="footer-tit">DANH MỤC</h2>
             <ul className="footer-list">
               <li>
-                <Link href="#" title="T - SHIRT">
-                  T - SHIRT
+                <Link href="/cua-hang?category=TOTE+BAG" title="TOTE BAG">
+                  TOTE BAG
                 </Link>
               </li>
               <li>
-                <Link href="#" title="SHIRT">
-                  SHIRT
+                <Link href="/cua-hang?category=SHOULDER+BAG" title="SHOULDER BAG">
+                  SHOULDER BAG
                 </Link>
               </li>
               <li>
-                <Link href="#" title="JACKET">
-                  JACKET
+                <Link href="/cua-hang?category=TRAVEL+BAG" title="TRAVEL BAG">
+                  TRAVEL BAG
                 </Link>
               </li>
               <li>
-                <Link href="#" title="SHORTS">
-                  SHORTS
-                </Link>
-              </li>
-              <li>
-                <Link href="#" title="TROUSERS">
-                  TROUSERS
-                </Link>
-              </li>
-              <li>
-                <Link href="#" title="ACCESSORIES">
+                <Link href="/cua-hang?category=ACCESSORIES" title="ACCESSORIES">
                   ACCESSORIES
+                </Link>
+              </li>
+              <li>
+                <Link href="/cua-hang?filter=new-arrival" title="SẢN PHẨM MỚI">
+                  SẢN PHẨM MỚI
+                </Link>
+              </li>
+              <li>
+                <Link href="/cua-hang?filter=best-seller" title="BÁN CHẠY NHẤT">
+                  BÁN CHẠY NHẤT
                 </Link>
               </li>
             </ul>

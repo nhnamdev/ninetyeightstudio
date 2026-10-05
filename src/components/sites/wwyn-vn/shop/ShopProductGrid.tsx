@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { SHOP_PRODUCTS, ShopProduct } from "@/data/shopProducts";
 import { ShopProductCard } from "./ShopProductCard";
 import { useCart } from "@/context/CartContext";
@@ -9,25 +10,82 @@ interface ShopProductGridProps {
   initialPage?: number;
 }
 
-const CATEGORIES = ["TẤT CẢ", "TOTE BAG", "SHOULDER BAG", "TRAVEL BAG"] as const;
+const CATEGORIES = [
+  "TẤT CẢ",
+  "TOTE BAG",
+  "SHOULDER BAG",
+  "TRAVEL BAG",
+  "ACCESSORIES",
+] as const;
 
 export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
   initialPage = 1,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("TẤT CẢ");
-  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useCart();
 
+  const urlCategory = searchParams.get("category");
+  const urlFilter = searchParams.get("filter");
+  const urlQuery = searchParams.get("q") || "";
+
+  // Derive category from URL if present
+  const derivedCategory = useMemo(() => {
+    if (urlCategory) {
+      const match = CATEGORIES.find(
+        (c) => c.toLowerCase() === urlCategory.toLowerCase()
+      );
+      if (match) return match;
+    }
+    return "TẤT CẢ";
+  }, [urlCategory]);
+
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const selectedCategory = activeCategory ?? derivedCategory;
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+
   const ITEMS_PER_PAGE = 8;
 
-  // Filter products by category
+  // Filter products by category, filter, and search query
   const filteredProducts = useMemo(() => {
-    if (selectedCategory === "TẤT CẢ") {
-      return SHOP_PRODUCTS;
+    let result = [...SHOP_PRODUCTS];
+
+    // 1. Filter by category
+    if (selectedCategory !== "TẤT CẢ") {
+      result = result.filter(
+        (product) => product.category === selectedCategory
+      );
     }
-    return SHOP_PRODUCTS.filter((product) => product.category === selectedCategory);
-  }, [selectedCategory]);
+
+    // 2. Filter by special highlights
+    if (urlFilter === "new-arrival") {
+      // Sort newest (descending ID)
+      result = [...result].sort((a, b) => b.id - a.id);
+    } else if (urlFilter === "best-seller") {
+      // Best seller bags first
+      result = [...result].filter(
+        (p) =>
+          p.slug.includes("zuni") ||
+          p.slug.includes("yacht") ||
+          p.slug.includes("sporty") ||
+          p.slug.includes("league")
+      );
+    }
+
+    // 3. Filter by search query
+    if (urlQuery.trim()) {
+      const q = urlQuery.trim().toLowerCase();
+      result = result.filter(
+        (product) =>
+          product.name.toLowerCase().includes(q) ||
+          product.description.toLowerCase().includes(q) ||
+          product.category.toLowerCase().includes(q)
+      );
+    }
+
+    return result;
+  }, [selectedCategory, urlFilter, urlQuery]);
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
 
@@ -38,8 +96,11 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
   }, [filteredProducts, currentPage]);
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+    setActiveCategory(category);
     setCurrentPage(1);
+    if (urlFilter || urlCategory) {
+      router.push(category === "TẤT CẢ" ? "/cua-hang" : `/cua-hang?category=${encodeURIComponent(category)}`);
+    }
   };
 
   const handlePageChange = (newPage: number) => {
@@ -48,6 +109,10 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  };
+
+  const handleClearSearch = () => {
+    router.push("/cua-hang");
   };
 
   const handleAddToCart = (product: ShopProduct) => {
@@ -67,6 +132,39 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
 
   return (
     <div ref={containerRef} className="w-full">
+      {/* Search / Filter Notification Banner */}
+      {(urlQuery || urlFilter) && (
+        <div className="mb-6 p-3.5 bg-neutral-50 border border-neutral-200 rounded flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-neutral-500">Đang lọc theo:</span>
+            {urlQuery && (
+              <span className="font-semibold text-neutral-900 bg-white px-2 py-1 rounded border border-neutral-200">
+                Từ khóa: &ldquo;{urlQuery}&rdquo;
+              </span>
+            )}
+            {urlFilter === "new-arrival" && (
+              <span className="font-semibold text-neutral-900 bg-white px-2 py-1 rounded border border-neutral-200">
+                Sản phẩm mới (New Arrival)
+              </span>
+            )}
+            {urlFilter === "best-seller" && (
+              <span className="font-semibold text-neutral-900 bg-white px-2 py-1 rounded border border-neutral-200">
+                Bán chạy nhất (Best Seller)
+              </span>
+            )}
+            <span className="text-neutral-500">({filteredProducts.length} sản phẩm)</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleClearSearch}
+            className="text-neutral-700 hover:text-black font-semibold underline cursor-pointer"
+          >
+            Xóa bộ lọc
+          </button>
+        </div>
+      )}
+
       {/* Category Filter Tabs */}
       <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 pb-3 border-b border-neutral-100">
         {CATEGORIES.map((cat) => {
@@ -76,7 +174,7 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
               key={cat}
               type="button"
               onClick={() => handleCategoryChange(cat)}
-              className={`px-4 py-2 text-xs sm:text-sm font-semibold tracking-wider rounded uppercase transition-all ${
+              className={`px-4 py-2 text-xs sm:text-sm font-semibold tracking-wider rounded uppercase transition-all cursor-pointer ${
                 isActive
                   ? "bg-black text-white shadow-sm"
                   : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-black"
@@ -88,16 +186,51 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
         })}
       </div>
 
-      {/* Grid of Product Cards */}
-      <div className="shop-product-grid">
-        {displayedProducts.map((product) => (
-          <ShopProductCard
-            key={product.id}
-            product={product}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
-      </div>
+      {/* Empty State */}
+      {filteredProducts.length === 0 ? (
+        <div className="py-16 text-center">
+          <div className="w-16 h-16 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center mx-auto mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3 className="text-base font-bold text-neutral-900 mb-1">
+            Không tìm thấy sản phẩm phù hợp
+          </h3>
+          <p className="text-xs text-neutral-500 max-w-sm mx-auto mb-6">
+            Rất tiếc, không có sản phẩm nào khớp với tìm kiếm của bạn. Hãy thử từ khóa khác hoặc xem toàn bộ danh mục.
+          </p>
+          <button
+            type="button"
+            onClick={handleClearSearch}
+            className="px-6 py-2.5 bg-black text-white text-xs uppercase font-bold tracking-wider hover:bg-neutral-800 transition rounded-sm cursor-pointer"
+          >
+            Xem tất cả sản phẩm
+          </button>
+        </div>
+      ) : (
+        /* Grid of Product Cards */
+        <div className="shop-product-grid">
+          {displayedProducts.map((product) => (
+            <ShopProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={handleAddToCart}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Pagination Bar (show if more than 1 page) */}
       {totalPages > 1 && (
@@ -129,13 +262,16 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
               </button>
             </li>
 
-            {/* Page Numbers */}
+            {/* Page Number Buttons */}
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
               <li key={pageNum} className="shop-page-item">
                 <button
                   type="button"
-                  className={`shop-page-btn ${currentPage === pageNum ? "active" : ""}`}
                   onClick={() => handlePageChange(pageNum)}
+                  className={`shop-page-btn ${
+                    currentPage === pageNum ? "active" : ""
+                  }`}
+                  aria-label={`Trang ${pageNum}`}
                   aria-current={currentPage === pageNum ? "page" : undefined}
                 >
                   {pageNum}
@@ -150,8 +286,8 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
                 className="shop-page-btn"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                aria-label="Trang sau"
-                title="Trang sau"
+                aria-label="Trang kế tiếp"
+                title="Trang kế tiếp"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
