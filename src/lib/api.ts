@@ -32,13 +32,27 @@ export function removeAdminToken(): void {
   }
 }
 
+let cachedUserRaw: string | null = null;
+let cachedUserObj: { id: number; full_name: string; email: string; role: string } | null = null;
+
 export function getAdminUser(): { id: number; full_name: string; email: string; role: string } | null {
   if (typeof window === "undefined") return null;
   const raw = localStorage.getItem("nes_admin_user");
-  if (!raw) return null;
+  if (!raw) {
+    cachedUserRaw = null;
+    cachedUserObj = null;
+    return null;
+  }
+  if (raw === cachedUserRaw && cachedUserObj) {
+    return cachedUserObj;
+  }
   try {
-    return JSON.parse(raw);
+    cachedUserRaw = raw;
+    cachedUserObj = JSON.parse(raw);
+    return cachedUserObj;
   } catch {
+    cachedUserRaw = null;
+    cachedUserObj = null;
     return null;
   }
 }

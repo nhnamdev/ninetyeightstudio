@@ -166,18 +166,18 @@ function OrdersContent() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <ShoppingCart className="w-7 h-7 text-red-500" />
-            Quản lý Đơn hàng (Orders)
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 flex items-center gap-2">
+            <ShoppingCart className="w-6 h-6 text-zinc-800" />
+            Quản lý Đơn hàng
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">
             Theo dõi, xử lý vận chuyển và cập nhật trạng thái đơn hàng VietQR / COD
           </p>
         </div>
         <button
           onClick={fetchOrders}
           disabled={loading}
-          className="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer self-start sm:self-auto"
+          className="px-3 py-1.5 rounded-lg bg-white border border-zinc-200 hover:bg-zinc-50 text-xs font-medium text-zinc-700 flex items-center gap-1.5 transition-colors cursor-pointer self-start sm:self-auto"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
           <span>Làm mới đơn</span>
@@ -187,15 +187,15 @@ function OrdersContent() {
       {/* Tabs & Search Toolbar */}
       <div className="space-y-3">
         {/* Status Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-zinc-800">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-zinc-200/80">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setStatusTab(tab.id)}
-              className={`px-3.5 py-2 text-xs font-semibold rounded-lg whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-colors cursor-pointer ${
                 statusTab === tab.id
-                  ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60"
+                  ? "bg-zinc-900 text-white shadow-xs"
+                  : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100"
               }`}
             >
               {tab.label}
@@ -204,21 +204,21 @@ function OrdersContent() {
         </div>
 
         {/* Search */}
-        <div className="bg-[#141720] border border-zinc-800/80 rounded-2xl p-3 sm:p-4 flex items-center gap-3">
+        <div className="bg-white border border-zinc-200/90 rounded-xl p-3 sm:p-4 flex items-center gap-2.5 shadow-xs">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && fetchOrders()}
               placeholder="Tìm theo mã đơn (#NES-xxxxx), tên khách hoặc số điện thoại..."
-              className="w-full pl-9 pr-4 py-2 bg-zinc-900 border border-zinc-700/80 rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-red-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900"
             />
           </div>
           <button
             onClick={fetchOrders}
-            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-xs font-medium text-white rounded-xl cursor-pointer"
+            className="px-3.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-xs font-medium text-white rounded-lg cursor-pointer"
           >
             Tìm
           </button>
@@ -226,43 +226,43 @@ function OrdersContent() {
       </div>
 
       {/* Orders List Table */}
-      <div className="bg-[#141720] border border-zinc-800/80 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs sm:text-sm">
+          <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-zinc-800/80 text-zinc-400 bg-zinc-900/40 text-[11px] uppercase tracking-wider">
-                <th className="p-4 pl-6">Mã đơn & Thời gian</th>
-                <th className="p-4">Khách hàng</th>
-                <th className="p-4">Địa chỉ giao</th>
-                <th className="p-4">Thanh toán</th>
-                <th className="p-4">Tổng tiền</th>
-                <th className="p-4">Trạng thái xử lý</th>
-                <th className="p-4 pr-6 text-right">Chi tiết</th>
+              <tr className="border-b border-zinc-200/80 text-zinc-500 bg-zinc-50/70 text-[11px] uppercase tracking-wider">
+                <th className="p-3 pl-5">Mã đơn & Thời gian</th>
+                <th className="p-3">Khách hàng</th>
+                <th className="p-3">Địa chỉ giao</th>
+                <th className="p-3">Thanh toán</th>
+                <th className="p-3">Tổng tiền</th>
+                <th className="p-3">Trạng thái xử lý</th>
+                <th className="p-3 pr-5 text-right">Chi tiết</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/60">
+            <tbody className="divide-y divide-zinc-100">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-12 text-center text-zinc-400">
-                    <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-red-500" />
+                  <td colSpan={7} className="p-10 text-center text-zinc-400">
+                    <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-zinc-700" />
                     <span>Đang tải danh sách đơn hàng...</span>
                   </td>
                 </tr>
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-12 text-center text-zinc-400">
+                  <td colSpan={7} className="p-10 text-center text-zinc-400">
                     Không có đơn hàng nào trong mục này
                   </td>
                 </tr>
               ) : (
                 orders.map((order) => (
-                  <tr key={order.id} className="hover:bg-zinc-800/30 transition-colors">
-                    <td className="p-4 pl-6">
-                      <div className="font-mono font-bold text-white text-xs sm:text-sm">
+                  <tr key={order.id} className="hover:bg-zinc-50/80 transition-colors">
+                    <td className="p-3 pl-5">
+                      <div className="font-mono font-semibold text-zinc-900">
                         {order.order_code}
                       </div>
-                      <div className="text-[11px] text-zinc-400 mt-0.5 flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-zinc-500" />
+                      <div className="text-[10px] text-zinc-500 mt-0.5 flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-zinc-400" />
                         {new Date(order.created_at).toLocaleDateString("vi-VN", {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -272,74 +272,74 @@ function OrdersContent() {
                       </div>
                     </td>
 
-                    <td className="p-4">
-                      <div className="font-semibold text-white">{order.customer_name}</div>
-                      <div className="text-[11px] text-zinc-400 font-mono">{order.customer_phone}</div>
+                    <td className="p-3">
+                      <div className="font-medium text-zinc-900">{order.customer_name}</div>
+                      <div className="text-[10px] text-zinc-500 font-mono">{order.customer_phone}</div>
                     </td>
 
-                    <td className="p-4 max-w-xs">
-                      <div className="text-xs text-zinc-300 line-clamp-2">
+                    <td className="p-3 max-w-xs">
+                      <div className="text-zinc-600 line-clamp-1">
                         {order.shipping_address}, {order.shipping_district}, {order.shipping_province}
                       </div>
                     </td>
 
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        <span className="uppercase text-[11px] font-bold px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 inline-block">
-                          {order.payment_method === "vietqr" ? "VietQR Chuyển khoản" : "COD Tiền mặt"}
+                    <td className="p-3">
+                      <div className="space-y-0.5">
+                        <span className="uppercase text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-200 text-zinc-700 inline-block">
+                          {order.payment_method === "vietqr" ? "VietQR" : "COD"}
                         </span>
                         <div>
                           {order.payment_status === "paid" ? (
-                            <span className="text-[11px] text-emerald-400 font-medium">✓ Đã thanh toán</span>
+                            <span className="text-[11px] text-emerald-700 font-medium">✓ Đã thanh toán</span>
                           ) : (
                             <button
                               onClick={() => handleUpdatePaymentStatus(order.id, "paid")}
                               title="Bấm để đánh dấu đã nhận tiền"
-                              className="text-[11px] text-amber-400 hover:underline cursor-pointer"
+                              className="text-[11px] text-amber-700 hover:underline cursor-pointer"
                             >
-                              ⏳ Chưa trả (Đánh dấu đã thu)
+                              ⏳ Chưa trả (Đánh dấu)
                             </button>
                           )}
                         </div>
                       </div>
                     </td>
 
-                    <td className="p-4 font-mono font-bold text-white text-xs sm:text-sm">
+                    <td className="p-3 font-mono font-semibold text-zinc-900">
                       {formatVND(order.total_amount)}
                     </td>
 
                     {/* Quick status dropdown */}
-                    <td className="p-4">
+                    <td className="p-3">
                       <select
                         value={order.order_status}
                         onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
-                        className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg border focus:outline-none cursor-pointer ${
+                        className={`text-[11px] font-medium px-2 py-1 rounded-md border focus:outline-none cursor-pointer ${
                           order.order_status === "pending"
-                            ? "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                            ? "bg-amber-50 text-amber-800 border-amber-200"
                             : order.order_status === "confirmed"
-                            ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                            ? "bg-blue-50 text-blue-800 border-blue-200"
                             : order.order_status === "shipping"
-                            ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30"
+                            ? "bg-indigo-50 text-indigo-800 border-indigo-200"
                             : order.order_status === "completed"
-                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                            : "bg-red-500/10 text-red-400 border-red-500/30"
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                            : "bg-zinc-100 text-zinc-700 border-zinc-200"
                         }`}
                       >
-                        <option value="pending" className="bg-zinc-900 text-zinc-200">Chờ xử lý</option>
-                        <option value="confirmed" className="bg-zinc-900 text-zinc-200">Đã xác nhận</option>
-                        <option value="shipping" className="bg-zinc-900 text-zinc-200">Đang giao hàng</option>
-                        <option value="completed" className="bg-zinc-900 text-zinc-200">Hoàn thành</option>
-                        <option value="cancelled" className="bg-zinc-900 text-zinc-200">Hủy đơn</option>
+                        <option value="pending">Chờ xử lý</option>
+                        <option value="confirmed">Đã xác nhận</option>
+                        <option value="shipping">Đang giao</option>
+                        <option value="completed">Hoàn thành</option>
+                        <option value="cancelled">Hủy đơn</option>
                       </select>
                     </td>
 
-                    <td className="p-4 pr-6 text-right">
+                    <td className="p-3 pr-5 text-right">
                       <button
                         onClick={() => openOrderDetail(order)}
-                        className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                        className="p-1.5 rounded-md bg-white hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 border border-zinc-200 transition-colors cursor-pointer"
                         title="Xem chi tiết đơn hàng"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-3.5 h-3.5" />
                       </button>
                     </td>
                   </tr>
@@ -352,64 +352,64 @@ function OrdersContent() {
 
       {/* Order Detail Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-          <div className="bg-[#141720] border border-zinc-800 rounded-2xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden my-auto">
+        <div className="fixed inset-0 z-50 bg-zinc-950/40 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <div className="bg-white border border-zinc-200 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-xl overflow-hidden my-auto font-sans">
             {/* Header */}
-            <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
+            <div className="p-4 sm:p-5 border-b border-zinc-100 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold text-white font-mono">
+                  <h2 className="text-base font-bold text-zinc-900 font-mono">
                     Đơn hàng {selectedOrder.order_code}
                   </h2>
-                  {detailLoading && <Loader2 className="w-3.5 h-3.5 animate-spin text-red-500" />}
-                  <span className="text-xs px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono">
+                  {detailLoading && <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-500" />}
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 font-mono border border-zinc-200">
                     ID #{selectedOrder.id}
                   </span>
                 </div>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-[11px] text-zinc-500 mt-0.5">
                   Ngày đặt: {new Date(selectedOrder.created_at).toLocaleString("vi-VN")}
                 </p>
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-md text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
               {/* Customer & Delivery Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2 text-xs">
-                  <div className="font-bold text-white uppercase text-[11px] tracking-wider flex items-center gap-1.5 text-red-400">
-                    <User className="w-3.5 h-3.5" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5 text-xs">
+                  <div className="font-bold text-zinc-900 uppercase text-[10px] tracking-wider flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-zinc-600" />
                     Người nhận hàng
                   </div>
                   <div>
-                    Họ tên: <span className="font-semibold text-white">{selectedOrder.customer_name}</span>
+                    Họ tên: <span className="font-semibold text-zinc-900">{selectedOrder.customer_name}</span>
                   </div>
                   <div>
-                    SĐT: <span className="font-mono text-zinc-200">{selectedOrder.customer_phone}</span>
+                    SĐT: <span className="font-mono text-zinc-800">{selectedOrder.customer_phone}</span>
                   </div>
                   {selectedOrder.customer_email && (
                     <div>
-                      Email: <span className="text-zinc-300">{selectedOrder.customer_email}</span>
+                      Email: <span className="text-zinc-600">{selectedOrder.customer_email}</span>
                     </div>
                   )}
                 </div>
 
-                <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2 text-xs">
-                  <div className="font-bold text-white uppercase text-[11px] tracking-wider flex items-center gap-1.5 text-blue-400">
-                    <MapPin className="w-3.5 h-3.5" />
+                <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5 text-xs">
+                  <div className="font-bold text-zinc-900 uppercase text-[10px] tracking-wider flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-zinc-600" />
                     Địa chỉ giao hàng
                   </div>
-                  <div className="text-zinc-300">
+                  <div className="text-zinc-700">
                     {selectedOrder.shipping_address}, {selectedOrder.shipping_district}, {selectedOrder.shipping_province}
                   </div>
                   {selectedOrder.order_notes && (
-                    <div className="text-amber-400/90 pt-1 border-t border-zinc-800">
+                    <div className="text-amber-800 pt-1 border-t border-zinc-200">
                       Ghi chú: {selectedOrder.order_notes}
                     </div>
                   )}
@@ -418,42 +418,42 @@ function OrdersContent() {
 
               {/* Order Items Table */}
               <div>
-                <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2.5">
                   Danh sách sản phẩm trong đơn ({selectedOrder.items?.length || 0} món)
                 </h3>
-                <div className="border border-zinc-800 rounded-xl overflow-hidden">
+                <div className="border border-zinc-200 rounded-lg overflow-hidden">
                   <table className="w-full text-left text-xs">
                     <thead>
-                      <tr className="bg-zinc-900 text-zinc-400 border-b border-zinc-800 text-[11px]">
-                        <th className="p-3">Sản phẩm</th>
-                        <th className="p-3">Màu sắc</th>
-                        <th className="p-3">Mã SKU</th>
-                        <th className="p-3">Đơn giá</th>
-                        <th className="p-3">Số lượng</th>
-                        <th className="p-3 text-right">Thành tiền</th>
+                      <tr className="bg-zinc-50/70 text-zinc-500 border-b border-zinc-200 text-[11px]">
+                        <th className="p-2.5 pl-3">Sản phẩm</th>
+                        <th className="p-2.5">Màu</th>
+                        <th className="p-2.5">Mã SKU</th>
+                        <th className="p-2.5">Đơn giá</th>
+                        <th className="p-2.5">Số lượng</th>
+                        <th className="p-2.5 pr-3 text-right">Thành tiền</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-800">
+                    <tbody className="divide-y divide-zinc-100">
                       {selectedOrder.items && selectedOrder.items.length > 0 ? (
                         selectedOrder.items.map((item) => (
                           <tr key={item.id}>
-                            <td className="p-3">
-                              <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-lg bg-zinc-800 border border-zinc-700 overflow-hidden shrink-0">
+                            <td className="p-2.5 pl-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-md bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0">
                                   <img
                                     src={item.image || "/images/products/placeholder.jpg"}
                                     alt={item.product_name}
                                     className="w-full h-full object-cover"
                                   />
                                 </div>
-                                <span className="font-medium text-white">{item.product_name}</span>
+                                <span className="font-medium text-zinc-900">{item.product_name}</span>
                               </div>
                             </td>
-                            <td className="p-3 font-semibold text-zinc-200">{item.color_name}</td>
-                            <td className="p-3 font-mono text-zinc-400">{item.sku}</td>
-                            <td className="p-3 font-mono">{formatVND(item.unit_price)}</td>
-                            <td className="p-3 font-mono font-bold text-white">x{item.quantity}</td>
-                            <td className="p-3 font-mono font-bold text-white text-right">
+                            <td className="p-2.5 font-medium text-zinc-700">{item.color_name}</td>
+                            <td className="p-2.5 font-mono text-zinc-500">{item.sku}</td>
+                            <td className="p-2.5 font-mono text-zinc-700">{formatVND(item.unit_price)}</td>
+                            <td className="p-2.5 font-mono font-bold text-zinc-900">x{item.quantity}</td>
+                            <td className="p-2.5 pr-3 font-mono font-bold text-zinc-900 text-right">
                               {formatVND(Number(item.unit_price) * item.quantity)}
                             </td>
                           </tr>
@@ -471,55 +471,55 @@ function OrdersContent() {
               </div>
 
               {/* Payment Summary */}
-              <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 space-y-2 text-xs">
-                <div className="flex justify-between text-zinc-400">
+              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5 text-xs">
+                <div className="flex justify-between text-zinc-600">
                   <span>Tiền hàng tạm tính:</span>
                   <span className="font-mono">{formatVND(selectedOrder.subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-zinc-600">
                   <span>Phí vận chuyển:</span>
                   <span className="font-mono">{formatVND(selectedOrder.shipping_fee)}</span>
                 </div>
                 {Number(selectedOrder.discount_amount) > 0 && (
-                  <div className="flex justify-between text-red-400">
+                  <div className="flex justify-between text-red-700">
                     <span>Mã giảm giá ({selectedOrder.coupon_code || "VOUCHER"}):</span>
                     <span className="font-mono">-{formatVND(selectedOrder.discount_amount)}</span>
                   </div>
                 )}
-                <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-sm font-bold text-white">
+                <div className="pt-2 border-t border-zinc-200 flex justify-between items-center text-xs font-bold text-zinc-900">
                   <span>Tổng tiền thanh toán:</span>
-                  <span className="text-base text-red-500 font-mono">
+                  <span className="text-sm font-mono text-zinc-900">
                     {formatVND(selectedOrder.total_amount)}
                   </span>
                 </div>
               </div>
 
               {/* Status Action Buttons */}
-              <div className="p-4 rounded-xl bg-[#181a24] border border-zinc-800 space-y-3">
-                <div className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
-                  Cập nhật tiến trình xử lý đơn hàng
+              <div className="p-3.5 rounded-xl bg-white border border-zinc-200 space-y-2.5">
+                <div className="text-xs font-bold text-zinc-900 uppercase tracking-wider">
+                  Cập nhật tiến trình đơn
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, "confirmed")}
                     disabled={actionLoading || selectedOrder.order_status === "confirmed"}
-                    className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white text-xs font-medium cursor-pointer"
+                    className="px-3 py-1 rounded-md bg-white border border-zinc-200 hover:bg-zinc-50 disabled:opacity-40 text-zinc-800 text-xs font-medium cursor-pointer"
                   >
                     1. Xác nhận đơn
                   </button>
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, "shipping")}
                     disabled={actionLoading || selectedOrder.order_status === "shipping"}
-                    className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-xs font-medium cursor-pointer"
+                    className="px-3 py-1 rounded-md bg-white border border-zinc-200 hover:bg-zinc-50 disabled:opacity-40 text-zinc-800 text-xs font-medium cursor-pointer"
                   >
-                    2. Giao hàng cho shipper
+                    2. Giao hàng
                   </button>
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, "completed")}
                     disabled={actionLoading || selectedOrder.order_status === "completed"}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white text-xs font-medium cursor-pointer"
+                    className="px-3 py-1 rounded-md bg-zinc-900 hover:bg-zinc-800 disabled:opacity-40 text-white text-xs font-medium cursor-pointer"
                   >
-                    3. Hoàn thành đơn hàng
+                    3. Hoàn thành
                   </button>
                   <button
                     onClick={() => {
@@ -528,19 +528,19 @@ function OrdersContent() {
                       }
                     }}
                     disabled={actionLoading || selectedOrder.order_status === "cancelled"}
-                    className="px-3 py-1.5 rounded-lg bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 disabled:opacity-40 text-xs font-medium cursor-pointer"
+                    className="px-3 py-1 rounded-md bg-white hover:bg-red-50 text-zinc-600 hover:text-red-700 border border-zinc-200 disabled:opacity-40 text-xs font-medium cursor-pointer"
                   >
-                    Hủy đơn hàng
+                    Hủy đơn
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="p-4 border-t border-zinc-800 flex justify-end">
+            <div className="p-3.5 border-t border-zinc-100 flex justify-end">
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-medium text-zinc-200 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-xs font-medium text-zinc-700 cursor-pointer"
               >
                 Đóng
               </button>
@@ -556,7 +556,7 @@ export default function AdminOrdersPage() {
   return (
     <Suspense
       fallback={
-        <div className="p-12 text-center text-zinc-400 text-xs">
+        <div className="p-10 text-center text-zinc-400 text-xs">
           Đang tải dữ liệu đơn hàng...
         </div>
       }

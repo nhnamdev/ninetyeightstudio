@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useSyncExternalStore } from "react";
+import React, { useEffect, useState, useSyncExternalStore, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -15,7 +15,7 @@ import {
   Database,
   UserCheck,
 } from "lucide-react";
-import { getAdminToken, getAdminUser, removeAdminToken } from "@/lib/api";
+import { getAdminToken, removeAdminToken } from "@/lib/api";
 
 const subscribe = () => () => {};
 
@@ -24,7 +24,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
-  const adminUser = useSyncExternalStore(subscribe, () => getAdminUser(), () => null);
+
+  const rawUser = useSyncExternalStore(
+    subscribe,
+    () => (typeof window !== "undefined" ? localStorage.getItem("nes_admin_user") : null),
+    () => null
+  );
+
+  const adminUser = useMemo<{ full_name: string; email: string; role: string } | null>(() => {
+    if (!rawUser) return null;
+    try {
+      return JSON.parse(rawUser);
+    } catch {
+      return null;
+    }
+  }, [rawUser]);
 
   useEffect(() => {
     if (pathname === "/admin/login") return;
@@ -43,10 +57,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // Prevent flash of unauthenticated content
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-[#0d0e12] flex items-center justify-center text-zinc-400">
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center text-zinc-500">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm">Đang tải trung tâm quản trị...</span>
+          <div className="w-5 h-5 border-2 border-zinc-900 border-t-transparent rounded-full animate-spin" />
+          <span className="text-sm font-medium">Đang tải trung tâm quản trị...</span>
         </div>
       </div>
     );
@@ -85,44 +99,44 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] text-zinc-100 flex flex-col md:flex-row antialiased">
+    <div className="min-h-screen bg-zinc-50/70 text-zinc-900 flex flex-col md:flex-row antialiased font-sans">
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-40 bg-zinc-950/40 backdrop-blur-xs md:hidden"
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar (Clean White shadcn/ui style) */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-50 h-screen w-72 bg-[#12141a] border-r border-zinc-800/80 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
+        className={`fixed md:sticky top-0 left-0 z-50 h-screen w-64 bg-white border-r border-zinc-200/80 flex flex-col justify-between transition-transform duration-200 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         <div>
           {/* Logo & Brand */}
-          <div className="p-6 border-b border-zinc-800/80 flex items-center justify-between">
-            <Link href="/admin" className="flex items-center gap-2.5">
-              <span className="text-2xl font-black tracking-widest text-white uppercase font-mono">
+          <div className="h-16 px-6 border-b border-zinc-100 flex items-center justify-between">
+            <Link href="/admin" className="flex items-center gap-2">
+              <span className="text-xl font-black tracking-wider text-zinc-950 uppercase font-mono">
                 98STUDIO
               </span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30">
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
                 CMS
               </span>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-1.5 text-zinc-400 hover:text-white md:hidden"
+              className="p-1.5 text-zinc-400 hover:text-zinc-900 md:hidden"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1.5">
-            <div className="px-3 py-2 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
-              Danh mục quản lý
+          <nav className="p-3 space-y-1">
+            <div className="px-3 pt-3 pb-1 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+              Quản trị hệ thống
             </div>
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -131,10 +145,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     item.active
-                      ? "bg-red-600 text-white shadow-lg shadow-red-600/20"
-                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60"
+                      ? "bg-zinc-900 text-white shadow-xs"
+                      : "text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100"
                   }`}
                 >
                   <Icon className="w-4 h-4 shrink-0" />
@@ -143,45 +157,47 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               );
             })}
 
-            <div className="pt-4 px-3 py-2 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
-              Liên kết nhanh
+            <div className="px-3 pt-5 pb-1 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+              Khác
             </div>
             <Link
               href="/"
               target="_blank"
-              className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60 transition-all"
+              className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100 transition-colors"
             >
-              <span className="flex items-center gap-3">
+              <span className="flex items-center gap-2.5">
                 <ExternalLink className="w-4 h-4" />
                 <span>Xem Website</span>
               </span>
-              <span className="text-[10px] text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded">Mở tab</span>
+              <span className="text-[10px] text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded border border-zinc-200">
+                Tab mới
+              </span>
             </Link>
           </nav>
         </div>
 
         {/* Footer info & Logout */}
-        <div className="p-4 border-t border-zinc-800/80 space-y-3">
+        <div className="p-3 border-t border-zinc-100 space-y-2">
           {/* Database status */}
-          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-400">
-            <div className="flex items-center gap-2">
-              <Database className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-[11px] text-zinc-600">
+            <div className="flex items-center gap-1.5">
+              <Database className="w-3.5 h-3.5 text-zinc-500" />
               <span>VPS: 36.50.27.243</span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           </div>
 
           {/* Admin User Card */}
-          <div className="flex items-center justify-between p-2">
+          <div className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 transition-colors">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0">
-                <UserCheck className="w-4 h-4 text-zinc-300" />
+              <div className="w-7 h-7 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center shrink-0 text-zinc-700">
+                <UserCheck className="w-3.5 h-3.5" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-white truncate">
+                <p className="text-xs font-semibold text-zinc-900 truncate">
                   {adminUser?.full_name || "Administrator"}
                 </p>
-                <p className="text-[11px] text-zinc-400 truncate">
+                <p className="text-[10px] text-zinc-500 truncate">
                   {adminUser?.email || "admin@ninetyeight.vn"}
                 </p>
               </div>
@@ -189,9 +205,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <button
               onClick={handleLogout}
               title="Đăng xuất"
-              className="p-1.5 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer"
+              className="p-1.5 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -200,18 +216,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content Viewport */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Navbar */}
-        <header className="sticky top-0 z-30 h-16 bg-[#12141a]/80 backdrop-blur-md border-b border-zinc-800/80 px-4 sm:px-8 flex items-center justify-between">
+        <header className="sticky top-0 z-30 h-16 bg-white/90 backdrop-blur-md border-b border-zinc-200/80 px-4 sm:px-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 -ml-2 text-zinc-400 hover:text-white md:hidden"
+              className="p-1.5 -ml-1.5 text-zinc-600 hover:text-zinc-950 md:hidden cursor-pointer"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400">
-              <span>Ninety Eight Studio</span>
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-500">
+              <span>98STUDIO</span>
               <span>/</span>
-              <span className="text-white font-medium">
+              <span className="text-zinc-900 font-semibold">
                 {pathname === "/admin"
                   ? "Bảng điều khiển"
                   : pathname.startsWith("/admin/products")
@@ -225,17 +241,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              API Online (Port 5000)
+          <div className="flex items-center gap-2.5">
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-xs text-zinc-700 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              API: 5000 Online
             </div>
             <Link
               href="/"
               target="_blank"
-              className="px-3 py-1.5 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 text-xs font-medium text-zinc-200 transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200/80 text-xs font-medium text-zinc-800 transition-colors flex items-center gap-1.5 border border-zinc-200"
             >
-              <span>Trang chủ</span>
+              <span>Xem Web</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           </div>
