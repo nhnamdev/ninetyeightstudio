@@ -14,7 +14,7 @@ export const metadata = {
     title: "Giới thiệu | Ninety Eight Studio",
     description:
       "Với 98 STUDIO phong cách không phải là nỗ lực để nổi bật mà là sự tự tin khi biết rõ đâu là bản sắc của chính mình. Thiết kế tối giản, thanh lịch và cá tính.",
-    images: ["/images/about-us.jpg"],
+    images: ["https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/about-us-f10b152f.jpg"],
   },
 };
 
@@ -72,7 +72,7 @@ export default function AboutPage() {
             {/* Lookbook Editorial Poster Image */}
             <div className="about-poster-wrapper">
               <img
-                src="/images/about-us.jpg"
+                src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/about-us-f10b152f.jpg"
                 alt="Ninety Eight Studio Editorial Lookbook"
                 className="about-poster-img"
                 loading="lazy"

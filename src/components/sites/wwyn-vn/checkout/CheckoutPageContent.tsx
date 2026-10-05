@@ -4,6 +4,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { CheckoutSteps } from "./CheckoutSteps";
+import { getCustomerToken, getCustomerUser } from "@/lib/api";
 
 interface OrderCustomerInfo {
   fullName: string;
@@ -64,16 +65,18 @@ const PROVINCES = [
 export const CheckoutPageContent: React.FC = () => {
   const { items, subtotal, clearCart, isLoaded } = useCart();
 
-  // Form states
-  const [formData, setFormData] = useState<OrderCustomerInfo>({
-    fullName: "",
-    phone: "",
-    email: "",
-    province: "TP. Hồ Chí Minh",
-    district: "",
-    ward: "",
-    address: "",
-    notes: "",
+  const [formData, setFormData] = useState<OrderCustomerInfo>(() => {
+    const customer = typeof window !== "undefined" ? getCustomerUser() : null;
+    return {
+      fullName: customer?.full_name || "",
+      phone: customer?.phone || "",
+      email: customer?.email || "",
+      province: "TP. Hồ Chí Minh",
+      district: "",
+      ward: "",
+      address: "",
+      notes: "",
+    };
   });
 
   const [shippingMethod, setShippingMethod] = useState<"standard" | "express">(
@@ -212,10 +215,18 @@ export const CheckoutPageContent: React.FC = () => {
 
       // Sync order to Backend Express MySQL VPS
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const customerToken = getCustomerToken();
+      const customerUser = getCustomerUser();
+      const orderHeaders: Record<string, string> = { "Content-Type": "application/json" };
+      if (customerToken) {
+        orderHeaders["Authorization"] = `Bearer ${customerToken}`;
+      }
+
       fetch(`${apiUrl}/orders`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: orderHeaders,
         body: JSON.stringify({
+          user_id: customerUser?.id || null,
           customer_name: formData.fullName,
           customer_phone: formData.phone,
           customer_email: formData.email,

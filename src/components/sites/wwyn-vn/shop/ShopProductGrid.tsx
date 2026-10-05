@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { SHOP_PRODUCTS, ShopProduct } from "@/data/shopProducts";
 import { ShopProductCard } from "./ShopProductCard";
@@ -44,12 +44,85 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const selectedCategory = activeCategory ?? derivedCategory;
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
+  const [productsList, setProductsList] = useState<ShopProduct[]>(SHOP_PRODUCTS);
 
   const ITEMS_PER_PAGE = 8;
 
+  // Live fetch from backend API
+  useEffect(() => {
+    let isMounted = true;
+    async function loadLiveProducts() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+        const res = await fetch(`${apiUrl}/products?limit=100`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
+          interface ProductVariantApi {
+            id: number;
+            color_name: string;
+            image?: string;
+          }
+          interface ProductApiRow {
+            id: number;
+            name: string;
+            slug: string;
+            min_price?: number | string;
+            base_price?: number | string;
+            category_name?: "TOTE BAG" | "SHOULDER BAG" | "TRAVEL BAG" | "ACCESSORIES";
+            cover_image: string;
+            hover_image?: string;
+            gallery_images?: string[];
+            variants?: ProductVariantApi[];
+            description?: string;
+            highlights?: string[];
+            dimensions?: string;
+            material?: string;
+            total_stock?: number;
+          }
+          const mapped: ShopProduct[] = (json.data as ProductApiRow[]).map((p) => {
+            const priceNum = Number(p.min_price || p.base_price || 0);
+            const formattedPrice = new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(priceNum);
+
+            return {
+              id: p.id,
+              name: p.name,
+              slug: p.slug,
+              price: formattedPrice,
+              category: p.category_name || "TOTE BAG",
+              image: p.cover_image,
+              hoverImage: p.hover_image || p.cover_image,
+              gallery: Array.isArray(p.gallery_images) && p.gallery_images.length > 0 ? p.gallery_images : [p.cover_image],
+              colors: (p.variants || []).map((v) => ({
+                name: v.color_name,
+                thumbnail: v.image || p.cover_image,
+                slug: p.slug,
+              })),
+              description: p.description || "",
+              highlights: p.highlights || [],
+              dimensions: p.dimensions ? { size: p.dimensions, strapDrop: "", weight: "" } : undefined,
+              material: p.material || "",
+              outOfStock: Number(p.total_stock) <= 0,
+              page: 1,
+            };
+          });
+          setProductsList(mapped);
+        }
+      } catch (e) {
+        console.warn("Backend not reachable, displaying local catalog:", e);
+      }
+    }
+    loadLiveProducts();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // Filter products by category, filter, and search query
   const filteredProducts = useMemo(() => {
-    let result = [...SHOP_PRODUCTS];
+    let result = [...productsList];
 
     // 1. Filter by category
     if (selectedCategory !== "TẤT CẢ") {
@@ -85,7 +158,7 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
     }
 
     return result;
-  }, [selectedCategory, urlFilter, urlQuery]);
+  }, [selectedCategory, urlFilter, urlQuery, productsList]);
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
 

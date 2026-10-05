@@ -17,70 +17,70 @@ const PRODUCTS: Product[] = [
     id: 1,
     name: "ZUNI BAG | BLACK",
     price: "2.450.000 ₫",
-    image: "/images/products/zuni-bag/thumb-1.png",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/thumb-1-b6c013de.png",
     href: "/san-pham/zuni-bag-black",
   },
   {
     id: 2,
     name: "YACHT TOTE | CAMO",
     price: "950.000 ₫",
-    image: "/images/products/yacht-tote-camo.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/yacht-tote-camo-187b8f33.webp",
     href: "/san-pham/yacht-tote-camo",
   },
   {
     id: 3,
     name: "SPORTY TRAVEL BAG | CAMO",
     price: "1.170.000 ₫",
-    image: "/images/products/sporty-travel-bag-camo.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/sporty-travel-bag-camo-399bafcd.webp",
     href: "/san-pham/sporty-travel-bag-camo",
   },
   {
     id: 4,
     name: "ZUNI BAG | GRAY",
     price: "2.450.000 ₫",
-    image: "/images/products/zuni-bag/swatch-gray.png",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/swatch-gray-1810aa75.png",
     href: "/san-pham/zuni-bag-gray",
   },
   {
     id: 5,
     name: "LEAGUE V2 TOTE BAG | SAND",
     price: "790.000 ₫",
-    image: "/images/products/league-v2-tote-sand.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-sand-323c1b4a.webp",
     href: "/san-pham/league-v2-tote-sand",
   },
   {
     id: 6,
     name: "LEAGUE V2 TOTE BAG | DEEP BLUE",
     price: "790.000 ₫",
-    image: "/images/products/league-v2-tote-deep-blue.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-deep-blue-7b2f0594.webp",
     href: "/san-pham/league-v2-tote-deep-blue",
   },
   {
     id: 7,
     name: "ZUNI BAG STUD | OLIVE",
     price: "2.550.000 ₫",
-    image: "/images/products/zuni-bag/swatch-olive.png",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/swatch-olive-57acebdc.png",
     href: "/san-pham/zuni-bag-olive",
   },
   {
     id: 8,
     name: "GOOD BYE MY WORK TOTE BAG | RED",
     price: "200.000 ₫",
-    image: "/images/products/good-bye-my-work-tote-red.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/good-bye-my-work-tote-red-698465a8.webp",
     href: "/san-pham/good-bye-my-work-tote-red",
   },
   {
     id: 9,
     name: "GOOD BYE MY WORK TOTE BAG | BLUE",
     price: "200.000 ₫",
-    image: "/images/products/good-bye-my-work-tote-blue.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/good-bye-my-work-tote-blue-4aa03f3e.webp",
     href: "/san-pham/good-bye-my-work-tote-blue",
   },
   {
     id: 10,
     name: "LEAGUE V2 TOTE BAG | DUST BLACK",
     price: "790.000 ₫",
-    image: "/images/products/league-v2-tote-dust-black.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-dust-black-e174e6e3.webp",
     href: "/san-pham/league-v2-tote-dust-black",
     outOfStock: true,
   },
@@ -88,16 +88,58 @@ const PRODUCTS: Product[] = [
     id: 11,
     name: "LEAGUE V2 TOTE BAG | STONE BLUE",
     price: "790.000 ₫",
-    image: "/images/products/league-v2-tote-stone-blue.webp",
+    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-stone-blue-2889bc1e.webp",
     href: "/san-pham/league-v2-tote-stone-blue",
   },
 ];
 
 export const ProductSlider: React.FC = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [sliderProducts, setSliderProducts] = useState<Product[]>(PRODUCTS);
   const [activeDot, setActiveDot] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Live fetch products from backend API
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchHomeProducts() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+        const res = await fetch(`${apiUrl}/products?limit=12`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
+          interface SliderApiItem {
+            id: number;
+            name: string;
+            slug: string;
+            min_price?: number | string;
+            base_price?: number | string;
+            cover_image: string;
+            total_stock?: number;
+          }
+          const mapped: Product[] = (json.data as SliderApiItem[]).map((p) => ({
+            id: p.id,
+            name: p.name.toUpperCase(),
+            price: new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(Number(p.min_price || p.base_price || 0)),
+            image: p.cover_image,
+            href: `/san-pham/${p.slug}`,
+            outOfStock: Number(p.total_stock) <= 0,
+          }));
+          setSliderProducts(mapped);
+        }
+      } catch (err) {
+        console.warn("Backend not available for slider:", err);
+      }
+    }
+    fetchHomeProducts();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Check scroll position to update dots and arrow visibility
   const handleScroll = () => {
@@ -207,7 +249,7 @@ export const ProductSlider: React.FC = () => {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {PRODUCTS.map((product, index) => (
+            {sliderProducts.map((product, index) => (
               <div
                 key={product.id}
                 className="shrink-0 snap-start w-[calc(50%-6px)] sm:w-[calc(33.333%-10px)] md:w-[calc(25%-12px)] lg:w-[calc(14.285%-14px)] group cursor-pointer"

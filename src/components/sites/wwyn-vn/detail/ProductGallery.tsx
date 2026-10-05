@@ -14,7 +14,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
   const [selectedModalImage, setSelectedModalImage] = useState<string | null>(null);
 
-  const validImages = images && images.length > 0 ? images : ["/images/products/yacht-tote-camo.webp"];
+  const validImages = images && images.length > 0 ? images : ["https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/yacht-tote-camo-187b8f33.webp"];
 
   return (
     <div className="standoil-gallery-wrapper w-full">

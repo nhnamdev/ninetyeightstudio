@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
                 aria-label="Gửi đăng ký"
               >
                 <img
-                  src="/sites/wwyn-vn/root/images/dknticon.png"
+                  src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/dknticon-8c9d1858.png"
                   alt="DKNT Icon"
                 />
               </button>
@@ -69,7 +69,7 @@ export const Footer: React.FC = () => {
                   title="Facebook Ninety Eight Studio"
                 >
                   <img
-                    src="/sites/wwyn-vn/root/images/facebook.webp"
+                    src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/facebook-04fb3bb3.webp"
                     alt="Ninety Eight Studio Facebook"
                     width={24}
                     height={24}
@@ -84,7 +84,7 @@ export const Footer: React.FC = () => {
                   title="Instagram Ninety Eight Studio"
                 >
                   <img
-                    src="/sites/wwyn-vn/root/images/instagram.webp"
+                    src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/instagram-47e835c1.webp"
                     alt="Ninety Eight Studio Instagram"
                     width={24}
                     height={24}
@@ -99,7 +99,7 @@ export const Footer: React.FC = () => {
                   title="TikTok Ninety Eight Studio"
                 >
                   <img
-                    src="/sites/wwyn-vn/root/images/tiktok.webp"
+                    src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/tiktok-5334f940.webp"
                     alt="Ninety Eight Studio TikTok"
                     width={24}
                     height={24}
@@ -276,7 +276,7 @@ export const Footer: React.FC = () => {
               className="footer-bottom_right-item"
             >
               <img
-                src="/sites/wwyn-vn/root/images/location.png"
+                src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/location-e7d4b058.png"
                 alt="Icon location"
               />
               <span>STORE LOCATION</span>
@@ -287,7 +287,7 @@ export const Footer: React.FC = () => {
               className="footer-bottom_right-item"
             >
               <img
-                src="/sites/wwyn-vn/root/images/global.png"
+                src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/global-291eec35.png"
                 alt="Icon global"
               />
               <span>NATIONWIDE DELIVERY</span>

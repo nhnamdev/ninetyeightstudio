@@ -90,7 +90,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
               className="mega-banner-link"
             >
               <img
-                src="/sites/wwyn-vn/root/images/mega-menu-bags.webp"
+                src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/banners/mega-menu-bags-68fe3e75.webp"
                 alt="Bộ sưu tập túi Ninety Eight Studio"
                 width={550}
                 height={420}

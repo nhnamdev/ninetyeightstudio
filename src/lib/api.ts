@@ -63,11 +63,58 @@ export function setAdminUser(user: { id: number; full_name: string; email: strin
   }
 }
 
+export function getCustomerToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("nes_customer_token");
+}
+
+export function setCustomerToken(token: string): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("nes_customer_token", token);
+  }
+}
+
+export function removeCustomerToken(): void {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("nes_customer_token");
+    localStorage.removeItem("nes_customer_user");
+  }
+}
+
+export interface CustomerUser {
+  id: number;
+  full_name: string;
+  email: string;
+  phone?: string;
+  role: string;
+  avatar_url?: string;
+  gender?: string;
+  birthday?: string;
+}
+
+export function getCustomerUser(): CustomerUser | null {
+  if (typeof window === "undefined") return null;
+  const raw = localStorage.getItem("nes_customer_user");
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+export function setCustomerUser(user: CustomerUser): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("nes_customer_user", JSON.stringify(user));
+  }
+}
+
 async function request<T = unknown>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
-  const token = getAdminToken();
+  const isAdminRoute = typeof window !== "undefined" && window.location.pathname.startsWith("/admin");
+  const token = isAdminRoute ? getAdminToken() : (getCustomerToken() || getAdminToken());
   const headers = new Headers(options.headers || {});
 
   if (!headers.has("Content-Type") && !(options.body instanceof FormData)) {
@@ -89,10 +136,14 @@ async function request<T = unknown>(
     const data: ApiResponse<T> = await res.json();
 
     if (!res.ok) {
-      if (res.status === 401 && typeof window !== "undefined" && !window.location.pathname.includes("/admin/login")) {
-        removeAdminToken();
-        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-        window.location.href = "/admin/login?expired=1";
+      if (res.status === 401 && typeof window !== "undefined") {
+        if (isAdminRoute && !window.location.pathname.includes("/admin/login")) {
+          removeAdminToken();
+          // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+          window.location.href = "/admin/login?expired=1";
+        } else if (!isAdminRoute) {
+          removeCustomerToken();
+        }
       }
       throw new Error(data.message || `Request failed with status ${res.status}`);
     }
@@ -123,4 +174,9 @@ export const api = {
       body: body ? JSON.stringify(body) : undefined,
     }),
   delete: <T = unknown>(endpoint: string) => request<T>(endpoint, { method: "DELETE" }),
+  upload: <T = unknown>(endpoint: string, formData: FormData) =>
+    request<T>(endpoint, {
+      method: "POST",
+      body: formData,
+    }),
 };

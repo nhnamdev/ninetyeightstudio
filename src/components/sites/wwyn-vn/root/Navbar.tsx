@@ -90,7 +90,7 @@ export const Navbar: React.FC = () => {
               >
                 <span>Shop</span>
                 <img
-                  src="/sites/wwyn-vn/root/images/iconhaschild.png"
+                  src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/iconhaschild-d09e3324.png"
                   alt="Has Child"
                   className="has-child-icon"
                 />
@@ -137,7 +137,7 @@ export const Navbar: React.FC = () => {
                 >
                   <div className="flag-active">
                     <img
-                      src="/sites/wwyn-vn/root/images/ngonngu.png"
+                      src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/ngonngu-073e666a.png"
                       alt="Ngôn ngữ"
                       className="menu-icon"
                     />
@@ -177,7 +177,7 @@ export const Navbar: React.FC = () => {
                     aria-label="Tìm kiếm"
                   >
                     <img
-                      src="/sites/wwyn-vn/root/images/timkiem.png"
+                      src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/timkiem-04be7d00.png"
                       alt="Tìm kiếm"
                       className="menu-icon"
                     />
@@ -197,7 +197,7 @@ export const Navbar: React.FC = () => {
                     aria-label="Tài khoản của tôi"
                   >
                     <img
-                      src="/sites/wwyn-vn/root/images/user.png"
+                      src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/user-dd07cbe3.png"
                       alt="Tài khoản"
                       className="menu-icon"
                     />
@@ -214,7 +214,7 @@ export const Navbar: React.FC = () => {
                     aria-label="Giỏ hàng"
                   >
                     <img
-                      src="/sites/wwyn-vn/root/images/cart.png"
+                      src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/cart-2b55cbd4.png"
                       alt="Giỏ hàng"
                       className="menu-icon"
                     />
@@ -271,7 +271,7 @@ export const Navbar: React.FC = () => {
             >
               <div className="flag-active">
                 <img
-                  src="/sites/wwyn-vn/root/images/ngonngu.png"
+                  src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/ngonngu-073e666a.png"
                   alt="Ngôn ngữ"
                   className="menu-icon"
                 />
@@ -311,7 +311,7 @@ export const Navbar: React.FC = () => {
                 aria-label="Tìm kiếm"
               >
                 <img
-                  src="/sites/wwyn-vn/root/images/timkiem.png"
+                  src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/timkiem-04be7d00.png"
                   alt="Tìm kiếm"
                   className="menu-icon"
                 />
@@ -331,7 +331,7 @@ export const Navbar: React.FC = () => {
                 aria-label="Tài khoản của tôi"
               >
                 <img
-                  src="/sites/wwyn-vn/root/images/user.png"
+                  src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/user-dd07cbe3.png"
                   alt="Tài khoản"
                   className="menu-icon"
                 />
@@ -348,7 +348,7 @@ export const Navbar: React.FC = () => {
                 aria-label="Giỏ hàng"
               >
                 <img
-                  src="/sites/wwyn-vn/root/images/cart.png"
+                  src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/cart-2b55cbd4.png"
                   alt="Giỏ hàng"
                   className="menu-icon"
                 />

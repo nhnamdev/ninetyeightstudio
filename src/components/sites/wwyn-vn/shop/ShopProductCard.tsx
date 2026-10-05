@@ -16,7 +16,7 @@ export const ShopProductCard: React.FC<ShopProductCardProps> = ({
   const [img1Error, setImg1Error] = useState(false);
   const [img2Error, setImg2Error] = useState(false);
 
-  const fallbackImg = "/images/products/yacht-tote-camo.webp";
+  const fallbackImg = "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/yacht-tote-camo-187b8f33.webp";
   const primaryImg = img1Error || !product.image ? fallbackImg : product.image;
   const secondaryImg =
     img2Error || !product.hoverImage ? primaryImg : product.hoverImage;
@@ -55,7 +55,7 @@ export const ShopProductCard: React.FC<ShopProductCardProps> = ({
           }}
         >
           <img
-            src="/sites/wwyn-vn/root/images/cart.png"
+            src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/branding/cart-2b55cbd4.png"
             alt="Giỏ hàng"
             width={22}
             height={22}

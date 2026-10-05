@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
+import { api, setCustomerToken, setCustomerUser, CustomerUser } from "@/lib/api";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -38,7 +39,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     agreeTerms: true,
   });
 
-
   // Handle ESC key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -64,22 +64,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
     setLoading(true);
 
-    setTimeout(() => {
+    try {
+      const res = await api.post<{ token: string; user: CustomerUser }>("/auth/login", {
+        email: loginData.identifier.trim(),
+        password: loginData.password,
+      });
+
+      if (res.token && res.user) {
+        setCustomerToken(res.token);
+        setCustomerUser(res.user);
+        setSuccessMsg("Đăng nhập thành công! Đang chuyển hướng...");
+        setTimeout(() => {
+          onClose();
+          setSuccessMsg("");
+          window.location.href = "/my-account";
+        }, 600);
+      } else {
+        throw new Error(res.message || "Đăng nhập thất bại");
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      setErrorMsg(error.message || "Tài khoản hoặc mật khẩu không chính xác");
+    } finally {
       setLoading(false);
-      setSuccessMsg("Đăng nhập thành công! Đang chuyển hướng...");
-      setTimeout(() => {
-        onClose();
-        setSuccessMsg("");
-      }, 1200);
-    }, 800);
+    }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
 
@@ -95,14 +111,32 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     setLoading(true);
 
-    setTimeout(() => {
+    try {
+      const res = await api.post<{ token: string; user: CustomerUser }>("/auth/register", {
+        full_name: registerData.fullName.trim(),
+        email: registerData.email.trim(),
+        phone: registerData.phone.trim(),
+        password: registerData.password,
+      });
+
+      if (res.token && res.user) {
+        setCustomerToken(res.token);
+        setCustomerUser(res.user);
+        setSuccessMsg("Đăng ký thành viên thành công! Chào mừng bạn đến với Ninety Eight Studio.");
+        setTimeout(() => {
+          onClose();
+          setSuccessMsg("");
+          window.location.href = "/my-account";
+        }, 800);
+      } else {
+        throw new Error(res.message || "Đăng ký thất bại");
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      setErrorMsg(error.message || "Lỗi tạo tài khoản");
+    } finally {
       setLoading(false);
-      setSuccessMsg("Đăng ký thành viên thành công! Chào mừng bạn đến với Ninety Eight Studio.");
-      setTimeout(() => {
-        setMode("login");
-        setSuccessMsg("");
-      }, 1500);
-    }, 800);
+    }
   };
 
   return (

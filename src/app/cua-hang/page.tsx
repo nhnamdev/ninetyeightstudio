@@ -14,7 +14,7 @@ export const metadata = {
     title: "Cửa hàng | Ninety Eight Studio",
     description:
       "Khám phá các sản phẩm túi xách, tote bag, shoulder bag, travel bag cá tính tại Ninety Eight Studio.",
-    images: ["/sites/wwyn-vn/root/images/hero-banner.webp"],
+    images: ["https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/banners/hero-banner-27b25b23.webp"],
   },
 };
 

@@ -10,7 +10,7 @@ export const Hero: React.FC = () => {
         {/* Banner image */}
         <Link href="/cua-hang" title="Khám phá Ninety Eight Studio">
           <img
-            src="/sites/wwyn-vn/root/images/hero-banner.webp"
+            src="https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/banners/hero-banner-27b25b23.webp"
             alt="Ninety Eight Studio"
             width={1920}
             height={1080}

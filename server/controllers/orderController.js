@@ -1,4 +1,6 @@
 const pool = require("../config/db");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../middleware/authMiddleware");
 
 // GET /api/orders
 const getOrders = async (req, res) => {
@@ -218,6 +220,20 @@ const createOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: "Thiếu thông tin người nhận hoặc giỏ hàng trống" });
     }
 
+    // Check user_id from body or authorization header
+    let user_id = req.body.user_id || null;
+    if (!user_id && req.headers.authorization) {
+      try {
+        const token = req.headers.authorization.split(" ")[1];
+        if (token) {
+          const decoded = jwt.verify(token, JWT_SECRET);
+          user_id = decoded.id;
+        }
+      } catch (e) {
+        // guest order
+      }
+    }
+
     // Generate readable order code #NES-xxxxx
     const order_code = `#NES-${Math.floor(10000 + Math.random() * 90000)}`;
 
@@ -229,13 +245,14 @@ const createOrder = async (req, res) => {
 
     const [orderResult] = await connection.query(
       `INSERT INTO orders 
-        (order_code, customer_name, customer_phone, customer_email, 
+        (order_code, user_id, customer_name, customer_phone, customer_email, 
          shipping_province, shipping_district, shipping_ward, shipping_address, 
          order_notes, subtotal, shipping_fee, discount_amount, total_amount, 
          coupon_code, shipping_method, payment_method, payment_status, order_status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'unpaid', 'pending')`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'unpaid', 'pending')`,
       [
         order_code,
+        user_id,
         customer_name,
         customer_phone,
         customer_email || "",
@@ -306,10 +323,44 @@ const createOrder = async (req, res) => {
   }
 };
 
+// GET /api/orders/my-orders (Customer orders)
+const getMyOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const [orders] = await pool.query(
+      `SELECT o.*,
+              (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS item_count,
+              (SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+                  'id', oi.id,
+                  'product_name', oi.product_name,
+                  'color_name', oi.color_name,
+                  'quantity', oi.quantity,
+                  'unit_price', oi.unit_price,
+                  'image', oi.image
+                )
+              ) FROM order_items oi WHERE oi.order_id = o.id) AS items
+       FROM orders o
+       WHERE o.user_id = ?
+       ORDER BY o.created_at DESC`,
+      [userId]
+    );
+
+    return res.json({
+      success: true,
+      data: orders,
+    });
+  } catch (error) {
+    console.error("Get my orders error:", error);
+    return res.status(500).json({ success: false, message: "Lỗi lấy danh sách đơn hàng của bạn", error: error.message });
+  }
+};
+
 module.exports = {
   getOrders,
   getOrderById,
   updateOrderStatus,
   updatePaymentStatus,
   createOrder,
+  getMyOrders,
 };

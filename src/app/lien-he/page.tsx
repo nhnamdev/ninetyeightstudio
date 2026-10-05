@@ -15,7 +15,7 @@ export const metadata = {
     title: "Liên hệ | Ninety Eight Studio",
     description:
       "Liên hệ Ninety Eight Studio để được tư vấn kích thước, sản phẩm và chính sách mua hàng nhanh chóng. Hotline: 0378026461.",
-    images: ["/sites/wwyn-vn/root/images/hero-banner.webp"],
+    images: ["https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/banners/hero-banner-27b25b23.webp"],
   },
 };
 

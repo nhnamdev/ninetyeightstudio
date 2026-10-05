@@ -6,6 +6,9 @@ const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
 // Client order placement (checkout)
 router.post("/", orderController.createOrder);
 
+// Customer order history
+router.get("/my-orders", verifyToken, orderController.getMyOrders);
+
 // Admin order management
 router.get("/", verifyToken, requireAdmin, orderController.getOrders);
 router.get("/:id", verifyToken, requireAdmin, orderController.getOrderById);

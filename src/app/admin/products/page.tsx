@@ -16,6 +16,7 @@ import {
   Box,
   Copy,
   Palette,
+  Upload,
 } from "lucide-react";
 import { api } from "@/lib/api";
 
@@ -118,6 +119,35 @@ export default function AdminProductsPage() {
   const [newStockValue, setNewStockValue] = useState("");
   const [stockNote, setStockNote] = useState("");
   const [stockLoading, setStockLoading] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingHover, setUploadingHover] = useState(false);
+
+  const handleFileUpload = async (file: File, target: "cover" | "hover") => {
+    const isCover = target === "cover";
+    if (isCover) setUploadingCover(true);
+    else setUploadingHover(true);
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      uploadData.append("folder", "products");
+
+      const res = await api.upload<{ url: string }>("/upload", uploadData);
+      if (res.data?.url) {
+        if (isCover) {
+          setFormData((prev) => ({ ...prev, cover_image: res.data!.url }));
+        } else {
+          setFormData((prev) => ({ ...prev, hover_image: res.data!.url }));
+        }
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      alert("Lỗi tải ảnh lên Cloudflare R2: " + (error.message || "Không xác định"));
+    } finally {
+      if (isCover) setUploadingCover(false);
+      else setUploadingHover(false);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -275,7 +305,10 @@ export default function AdminProductsPage() {
     try {
       const payload = {
         ...formData,
-        variants,
+        variants: variants.map((v) => ({
+          ...v,
+          image: v.image || formData.cover_image,
+        })),
       };
 
       if (editingProduct) {
@@ -663,28 +696,60 @@ export default function AdminProductsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block text-xs font-medium text-zinc-700 mb-1">
-                      URL Ảnh bìa đại diện *
+                      Ảnh bìa đại diện *
                     </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.cover_image}
-                      onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                      placeholder="/images/products/nes-bag.jpg"
-                      className="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-mono"
-                    />
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        required
+                        value={formData.cover_image}
+                        onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
+                        placeholder="https://pub-...r2.dev/products/..."
+                        className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-mono"
+                      />
+                      <label className="px-2.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-xs font-medium text-zinc-700 cursor-pointer flex items-center gap-1 shrink-0 transition-colors">
+                        {uploadingCover ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                        <span>{uploadingCover ? "Đang tải..." : "Tải lên R2"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingCover}
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file, "cover");
+                          }}
+                        />
+                      </label>
+                    </div>
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-zinc-700 mb-1">
-                      URL Ảnh hover chuột
+                      Ảnh hover chuột
                     </label>
-                    <input
-                      type="text"
-                      value={formData.hover_image}
-                      onChange={(e) => setFormData({ ...formData, hover_image: e.target.value })}
-                      placeholder="/images/products/nes-bag-hover.jpg"
-                      className="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-mono"
-                    />
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        value={formData.hover_image}
+                        onChange={(e) => setFormData({ ...formData, hover_image: e.target.value })}
+                        placeholder="https://pub-...r2.dev/products/..."
+                        className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-mono"
+                      />
+                      <label className="px-2.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-xs font-medium text-zinc-700 cursor-pointer flex items-center gap-1 shrink-0 transition-colors">
+                        {uploadingHover ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                        <span>{uploadingHover ? "Đang tải..." : "Tải lên R2"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingHover}
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file, "hover");
+                          }}
+                        />
+                      </label>
+                    </div>
                   </div>
                 </div>
 
@@ -775,7 +840,6 @@ export default function AdminProductsPage() {
                         <th className="p-2.5">Mã SKU</th>
                         <th className="p-2.5">Giá bán (VND)</th>
                         <th className="p-2.5">Kho tồn</th>
-                        <th className="p-2.5">Link ảnh màu</th>
                         <th className="p-2.5 pr-3 text-center">Xóa</th>
                       </tr>
                     </thead>
@@ -840,16 +904,6 @@ export default function AdminProductsPage() {
                               onChange={(e) => handleVariantChange(idx, "stock", Number(e.target.value))}
                               placeholder="50"
                               className="w-18 px-2 py-1 bg-white border border-zinc-200 rounded-md text-xs text-zinc-900 font-mono"
-                            />
-                          </td>
-
-                          <td className="p-2">
-                            <input
-                              type="text"
-                              value={v.image}
-                              onChange={(e) => handleVariantChange(idx, "image", e.target.value)}
-                              placeholder="/images/color.jpg"
-                              className="w-32 px-2 py-1 bg-white border border-zinc-200 rounded-md text-xs text-zinc-900 font-mono"
                             />
                           </td>
 

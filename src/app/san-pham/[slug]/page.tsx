@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import {
   SHOP_PRODUCTS,
+  ShopProduct,
   getProductBySlug,
   getRelatedProducts,
 } from "@/data/shopProducts";
@@ -27,9 +28,73 @@ export function generateStaticParams() {
   }));
 }
 
+async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const res = await fetch(`${apiUrl}/products/${slug}`, { next: { revalidate: 10 } });
+    if (!res.ok) return undefined;
+    const json = await res.json();
+    if (json.success && json.data) {
+      interface ProductDetailApiRow {
+        id: number;
+        name: string;
+        slug: string;
+        min_price?: number | string;
+        base_price?: number | string;
+        category_name?: "TOTE BAG" | "SHOULDER BAG" | "TRAVEL BAG" | "ACCESSORIES";
+        cover_image: string;
+        hover_image?: string;
+        gallery_images?: string[];
+        variants?: Array<{ id: number; color_name: string; image?: string }>;
+        description?: string;
+        highlights?: string[];
+        dimensions?: string;
+        material?: string;
+        care_instructions?: string;
+        shipping_policy?: string;
+        total_stock?: number;
+      }
+      const p = json.data as ProductDetailApiRow;
+      const priceNum = Number(p.min_price || p.base_price || 0);
+      const formattedPrice = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(priceNum);
+
+      return {
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        price: formattedPrice,
+        category: p.category_name || "TOTE BAG",
+        image: p.cover_image,
+        hoverImage: p.hover_image || p.cover_image,
+        gallery: Array.isArray(p.gallery_images) && p.gallery_images.length > 0 ? p.gallery_images : [p.cover_image],
+        colors: (p.variants || []).map((v) => ({
+          name: v.color_name,
+          thumbnail: v.image || p.cover_image,
+          slug: p.slug,
+        })),
+        description: p.description || "",
+        highlights: p.highlights || [],
+        dimensions: p.dimensions ? { size: p.dimensions, strapDrop: "", weight: "" } : undefined,
+        material: p.material || "",
+        careInstructions: p.care_instructions || "",
+        shippingPolicy: p.shipping_policy || "",
+        outOfStock: Number(p.total_stock) <= 0,
+        page: 1,
+      };
+    }
+  } catch {
+    // fallback
+  }
+  return undefined;
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const liveProduct = await fetchLiveProduct(slug);
+  const product = liveProduct || getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -50,7 +115,8 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const liveProduct = await fetchLiveProduct(slug);
+  const product = liveProduct || getProductBySlug(slug);
 
   if (!product) {
     notFound();
