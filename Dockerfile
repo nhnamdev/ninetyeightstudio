@@ -5,7 +5,8 @@ RUN apk add --no-cache libc6-compat curl
 FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+ENV NODE_ENV=development
+RUN npm ci --include=dev
 
 # 2. Build Next.js standalone application
 FROM base AS builder
