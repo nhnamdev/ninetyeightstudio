@@ -19,10 +19,25 @@ export const metadata = {
   },
 };
 
+function getServerApiUrl(): string {
+  if (process.env.INTERNAL_API_URL) {
+    return process.env.INTERNAL_API_URL.endsWith("/api")
+      ? process.env.INTERNAL_API_URL
+      : `${process.env.INTERNAL_API_URL}/api`;
+  }
+  if (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL.startsWith("http")) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  return "http://127.0.0.1:5000/api";
+}
+
 async function getLiveShopProducts(): Promise<ShopProduct[]> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-    const res = await fetch(`${apiUrl}/products?limit=100`, { next: { revalidate: 10 } });
+    const apiUrl = getServerApiUrl();
+    const res = await fetch(`${apiUrl}/products?limit=100`, {
+      next: { revalidate: 10 },
+      signal: AbortSignal.timeout(1500),
+    });
     if (!res.ok) return [];
     const json = await res.json();
     if (json.success && Array.isArray(json.data)) {

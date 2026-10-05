@@ -21,10 +21,25 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+function getServerApiUrl(): string {
+  if (process.env.INTERNAL_API_URL) {
+    return process.env.INTERNAL_API_URL.endsWith("/api")
+      ? process.env.INTERNAL_API_URL
+      : `${process.env.INTERNAL_API_URL}/api`;
+  }
+  if (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL.startsWith("http")) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  return "http://127.0.0.1:5000/api";
+}
+
 export async function generateStaticParams() {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-    const res = await fetch(`${apiUrl}/products?limit=100`, { next: { revalidate: 10 } });
+    const apiUrl = getServerApiUrl();
+    const res = await fetch(`${apiUrl}/products?limit=100`, {
+      next: { revalidate: 10 },
+      signal: AbortSignal.timeout(1500),
+    });
     if (res.ok) {
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
@@ -41,8 +56,11 @@ export async function generateStaticParams() {
 
 async function fetchLiveRelatedProducts(currentId: number): Promise<ShopProduct[]> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-    const res = await fetch(`${apiUrl}/products?limit=10`, { next: { revalidate: 10 } });
+    const apiUrl = getServerApiUrl();
+    const res = await fetch(`${apiUrl}/products?limit=10`, {
+      next: { revalidate: 10 },
+      signal: AbortSignal.timeout(1500),
+    });
     if (!res.ok) return [];
     const json = await res.json();
     if (json.success && Array.isArray(json.data)) {
@@ -109,8 +127,11 @@ async function fetchLiveRelatedProducts(currentId: number): Promise<ShopProduct[
 
 async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-    const res = await fetch(`${apiUrl}/products/${slug}`, { next: { revalidate: 10 } });
+    const apiUrl = getServerApiUrl();
+    const res = await fetch(`${apiUrl}/products/${slug}`, {
+      next: { revalidate: 10 },
+      signal: AbortSignal.timeout(1500),
+    });
     if (!res.ok) return undefined;
     const json = await res.json();
     if (json.success && json.data) {
