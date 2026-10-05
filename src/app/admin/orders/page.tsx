@@ -441,7 +441,7 @@ function OrdersContent() {
                               <div className="flex items-center gap-2">
                                 <div className="w-8 h-8 rounded-md bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0">
                                   <img
-                                    src={item.image || "/images/products/placeholder.jpg"}
+                                    src={item.image || "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/thumb-1-b6c013de.png"}
                                     alt={item.product_name}
                                     className="w-full h-full object-cover"
                                   />

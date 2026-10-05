@@ -287,10 +287,10 @@ export default function AdminDashboardPage() {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-zinc-900">
-                Cảnh báo kho hàng Shopee (Biến thể màu sắp hết)
+                Cảnh báo sản phẩm sắp hết hàng
               </h2>
               <p className="text-xs text-zinc-500">
-                Phân loại màu có tồn khả dụng (Kho - Giữ chỗ) ≤ 10 cái
+                Các màu sắc có số lượng tồn kho còn ít (dưới 10 sản phẩm)
               </p>
             </div>
           </div>
@@ -312,7 +312,7 @@ export default function AdminDashboardPage() {
               >
                 <div className="w-11 h-11 rounded-md bg-white overflow-hidden shrink-0 border border-zinc-200">
                   <img
-                    src={item.image || "/images/products/placeholder.jpg"}
+                    src={item.image || "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/thumb-1-b6c013de.png"}
                     alt={item.color_name}
                     className="w-full h-full object-cover"
                   />

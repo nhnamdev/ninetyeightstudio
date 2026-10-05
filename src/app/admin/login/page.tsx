@@ -147,10 +147,10 @@ export default function AdminLoginPage() {
           </div>
         </div>
 
-        {/* Server & DB connectivity badge */}
+        {/* System security & connectivity badge */}
         <div className="mt-6 text-center text-xs text-zinc-400 flex items-center justify-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span>Kết nối MySQL VPS: 36.50.27.243 (Port 5000)</span>
+          <span>Hệ thống bảo mật & kết nối trực tuyến</span>
         </div>
       </div>
     </div>

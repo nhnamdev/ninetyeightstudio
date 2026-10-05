@@ -90,14 +90,14 @@ export default function AdminProductsPage() {
     dimensions: "",
     material: "",
     base_price: 350000,
-    cover_image: "/images/products/nes-bag.jpg",
+    cover_image: "",
     hover_image: "",
     is_new_arrival: false,
     is_best_seller: false,
     is_active: true,
   });
 
-  // Shopee-style Variants Table State
+  // Variants Table State
   const [variants, setVariants] = useState<ProductVariant[]>([
     {
       color_name: "Đen (Black)",
@@ -106,7 +106,7 @@ export default function AdminProductsPage() {
       price: 350000,
       original_price: 420000,
       stock: 50,
-      image: "/images/products/nes-bag.jpg",
+      image: "",
     },
   ]);
 
@@ -142,7 +142,7 @@ export default function AdminProductsPage() {
       }
     } catch (err: unknown) {
       const error = err as Error;
-      alert("Lỗi tải ảnh lên Cloudflare R2: " + (error.message || "Không xác định"));
+      alert("Không thể tải ảnh lên, vui lòng thử lại: " + (error.message || "Lỗi không xác định"));
     } finally {
       if (isCover) setUploadingCover(false);
       else setUploadingHover(false);
@@ -192,7 +192,7 @@ export default function AdminProductsPage() {
       dimensions: "30 x 22 x 10 cm",
       material: "Canvas cao cấp trượt nước",
       base_price: 350000,
-      cover_image: "/images/products/nes-bag.jpg",
+      cover_image: "",
       hover_image: "",
       is_new_arrival: true,
       is_best_seller: false,
@@ -206,7 +206,7 @@ export default function AdminProductsPage() {
         price: 350000,
         original_price: 420000,
         stock: 50,
-        image: "/images/products/nes-bag.jpg",
+        image: "",
       },
     ]);
     setModalError(null);
@@ -300,6 +300,12 @@ export default function AdminProductsPage() {
   const handleSubmitProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setModalError(null);
+
+    if (!formData.cover_image) {
+      setModalError("Vui lòng tải lên ảnh bìa đại diện cho sản phẩm");
+      return;
+    }
+
     setModalLoading(true);
 
     try {
@@ -443,7 +449,7 @@ export default function AdminProductsPage() {
                 <tr>
                   <td colSpan={7} className="p-12 text-center text-zinc-400">
                     <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-zinc-700" />
-                    <span>Đang kết nối VPS MySQL tải danh sách sản phẩm...</span>
+                    <span>Đang tải danh sách sản phẩm...</span>
                   </td>
                 </tr>
               ) : products.length === 0 ? (
@@ -459,7 +465,7 @@ export default function AdminProductsPage() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0">
                           <img
-                            src={prod.cover_image || "/images/products/placeholder.jpg"}
+                            src={prod.cover_image || "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/thumb-1-b6c013de.png"}
                             alt={prod.name}
                             className="w-full h-full object-cover"
                           />
@@ -467,7 +473,7 @@ export default function AdminProductsPage() {
                         <div>
                           <div className="font-semibold text-zinc-900 text-xs sm:text-sm">{prod.name}</div>
                           <div className="text-[10px] text-zinc-500 font-mono">
-                            {prod.product_code || `SLUG: ${prod.slug}`}
+                            {prod.product_code || prod.slug}
                           </div>
                         </div>
                       </div>
@@ -693,23 +699,79 @@ export default function AdminProductsPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Ảnh bìa chính */}
                   <div>
-                    <label className="block text-xs font-medium text-zinc-700 mb-1">
-                      Ảnh bìa đại diện *
+                    <label className="block text-xs font-medium text-zinc-700 mb-1.5">
+                      Ảnh bìa đại diện <span className="text-red-500">*</span>
                     </label>
-                    <div className="flex items-center gap-1.5">
-                      <input
-                        type="text"
-                        required
-                        value={formData.cover_image}
-                        onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                        placeholder="https://pub-...r2.dev/products/..."
-                        className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-mono"
-                      />
-                      <label className="px-2.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-xs font-medium text-zinc-700 cursor-pointer flex items-center gap-1 shrink-0 transition-colors">
-                        {uploadingCover ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
-                        <span>{uploadingCover ? "Đang tải..." : "Tải lên R2"}</span>
+
+                    {formData.cover_image ? (
+                      <div className="p-3 bg-zinc-50 border border-zinc-200 rounded-xl flex items-center gap-3.5">
+                        <div className="w-16 h-20 rounded-lg bg-white border border-zinc-200 overflow-hidden shrink-0 shadow-2xs">
+                          <img
+                            src={formData.cover_image}
+                            alt="Ảnh bìa"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-900">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>Đã chọn ảnh bìa</span>
+                          </div>
+                          <p className="text-[11px] text-zinc-500 mt-0.5 truncate">
+                            Hiển thị làm ảnh chính sản phẩm
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <label className="px-2.5 py-1 rounded-md bg-white hover:bg-zinc-100 border border-zinc-200 text-[11px] font-medium text-zinc-800 cursor-pointer flex items-center gap-1 transition-colors shadow-2xs">
+                              {uploadingCover ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Upload className="w-3 h-3" />
+                              )}
+                              <span>{uploadingCover ? "Đang tải ảnh..." : "Đổi ảnh khác"}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                disabled={uploadingCover}
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) handleFileUpload(file, "cover");
+                                }}
+                              />
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => setFormData({ ...formData, cover_image: "" })}
+                              className="px-2 py-1 rounded-md text-[11px] font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                            >
+                              Xóa ảnh
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center p-5 border-2 border-dashed border-zinc-200 hover:border-zinc-400 bg-zinc-50/60 hover:bg-zinc-50 rounded-xl cursor-pointer transition-colors group text-center min-h-[104px]">
+                        {uploadingCover ? (
+                          <div className="flex flex-col items-center py-2">
+                            <Loader2 className="w-5 h-5 animate-spin text-zinc-800 mb-1" />
+                            <span className="text-xs font-medium text-zinc-700">Đang tải ảnh lên...</span>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="w-8 h-8 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-500 mb-1.5 group-hover:text-zinc-900 group-hover:border-zinc-300 shadow-2xs transition-colors">
+                              <Upload className="w-4 h-4" />
+                            </div>
+                            <span className="text-xs font-semibold text-zinc-800 group-hover:text-zinc-950">
+                              Tải ảnh lên
+                            </span>
+                            <span className="text-[11px] text-zinc-400 mt-0.5">
+                              Bấm để chọn tệp ảnh từ thiết bị
+                            </span>
+                          </>
+                        )}
                         <input
                           type="file"
                           accept="image/*"
@@ -721,23 +783,81 @@ export default function AdminProductsPage() {
                           }}
                         />
                       </label>
-                    </div>
+                    )}
                   </div>
+
+                  {/* Ảnh hover chuột */}
                   <div>
-                    <label className="block text-xs font-medium text-zinc-700 mb-1">
-                      Ảnh hover chuột
+                    <label className="block text-xs font-medium text-zinc-700 mb-1.5">
+                      Ảnh phụ (khi rê chuột)
                     </label>
-                    <div className="flex items-center gap-1.5">
-                      <input
-                        type="text"
-                        value={formData.hover_image}
-                        onChange={(e) => setFormData({ ...formData, hover_image: e.target.value })}
-                        placeholder="https://pub-...r2.dev/products/..."
-                        className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-mono"
-                      />
-                      <label className="px-2.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-xs font-medium text-zinc-700 cursor-pointer flex items-center gap-1 shrink-0 transition-colors">
-                        {uploadingHover ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
-                        <span>{uploadingHover ? "Đang tải..." : "Tải lên R2"}</span>
+
+                    {formData.hover_image ? (
+                      <div className="p-3 bg-zinc-50 border border-zinc-200 rounded-xl flex items-center gap-3.5">
+                        <div className="w-16 h-20 rounded-lg bg-white border border-zinc-200 overflow-hidden shrink-0 shadow-2xs">
+                          <img
+                            src={formData.hover_image}
+                            alt="Ảnh phụ khi rê chuột"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-900">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>Đã chọn ảnh phụ</span>
+                          </div>
+                          <p className="text-[11px] text-zinc-500 mt-0.5 truncate">
+                            Hiệu ứng đổi góc nhìn khi rê chuột
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <label className="px-2.5 py-1 rounded-md bg-white hover:bg-zinc-100 border border-zinc-200 text-[11px] font-medium text-zinc-800 cursor-pointer flex items-center gap-1 transition-colors shadow-2xs">
+                              {uploadingHover ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Upload className="w-3 h-3" />
+                              )}
+                              <span>{uploadingHover ? "Đang tải ảnh..." : "Đổi ảnh khác"}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                disabled={uploadingHover}
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) handleFileUpload(file, "hover");
+                                }}
+                              />
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => setFormData({ ...formData, hover_image: "" })}
+                              className="px-2 py-1 rounded-md text-[11px] font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                            >
+                              Xóa ảnh
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center p-5 border-2 border-dashed border-zinc-200 hover:border-zinc-400 bg-zinc-50/60 hover:bg-zinc-50 rounded-xl cursor-pointer transition-colors group text-center min-h-[104px]">
+                        {uploadingHover ? (
+                          <div className="flex flex-col items-center py-2">
+                            <Loader2 className="w-5 h-5 animate-spin text-zinc-800 mb-1" />
+                            <span className="text-xs font-medium text-zinc-700">Đang tải ảnh lên...</span>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="w-8 h-8 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-500 mb-1.5 group-hover:text-zinc-900 group-hover:border-zinc-300 shadow-2xs transition-colors">
+                              <Upload className="w-4 h-4" />
+                            </div>
+                            <span className="text-xs font-semibold text-zinc-800 group-hover:text-zinc-950">
+                              Tải ảnh lên
+                            </span>
+                            <span className="text-[11px] text-zinc-400 mt-0.5">
+                              Tùy chọn ảnh góc nhìn thứ 2
+                            </span>
+                          </>
+                        )}
                         <input
                           type="file"
                           accept="image/*"
@@ -749,7 +869,7 @@ export default function AdminProductsPage() {
                           }}
                         />
                       </label>
-                    </div>
+                    )}
                   </div>
                 </div>
 
@@ -773,10 +893,10 @@ export default function AdminProductsPage() {
                   <div>
                     <div className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
                       <Palette className="w-3.5 h-3.5 text-zinc-600" />
-                      2. Phân loại màu sắc & Tồn kho (Chuẩn Shopee)
+                      2. Phân loại màu sắc & Tồn kho
                     </div>
                     <p className="text-[11px] text-zinc-500 mt-0.5">
-                      Mỗi dòng tương ứng với một màu có SKU riêng, giá bán riêng và số lượng tồn kho riêng
+                      Mỗi dòng tương ứng với một màu có mã phân loại, giá bán và số lượng tồn kho riêng
                     </p>
                   </div>
                   <button
@@ -789,7 +909,7 @@ export default function AdminProductsPage() {
                   </button>
                 </div>
 
-                {/* Shopee Bulk Actions Bar */}
+                {/* Bulk Actions Bar */}
                 <div className="p-2.5 bg-zinc-50 border border-zinc-200 rounded-lg flex flex-wrap items-center gap-2.5 text-xs">
                   <span className="text-zinc-600 font-medium flex items-center gap-1">
                     <Copy className="w-3.5 h-3.5" />
@@ -836,8 +956,8 @@ export default function AdminProductsPage() {
                     <thead>
                       <tr className="bg-zinc-50/70 text-zinc-500 border-b border-zinc-200 text-[11px] uppercase tracking-wider">
                         <th className="p-2.5 pl-3">Tên màu</th>
-                        <th className="p-2.5">Mã Hex</th>
-                        <th className="p-2.5">Mã SKU</th>
+                        <th className="p-2.5">Mã màu</th>
+                        <th className="p-2.5">Mã phân loại</th>
                         <th className="p-2.5">Giá bán (VND)</th>
                         <th className="p-2.5">Kho tồn</th>
                         <th className="p-2.5 pr-3 text-center">Xóa</th>

@@ -122,7 +122,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 98STUDIO
               </span>
               <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
-                CMS
+                Quản trị
               </span>
             </Link>
             <button
@@ -182,7 +182,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-[11px] text-zinc-600">
             <div className="flex items-center gap-1.5">
               <Database className="w-3.5 h-3.5 text-zinc-500" />
-              <span>VPS: 36.50.27.243</span>
+              <span>Máy chủ trực tuyến</span>
             </div>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           </div>
@@ -244,7 +244,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-2.5">
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-xs text-zinc-700 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              API: 5000 Online
+              Hệ thống hoạt động
             </div>
             <Link
               href="/"
