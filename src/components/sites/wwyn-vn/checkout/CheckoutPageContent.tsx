@@ -210,6 +210,40 @@ export const CheckoutPageContent: React.FC = () => {
 
       setCompletedOrder(order);
 
+      // Sync order to Backend Express MySQL VPS
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      fetch(`${apiUrl}/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_name: formData.fullName,
+          customer_phone: formData.phone,
+          customer_email: formData.email,
+          shipping_province: formData.province,
+          shipping_district: formData.district,
+          shipping_ward: formData.ward,
+          shipping_address: formData.address,
+          order_notes: formData.notes,
+          items: items.map((i) => ({
+            product_id: 1,
+            variant_id: 1,
+            name: i.name,
+            color_name: i.color || "Mặc định",
+            sku: `NES-${i.id}`,
+            image: i.image,
+            price: i.price,
+            quantity: i.quantity,
+          })),
+          shipping_method: shippingMethod,
+          payment_method: paymentMethod,
+          shipping_fee: currentShippingFee,
+          discount_amount: discountAmount,
+          coupon_code: appliedCoupon?.code,
+        }),
+      }).catch((apiErr) => {
+        console.warn("Backend API sync notice:", apiErr);
+      });
+
       // Persist order to localStorage for /my-account and order tracking
       try {
         const existingOrdersStr = localStorage.getItem("ninetyeight_orders_v1");
