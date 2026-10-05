@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ShopProduct } from "@/data/shopProducts";
+import { useCart } from "@/context/CartContext";
 
 interface MobileBottomBarProps {
   product: ShopProduct;
@@ -9,7 +10,7 @@ interface MobileBottomBarProps {
 
 export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ product }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,22 +27,24 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ product }) => 
   }, []);
 
   const handleQuickAdd = () => {
-    setToastMessage(`Đã thêm "${product.name}" vào giỏ hàng!`);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
+    addToCart(
+      {
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        quantity: 1,
+      },
+      true
+    );
   };
 
   if (!isVisible) return null;
 
   return (
     <>
-      {toastMessage && (
-        <div className="fixed bottom-20 left-4 right-4 z-[350] bg-black text-white px-4 py-3 rounded text-center text-xs font-medium shadow-xl animate-fade-in border border-neutral-700">
-          {toastMessage}
-        </div>
-      )}
-
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[250] bg-white/95 backdrop-blur-md border-t border-neutral-200 px-4 py-2.5 flex items-center justify-between gap-3 shadow-lg">
         {/* Product preview */}
         <div className="flex items-center gap-2.5 overflow-hidden min-w-0">

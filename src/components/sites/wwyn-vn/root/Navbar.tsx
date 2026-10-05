@@ -9,6 +9,7 @@ import { SearchDropdown } from "./SearchDropdown";
 import { CartModal } from "./CartModal";
 import { AuthModal } from "./AuthModal";
 import { TopBar } from "./TopBar";
+import { useCart } from "@/context/CartContext";
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
@@ -18,8 +19,8 @@ export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const { totalCount, setIsCartOpen } = useCart();
   const [megaMenuHover, setMegaMenuHover] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<"VN" | "EN">("VN");
@@ -206,8 +207,8 @@ export const Navbar: React.FC = () => {
                 {/* Cart Button */}
                 <div className="cart-menu">
                   <div
-                    className="cursor-pointer"
-                    onClick={() => setCartOpen(true)}
+                    className="cursor-pointer relative"
+                    onClick={() => setIsCartOpen(true)}
                     role="button"
                     tabIndex={0}
                     aria-label="Giỏ hàng"
@@ -217,6 +218,11 @@ export const Navbar: React.FC = () => {
                       alt="Giỏ hàng"
                       className="menu-icon"
                     />
+                    {totalCount > 0 && (
+                      <span className="absolute -top-1.5 -right-2 bg-neutral-900 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-sm">
+                        {totalCount > 99 ? "99+" : totalCount}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -335,8 +341,8 @@ export const Navbar: React.FC = () => {
             {/* Cart */}
             <div className="cart-menu">
               <div
-                className="cursor-pointer"
-                onClick={() => setCartOpen(true)}
+                className="cursor-pointer relative"
+                onClick={() => setIsCartOpen(true)}
                 role="button"
                 tabIndex={0}
                 aria-label="Giỏ hàng"
@@ -346,6 +352,11 @@ export const Navbar: React.FC = () => {
                   alt="Giỏ hàng"
                   className="menu-icon"
                 />
+                {totalCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2 bg-neutral-900 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-sm">
+                    {totalCount > 99 ? "99+" : totalCount}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -359,7 +370,7 @@ export const Navbar: React.FC = () => {
       />
 
       {/* Cart Modal */}
-      <CartModal isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartModal />
 
       {/* Auth Modal (Login / Register) */}
       <AuthModal

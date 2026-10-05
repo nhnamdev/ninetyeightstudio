@@ -3,6 +3,7 @@
 import React, { useState, useRef, useMemo } from "react";
 import { SHOP_PRODUCTS, ShopProduct } from "@/data/shopProducts";
 import { ShopProductCard } from "./ShopProductCard";
+import { useCart } from "@/context/CartContext";
 
 interface ShopProductGridProps {
   initialPage?: number;
@@ -15,8 +16,8 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("TẤT CẢ");
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { addToCart } = useCart();
 
   const ITEMS_PER_PAGE = 8;
 
@@ -50,33 +51,22 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
   };
 
   const handleAddToCart = (product: ShopProduct) => {
-    setToastMessage(`Đã thêm "${product.name}" vào giỏ hàng!`);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
+    addToCart(
+      {
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        quantity: 1,
+      },
+      true
+    );
   };
 
   return (
     <div ref={containerRef} className="w-full">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[300] bg-black text-white px-5 py-3 rounded-md shadow-2xl text-sm font-medium flex items-center gap-3 animate-fade-in border border-neutral-700">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-green-400"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
       {/* Category Filter Tabs */}
       <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 pb-3 border-b border-neutral-100">
         {CATEGORIES.map((cat) => {

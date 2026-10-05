@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ShopProduct } from "@/data/shopProducts";
 import { ProductAccordions } from "./ProductAccordions";
+import { useCart } from "@/context/CartContext";
 
 interface ProductInfoProps {
   product: ShopProduct;
@@ -14,6 +16,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const { addToCart } = useCart();
+  const router = useRouter();
 
   const handleMinus = () => {
     if (quantity > 1) setQuantity(quantity - 1);
@@ -24,17 +28,44 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   };
 
   const handleAddToCart = () => {
-    setToastMessage(`Đã thêm ${quantity} x "${product.name}" vào giỏ hàng!`);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3500);
+    const currentColor = product.colors?.find(
+      (c) => c.slug === selectedColorSlug
+    )?.name;
+
+    addToCart(
+      {
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        color: currentColor,
+        quantity: quantity,
+      },
+      true // Mở slide drawer xem ngay
+    );
   };
 
   const handleBuyNow = () => {
-    setToastMessage(`Đang chuyển hướng thanh toán cho "${product.name}"...`);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3500);
+    const currentColor = product.colors?.find(
+      (c) => c.slug === selectedColorSlug
+    )?.name;
+
+    addToCart(
+      {
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        color: currentColor,
+        quantity: quantity,
+      },
+      false
+    );
+    router.push("/checkout");
   };
 
   return (
