@@ -286,7 +286,7 @@ const createOrder = async (req, res) => {
           item.name || item.product_name,
           item.color_name || "Mặc định",
           item.sku || "SKU-DEFAULT",
-          item.image || "/images/products/nes-bag.jpg",
+          item.image || "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/thumb-1-b6c013de.png",
           item.price,
           item.quantity,
           Number(item.price) * Number(item.quantity),

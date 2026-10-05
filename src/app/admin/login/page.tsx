@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, ArrowRight, ShieldCheck, Eye, EyeOff, Loader2 } from "lucide-react";
-import { api, setAdminToken, setAdminUser } from "@/lib/api";
+import { api, getAdminToken, setAdminToken, setAdminUser } from "@/lib/api";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,6 +13,13 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = getAdminToken();
+    if (token) {
+      router.replace("/admin");
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +33,9 @@ export default function AdminLoginPage() {
       });
 
       if (res.token && res.user) {
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("nes_admin_logged_out");
+        }
         setAdminToken(res.token);
         setAdminUser(res.user);
         router.push("/admin");

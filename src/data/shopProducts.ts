@@ -11,6 +11,17 @@ export interface ProductDimensions {
   weight: string;
 }
 
+export interface ProductVariantItem {
+  id: number;
+  color_name: string;
+  color_code?: string;
+  sku?: string;
+  price: number;
+  original_price?: number | null;
+  stock: number;
+  image?: string;
+}
+
 export interface ShopProduct {
   id: number;
   name: string;
@@ -22,6 +33,7 @@ export interface ShopProduct {
   hoverImage: string;
   gallery: string[];
   colors?: ProductColor[];
+  variants?: ProductVariantItem[];
   description: string;
   highlights?: string[];
   dimensions?: ProductDimensions;

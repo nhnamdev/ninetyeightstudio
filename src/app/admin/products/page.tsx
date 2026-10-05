@@ -92,6 +92,7 @@ export default function AdminProductsPage() {
     base_price: 350000,
     cover_image: "",
     hover_image: "",
+    gallery_images: [] as string[],
     is_new_arrival: false,
     is_best_seller: false,
     is_active: true,
@@ -121,6 +122,42 @@ export default function AdminProductsPage() {
   const [stockLoading, setStockLoading] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
   const [uploadingHover, setUploadingHover] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+
+  const handleGalleryUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setUploadingGallery(true);
+    try {
+      const newUrls: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const uploadData = new FormData();
+        uploadData.append("file", file);
+        uploadData.append("folder", "products");
+
+        const res = await api.upload<{ url: string }>("/upload", uploadData);
+        if (res.data?.url) {
+          newUrls.push(res.data.url);
+        }
+      }
+      setFormData((prev) => ({
+        ...prev,
+        gallery_images: [...(prev.gallery_images || []), ...newUrls],
+      }));
+    } catch (err: unknown) {
+      const error = err as Error;
+      alert("Lỗi tải ảnh chi tiết: " + (error.message || "Không thể tải ảnh"));
+    } finally {
+      setUploadingGallery(false);
+    }
+  };
+
+  const handleRemoveGalleryImage = (indexToRemove: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      gallery_images: prev.gallery_images.filter((_, idx) => idx !== indexToRemove),
+    }));
+  };
 
   const handleFileUpload = async (file: File, target: "cover" | "hover") => {
     const isCover = target === "cover";
@@ -182,11 +219,11 @@ export default function AdminProductsPage() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      let endpoint = "/products";
+      let endpoint = "/products?include_inactive=true";
       const params = new URLSearchParams();
       if (search) params.append("search", search);
       if (selectedCategory !== "all") params.append("category", selectedCategory);
-      if (params.toString()) endpoint += `?${params.toString()}`;
+      if (params.toString()) endpoint += `&${params.toString()}`;
 
       const res = await api.get<Product[]>(endpoint);
       if (res.data) setProducts(res.data);
@@ -215,6 +252,7 @@ export default function AdminProductsPage() {
       base_price: 350000,
       cover_image: "",
       hover_image: "",
+      gallery_images: [],
       is_new_arrival: true,
       is_best_seller: false,
       is_active: true,
@@ -247,6 +285,7 @@ export default function AdminProductsPage() {
       base_price: Number(prod.base_price) || 0,
       cover_image: prod.cover_image,
       hover_image: prod.hover_image || "",
+      gallery_images: Array.isArray(prod.gallery_images) ? prod.gallery_images : [],
       is_new_arrival: !!prod.is_new_arrival,
       is_best_seller: !!prod.is_best_seller,
       is_active: !!prod.is_active,
@@ -355,9 +394,12 @@ export default function AdminProductsPage() {
   };
 
   const handleDeleteProduct = async (id: number) => {
-    if (!confirm("Bạn có chắc chắn muốn ngừng kinh doanh sản phẩm này?")) return;
+    if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) return;
     try {
-      await api.delete(`/products/${id}`);
+      const res = await api.delete<{ message: string }>(`/products/${id}`);
+      if (res.message) {
+        alert(res.message);
+      }
       fetchProducts();
     } catch (err: unknown) {
       const error = err as Error;
@@ -920,6 +962,89 @@ export default function AdminProductsPage() {
                       </label>
                     )}
                   </div>
+                </div>
+
+                {/* Section: Bộ sưu tập ảnh chi tiết (Nhiều ảnh) */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <label className="block text-xs font-semibold text-zinc-900">
+                        Bộ sưu tập ảnh chi tiết (Nhiều ảnh)
+                      </label>
+                      <p className="text-[11px] text-zinc-500">
+                        Thêm các góc chụp khác, chi tiết khóa kéo, dây đeo, không gian bên trong túi
+                      </p>
+                    </div>
+                    <label className="px-2.5 py-1 rounded-md bg-white hover:bg-zinc-50 border border-zinc-200 text-xs font-medium text-zinc-800 cursor-pointer flex items-center gap-1.5 shadow-2xs transition-colors">
+                      {uploadingGallery ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-600" />
+                      ) : (
+                        <Plus className="w-3.5 h-3.5 text-zinc-600" />
+                      )}
+                      <span>{uploadingGallery ? "Đang tải lên..." : "+ Thêm ảnh chi tiết"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={uploadingGallery}
+                        className="hidden"
+                        onChange={(e) => {
+                          handleGalleryUpload(e.target.files);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                  </div>
+
+                  {formData.gallery_images && formData.gallery_images.length > 0 ? (
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2.5 p-3 bg-zinc-50/70 border border-zinc-200 rounded-xl">
+                      {formData.gallery_images.map((imgUrl, gIdx) => (
+                        <div key={gIdx} className="relative group/gitem aspect-square rounded-lg bg-white border border-zinc-200 overflow-hidden shadow-2xs">
+                          <img src={imgUrl} alt={`Ảnh chi tiết ${gIdx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveGalleryImage(gIdx)}
+                            className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center opacity-0 group-hover/gitem:opacity-100 transition-opacity shadow-sm cursor-pointer"
+                            title="Xóa ảnh này"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                      <label className="aspect-square rounded-lg border-2 border-dashed border-zinc-200 hover:border-zinc-400 bg-white flex flex-col items-center justify-center cursor-pointer text-zinc-400 hover:text-zinc-700 transition-colors">
+                        <Plus className="w-4 h-4 mb-0.5" />
+                        <span className="text-[10px] font-medium">Thêm ảnh</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          disabled={uploadingGallery}
+                          className="hidden"
+                          onChange={(e) => {
+                            handleGalleryUpload(e.target.files);
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-zinc-200 hover:border-zinc-400 bg-zinc-50/50 hover:bg-zinc-50 rounded-xl cursor-pointer transition-colors text-center">
+                      <Upload className="w-4 h-4 text-zinc-400 mb-1" />
+                      <span className="text-xs font-semibold text-zinc-700">Tải bộ sưu tập nhiều ảnh</span>
+                      <span className="text-[11px] text-zinc-400">Chọn 1 hoặc nhiều ảnh cùng lúc từ thiết bị</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={uploadingGallery}
+                        className="hidden"
+                        onChange={(e) => {
+                          handleGalleryUpload(e.target.files);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                  )}
                 </div>
 
                 <div>

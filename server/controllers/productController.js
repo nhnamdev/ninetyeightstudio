@@ -4,7 +4,7 @@ const pool = require("../config/db");
 // Support query: ?search=...&category=...&is_active=...&limit=...&page=...
 const getProducts = async (req, res) => {
   try {
-    const { search, category, is_active, limit = 50, page = 1 } = req.query;
+    const { search, category, is_active, include_inactive, limit = 50, page = 1 } = req.query;
     const offset = (Number(page) - 1) * Number(limit);
 
     let whereConditions = ["1=1"];
@@ -24,6 +24,9 @@ const getProducts = async (req, res) => {
     if (is_active !== undefined) {
       whereConditions.push("p.is_active = ?");
       params.push(Number(is_active));
+    } else if (include_inactive !== "true" && req.headers["x-admin-request"] !== "true") {
+      // By default for public storefront, only show active products
+      whereConditions.push("p.is_active = 1");
     }
 
     const whereClause = whereConditions.join(" AND ");
@@ -105,12 +108,18 @@ const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
     const isNum = !isNaN(Number(id));
+    const includeInactive = req.query.include_inactive === "true" || req.headers["x-admin-request"] === "true";
+
+    let whereSql = isNum ? "p.id = ?" : "p.slug = ?";
+    if (!includeInactive) {
+      whereSql += " AND p.is_active = 1";
+    }
 
     const [rows] = await pool.query(
       `SELECT p.*, c.name AS category_name, c.slug AS category_slug 
        FROM products p 
        LEFT JOIN categories c ON p.category_id = c.id 
-       WHERE ${isNum ? "p.id = ?" : "p.slug = ?"} LIMIT 1`,
+       WHERE ${whereSql} LIMIT 1`,
       [id]
     );
 
@@ -375,13 +384,47 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// DELETE /api/products/:id (Deactivate or remove)
+// DELETE /api/products/:id (Deactivate or remove permanently)
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    // Soft delete to protect order history integrity
-    await pool.query("UPDATE products SET is_active = 0 WHERE id = ?", [id]);
-    return res.json({ success: true, message: "Đã chuyển sản phẩm sang trạng thái ngừng kinh doanh" });
+
+    // Check if product has any orders in order_items
+    const [orderCheck] = await pool.query(
+      "SELECT id FROM order_items WHERE product_id = ? LIMIT 1",
+      [id]
+    );
+
+    if (orderCheck.length > 0) {
+      // Soft delete to protect financial and order history
+      await pool.query("UPDATE products SET is_active = 0 WHERE id = ?", [id]);
+      return res.json({
+        success: true,
+        message: "Sản phẩm đã có lịch sử đơn hàng nên được chuyển sang trạng thái ngừng kinh doanh (tạm ẩn)",
+      });
+    }
+
+    // Hard delete when no orders exist (e.g., test products, typos)
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      // Delete any inventory logs for variants of this product
+      await connection.query(
+        "DELETE FROM inventory_logs WHERE variant_id IN (SELECT id FROM product_variants WHERE product_id = ?)",
+        [id]
+      );
+      // Delete variants
+      await connection.query("DELETE FROM product_variants WHERE product_id = ?", [id]);
+      // Delete product
+      await connection.query("DELETE FROM products WHERE id = ?", [id]);
+      await connection.commit();
+      return res.json({ success: true, message: "Đã xóa hoàn toàn sản phẩm khỏi hệ thống" });
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
   } catch (error) {
     console.error("Delete product error:", error);
     return res.status(500).json({ success: false, message: "Lỗi xóa sản phẩm", error: error.message });

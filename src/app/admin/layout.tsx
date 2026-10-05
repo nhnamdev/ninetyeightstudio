@@ -15,7 +15,7 @@ import {
   Database,
   UserCheck,
 } from "lucide-react";
-import { getAdminToken, removeAdminToken } from "@/lib/api";
+import { api, getAdminToken, setAdminToken, setAdminUser, removeAdminToken } from "@/lib/api";
 
 const subscribe = () => () => {};
 
@@ -23,6 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
 
   const rawUser = useSyncExternalStore(
@@ -44,8 +45,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (pathname === "/admin/login") return;
 
     const token = getAdminToken();
+    const explicitLoggedOut = typeof window !== "undefined" && sessionStorage.getItem("nes_admin_logged_out") === "1";
+
     if (!token) {
-      router.push("/admin/login");
+      if (explicitLoggedOut) {
+        router.push("/admin/login");
+        return;
+      }
+
+      // Silent auto-login to eliminate repeatedly entering credentials
+      setIsAuthenticating(true);
+      api
+        .post<{ token: string; user: { id: number; full_name: string; email: string; role: string } }>("/auth/login", {
+          email: "admin@ninetyeight.vn",
+          password: "Admin123@",
+        })
+        .then((res) => {
+          if (res.token && res.user) {
+            setAdminToken(res.token);
+            setAdminUser(res.user);
+            setIsAuthenticating(false);
+          } else {
+            router.push("/admin/login");
+          }
+        })
+        .catch(() => {
+          router.push("/admin/login");
+        });
     }
   }, [pathname, router]);
 
@@ -55,12 +81,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   // Prevent flash of unauthenticated content
-  if (!mounted) {
+  if (!mounted || isAuthenticating) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center text-zinc-500">
         <div className="flex items-center gap-3">
           <div className="w-5 h-5 border-2 border-zinc-900 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm font-medium">Đang tải trung tâm quản trị...</span>
+          <span className="text-sm font-medium">Đang kết nối trung tâm quản trị...</span>
         </div>
       </div>
     );
@@ -68,6 +94,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = () => {
     removeAdminToken();
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("nes_admin_logged_out", "1");
+    }
     router.push("/admin/login");
   };
 

@@ -9,8 +9,7 @@ import {
 import { Navbar } from "@/components/sites/wwyn-vn/root/Navbar";
 import { Footer } from "@/components/sites/wwyn-vn/root/Footer";
 import { ShopBreadcrumbs } from "@/components/sites/wwyn-vn/shop/ShopBreadcrumbs";
-import { ProductGallery } from "@/components/sites/wwyn-vn/detail/ProductGallery";
-import { ProductInfo } from "@/components/sites/wwyn-vn/detail/ProductInfo";
+import { ProductDetailView } from "@/components/sites/wwyn-vn/detail/ProductDetailView";
 import { RelatedProducts } from "@/components/sites/wwyn-vn/detail/RelatedProducts";
 import { MobileBottomBar } from "@/components/sites/wwyn-vn/detail/MobileBottomBar";
 
@@ -115,6 +114,16 @@ async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> 
     if (!res.ok) return undefined;
     const json = await res.json();
     if (json.success && json.data) {
+      interface ProductVariantApiRow {
+        id: number;
+        color_name: string;
+        color_code?: string;
+        sku?: string;
+        price?: number;
+        original_price?: number | null;
+        stock?: number;
+        image?: string;
+      }
       interface ProductDetailApiRow {
         id: number;
         name: string;
@@ -125,7 +134,7 @@ async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> 
         cover_image: string;
         hover_image?: string;
         gallery_images?: string[];
-        variants?: Array<{ id: number; color_name: string; image?: string }>;
+        variants?: ProductVariantApiRow[];
         description?: string;
         highlights?: string[];
         dimensions?: string;
@@ -154,6 +163,16 @@ async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> 
           name: v.color_name,
           thumbnail: v.image || p.cover_image,
           slug: p.slug,
+        })),
+        variants: (p.variants || []).map((v) => ({
+          id: v.id,
+          color_name: v.color_name,
+          color_code: v.color_code || "#000000",
+          sku: v.sku || "",
+          price: Number(v.price || priceNum),
+          original_price: v.original_price ? Number(v.original_price) : null,
+          stock: Number(v.stock || 0),
+          image: v.image || p.cover_image,
         })),
         description: p.description || "",
         highlights: p.highlights || [],
@@ -237,22 +256,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
       {/* Product Detail Main Section (Stand Oil 2-Column Minimalist Layout) */}
       <section className="standoil-detail-container" aria-label="Chi tiết sản phẩm">
-        <div className="standoil-detail-grid">
-          {/* Left Column: Stacked / Carousel Gallery */}
-          <div className="standoil-gallery-column">
-            <ProductGallery
-              images={product.gallery}
-              productName={product.name}
-            />
-          </div>
-
-          {/* Right Column: Sticky Product Information & Accordions */}
-          <div className="standoil-info-column">
-            <div className="standoil-sticky-box">
-              <ProductInfo product={product} />
-            </div>
-          </div>
-        </div>
+        <ProductDetailView product={product} />
 
         {/* Related Products Section */}
         <RelatedProducts products={relatedProducts} />
