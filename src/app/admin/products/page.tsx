@@ -149,6 +149,27 @@ export default function AdminProductsPage() {
     }
   };
 
+  const [uploadingVariantIndex, setUploadingVariantIndex] = useState<number | null>(null);
+
+  const handleVariantImageUpload = async (file: File, index: number) => {
+    setUploadingVariantIndex(index);
+    try {
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      uploadData.append("folder", "products");
+
+      const res = await api.upload<{ url: string }>("/upload", uploadData);
+      if (res.data?.url) {
+        handleVariantChange(index, "image", res.data.url);
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      alert("Không thể tải ảnh màu lên, vui lòng thử lại: " + (error.message || "Lỗi không xác định"));
+    } finally {
+      setUploadingVariantIndex(null);
+    }
+  };
+
   const fetchCategories = async () => {
     try {
       const res = await api.get<Category[]>("/products/categories");
@@ -438,7 +459,7 @@ export default function AdminProductsPage() {
                 <th className="p-3 pl-5">Sản phẩm</th>
                 <th className="p-3">Danh mục</th>
                 <th className="p-3">Giá tham chiếu</th>
-                <th className="p-3">Phân loại màu & Tồn kho Shopee</th>
+                <th className="p-3">Phân loại màu & Tồn kho</th>
                 <th className="p-3">Tổng tồn</th>
                 <th className="p-3">Trạng thái</th>
                 <th className="p-3 pr-5 text-right">Thao tác</th>
@@ -446,12 +467,40 @@ export default function AdminProductsPage() {
             </thead>
             <tbody className="divide-y divide-zinc-100">
               {loading ? (
-                <tr>
-                  <td colSpan={7} className="p-12 text-center text-zinc-400">
-                    <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-zinc-700" />
-                    <span>Đang tải danh sách sản phẩm...</span>
-                  </td>
-                </tr>
+                [1, 2, 3, 4, 5].map((i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="p-3 pl-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-zinc-200 shrink-0" />
+                        <div className="space-y-1.5 flex-1 min-w-0">
+                          <div className="h-3.5 w-32 bg-zinc-200 rounded" />
+                          <div className="h-2.5 w-20 bg-zinc-200/70 rounded" />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-3">
+                      <div className="h-4 w-16 bg-zinc-200 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-20 bg-zinc-200 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="flex gap-1.5">
+                        <div className="h-5 w-16 bg-zinc-200 rounded-md" />
+                        <div className="h-5 w-16 bg-zinc-200 rounded-md" />
+                      </div>
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-12 bg-zinc-200 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-5 w-16 bg-zinc-200 rounded-full" />
+                    </td>
+                    <td className="p-3 pr-5 text-right">
+                      <div className="h-6 w-16 bg-zinc-200 rounded ml-auto" />
+                    </td>
+                  </tr>
+                ))
               ) : products.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="p-10 text-center text-zinc-400">
@@ -955,7 +1004,8 @@ export default function AdminProductsPage() {
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
                       <tr className="bg-zinc-50/70 text-zinc-500 border-b border-zinc-200 text-[11px] uppercase tracking-wider">
-                        <th className="p-2.5 pl-3">Tên màu</th>
+                        <th className="p-2.5 pl-3">Ảnh màu</th>
+                        <th className="p-2.5">Tên màu</th>
                         <th className="p-2.5">Mã màu</th>
                         <th className="p-2.5">Mã phân loại</th>
                         <th className="p-2.5">Giá bán (VND)</th>
@@ -967,6 +1017,40 @@ export default function AdminProductsPage() {
                       {variants.map((v, idx) => (
                         <tr key={idx} className="hover:bg-zinc-50/50">
                           <td className="p-2 pl-3">
+                            <label className="relative w-10 h-10 rounded border border-zinc-200 bg-zinc-50 flex items-center justify-center overflow-hidden cursor-pointer hover:border-zinc-400 transition-colors group/vimg block shadow-2xs">
+                              {v.image ? (
+                                <img
+                                  src={v.image}
+                                  alt={v.color_name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="text-[10px] text-zinc-400 font-medium text-center leading-tight">
+                                  + Ảnh
+                                </div>
+                              )}
+                              {uploadingVariantIndex === idx ? (
+                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                  <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
+                                </div>
+                              ) : (
+                                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover/vimg:opacity-100 flex items-center justify-center transition-opacity">
+                                  <Upload className="w-3 h-3 text-white" />
+                                </div>
+                              )}
+                              <input
+                                type="file"
+                                accept="image/*"
+                                disabled={uploadingVariantIndex === idx}
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) handleVariantImageUpload(file, idx);
+                                }}
+                              />
+                            </label>
+                          </td>
+                          <td className="p-2">
                             <input
                               type="text"
                               required

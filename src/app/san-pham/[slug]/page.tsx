@@ -22,10 +22,90 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const res = await fetch(`${apiUrl}/products?limit=100`, { next: { revalidate: 10 } });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data)) {
+        return json.data.map((p: { slug: string }) => ({ slug: p.slug }));
+      }
+    }
+  } catch {
+    // fallback
+  }
   return SHOP_PRODUCTS.map((p) => ({
     slug: p.slug,
   }));
+}
+
+async function fetchLiveRelatedProducts(currentId: number): Promise<ShopProduct[]> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const res = await fetch(`${apiUrl}/products?limit=10`, { next: { revalidate: 10 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      interface ProductVariantApi {
+        id: number;
+        color_name: string;
+        image?: string;
+      }
+      interface ProductApiRow {
+        id: number;
+        name: string;
+        slug: string;
+        min_price?: number | string;
+        base_price?: number | string;
+        category_name?: "TOTE BAG" | "SHOULDER BAG" | "TRAVEL BAG" | "ACCESSORIES";
+        cover_image: string;
+        hover_image?: string;
+        gallery_images?: string[];
+        variants?: ProductVariantApi[];
+        description?: string;
+        highlights?: string[];
+        dimensions?: string;
+        material?: string;
+        total_stock?: number;
+      }
+      return (json.data as ProductApiRow[])
+        .filter((p) => p.id !== currentId)
+        .slice(0, 4)
+        .map((p) => {
+          const priceNum = Number(p.min_price || p.base_price || 0);
+          const formattedPrice = new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(priceNum);
+
+          return {
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            price: formattedPrice,
+            category: p.category_name || "TOTE BAG",
+            image: p.cover_image,
+            hoverImage: p.hover_image || p.cover_image,
+            gallery: Array.isArray(p.gallery_images) && p.gallery_images.length > 0 ? p.gallery_images : [p.cover_image],
+            colors: (p.variants || []).map((v) => ({
+              name: v.color_name,
+              thumbnail: v.image || p.cover_image,
+              slug: p.slug,
+            })),
+            description: p.description || "",
+            highlights: p.highlights || [],
+            dimensions: p.dimensions ? { size: p.dimensions, strapDrop: "", weight: "" } : undefined,
+            material: p.material || "",
+            outOfStock: Number(p.total_stock) <= 0,
+            page: 1,
+          };
+        });
+    }
+  } catch (err) {
+    console.warn("Error fetching live related products:", err);
+  }
+  return [];
 }
 
 async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> {
@@ -122,7 +202,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const relatedProducts = getRelatedProducts(product.id, 4);
+  const liveRelated = await fetchLiveRelatedProducts(product.id);
+  const relatedProducts = liveRelated.length > 0 ? liveRelated : getRelatedProducts(product.id, 4);
 
   const breadcrumbs = [
     { label: "Trang chủ", href: "/" },

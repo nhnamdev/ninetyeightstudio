@@ -139,8 +139,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       {/* Color Swatches (Stand Oil similar-product-list) */}
       {product.colors && product.colors.length > 0 && (
         <div className="mb-6">
-          <div className="text-[12px] font-semibold text-neutral-800 uppercase tracking-wider mb-2.5">
-            Màu sắc / Colors
+          <div className="text-[12px] font-semibold text-neutral-800 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+            <span>Màu sắc:</span>
+            <span className="font-medium text-neutral-900 normal-case">
+              {product.colors.find((c) => c.slug === product.slug)?.name || product.colors[0]?.name}
+            </span>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             {product.colors.map((color) => {

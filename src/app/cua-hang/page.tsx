@@ -3,6 +3,7 @@ import { Navbar } from "@/components/sites/wwyn-vn/root/Navbar";
 import { Footer } from "@/components/sites/wwyn-vn/root/Footer";
 import { ShopBreadcrumbs } from "@/components/sites/wwyn-vn/shop/ShopBreadcrumbs";
 import { ShopProductGrid } from "@/components/sites/wwyn-vn/shop/ShopProductGrid";
+import { ShopProduct } from "@/data/shopProducts";
 import "@/components/sites/wwyn-vn/root/wwyn.css";
 import "./shop.css";
 
@@ -18,7 +19,74 @@ export const metadata = {
   },
 };
 
-export default function ShopPage() {
+async function getLiveShopProducts(): Promise<ShopProduct[]> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const res = await fetch(`${apiUrl}/products?limit=100`, { next: { revalidate: 10 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      interface ProductVariantApi {
+        id: number;
+        color_name: string;
+        image?: string;
+      }
+      interface ProductApiRow {
+        id: number;
+        name: string;
+        slug: string;
+        min_price?: number | string;
+        base_price?: number | string;
+        category_name?: "TOTE BAG" | "SHOULDER BAG" | "TRAVEL BAG" | "ACCESSORIES";
+        cover_image: string;
+        hover_image?: string;
+        gallery_images?: string[];
+        variants?: ProductVariantApi[];
+        description?: string;
+        highlights?: string[];
+        dimensions?: string;
+        material?: string;
+        total_stock?: number;
+      }
+      return (json.data as ProductApiRow[]).map((p) => {
+        const priceNum = Number(p.min_price || p.base_price || 0);
+        const formattedPrice = new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(priceNum);
+
+        return {
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          price: formattedPrice,
+          category: p.category_name || "TOTE BAG",
+          image: p.cover_image,
+          hoverImage: p.hover_image || p.cover_image,
+          gallery: Array.isArray(p.gallery_images) && p.gallery_images.length > 0 ? p.gallery_images : [p.cover_image],
+          colors: (p.variants || []).map((v) => ({
+            name: v.color_name,
+            thumbnail: v.image || p.cover_image,
+            slug: p.slug,
+          })),
+          description: p.description || "",
+          highlights: p.highlights || [],
+          dimensions: p.dimensions ? { size: p.dimensions, strapDrop: "", weight: "" } : undefined,
+          material: p.material || "",
+          outOfStock: Number(p.total_stock) <= 0,
+          page: 1,
+        };
+      });
+    }
+  } catch (err) {
+    console.warn("Failed to fetch live shop products on server:", err);
+  }
+  return [];
+}
+
+export default async function ShopPage() {
+  const initialProducts = await getLiveShopProducts();
+
   return (
     <main className="min-h-screen flex flex-col bg-white">
       {/* Hidden SEO & h-card semantic data matching site standard */}
@@ -56,7 +124,7 @@ export default function ShopPage() {
             </div>
           }
         >
-          <ShopProductGrid initialPage={1} />
+          <ShopProductGrid initialPage={1} initialProducts={initialProducts} />
         </Suspense>
       </section>
 

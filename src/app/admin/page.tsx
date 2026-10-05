@@ -162,9 +162,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl font-bold text-zinc-900 font-mono tracking-tight">
-              {stats ? formatVND(stats.totalRevenue) : "---"}
-            </div>
+            {loading ? (
+              <div className="h-8 w-32 bg-zinc-200/80 rounded animate-pulse my-0.5" />
+            ) : (
+              <div className="text-2xl font-bold text-zinc-900 font-mono tracking-tight">
+                {stats ? formatVND(stats.totalRevenue) : "0 ₫"}
+              </div>
+            )}
             <p className="text-[11px] text-zinc-500 mt-1 flex items-center gap-1">
               <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
               <span>Đơn đã xác nhận & thanh toán</span>
@@ -181,9 +185,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl font-bold text-zinc-900 font-mono tracking-tight">
-              {stats ? stats.totalOrders : "---"}
-            </div>
+            {loading ? (
+              <div className="h-8 w-16 bg-zinc-200/80 rounded animate-pulse my-0.5" />
+            ) : (
+              <div className="text-2xl font-bold text-zinc-900 font-mono tracking-tight">
+                {stats ? stats.totalOrders : "0"}
+              </div>
+            )}
             <p className="text-[11px] text-zinc-500 mt-1">Toàn bộ đơn trên hệ thống</p>
           </div>
         </div>
@@ -197,9 +205,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl font-bold text-amber-700 font-mono tracking-tight">
-              {stats ? stats.pendingOrders : "---"}
-            </div>
+            {loading ? (
+              <div className="h-8 w-16 bg-amber-100/80 rounded animate-pulse my-0.5" />
+            ) : (
+              <div className="text-2xl font-bold text-amber-700 font-mono tracking-tight">
+                {stats ? stats.pendingOrders : "0"}
+              </div>
+            )}
             <p className="text-[11px] text-zinc-500 mt-1">Cần xác nhận xuất kho</p>
           </div>
         </div>
@@ -213,9 +225,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl font-bold text-zinc-900 font-mono tracking-tight">
-              {stats ? stats.totalCustomers : "---"}
-            </div>
+            {loading ? (
+              <div className="h-8 w-16 bg-zinc-200/80 rounded animate-pulse my-0.5" />
+            ) : (
+              <div className="text-2xl font-bold text-zinc-900 font-mono tracking-tight">
+                {stats ? stats.totalCustomers : "0"}
+              </div>
+            )}
             <p className="text-[11px] text-zinc-500 mt-1">Thành viên Ninety Eight Club</p>
           </div>
         </div>
@@ -233,49 +249,72 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#18181b" stopOpacity={0.12} />
-                  <stop offset="95%" stopColor="#18181b" stopOpacity={0.0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
-              <XAxis
-                dataKey="day"
-                tickLine={false}
-                axisLine={false}
-                tick={{ fontSize: 11, fill: "#71717a" }}
-              />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                tick={{ fontSize: 11, fill: "#71717a" }}
-                tickFormatter={(value) => `${(value / 1000).toLocaleString()}k`}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e4e4e7",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.05)",
-                }}
-                formatter={(value: unknown) => [formatVND(Number(value)), "Doanh thu"]}
-              />
-              <Area
-                type="monotone"
-                dataKey="revenue"
-                stroke="#18181b"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#revenueGradient)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        {loading ? (
+          <div className="h-64 w-full bg-zinc-50 rounded-lg flex flex-col justify-end p-5 gap-3 animate-pulse border border-zinc-100">
+            <div className="flex items-end justify-between h-44 gap-4 px-2">
+              <div className="w-full bg-zinc-200/80 rounded-t h-[40%]" />
+              <div className="w-full bg-zinc-200/80 rounded-t h-[65%]" />
+              <div className="w-full bg-zinc-200/80 rounded-t h-[30%]" />
+              <div className="w-full bg-zinc-200/80 rounded-t h-[80%]" />
+              <div className="w-full bg-zinc-200/80 rounded-t h-[55%]" />
+              <div className="w-full bg-zinc-200/80 rounded-t h-[95%]" />
+              <div className="w-full bg-zinc-200/80 rounded-t h-[70%]" />
+            </div>
+            <div className="flex justify-between px-2 pt-2 border-t border-zinc-200 text-[11px] text-zinc-400">
+              <span>Thứ 2</span>
+              <span>Thứ 3</span>
+              <span>Thứ 4</span>
+              <span>Thứ 5</span>
+              <span>Thứ 6</span>
+              <span>Thứ 7</span>
+              <span>Chủ nhật</span>
+            </div>
+          </div>
+        ) : (
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#18181b" stopOpacity={0.12} />
+                    <stop offset="95%" stopColor="#18181b" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
+                <XAxis
+                  dataKey="day"
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fontSize: 11, fill: "#71717a" }}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fontSize: 11, fill: "#71717a" }}
+                  tickFormatter={(value) => `${(value / 1000).toLocaleString()}k`}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#ffffff",
+                    borderColor: "#e4e4e7",
+                    borderRadius: "8px",
+                    fontSize: "12px",
+                    boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.05)",
+                  }}
+                  formatter={(value: unknown) => [formatVND(Number(value)), "Doanh thu"]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#18181b"
+                  strokeWidth={2}
+                  fillOpacity={1}
+                  fill="url(#revenueGradient)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        )}
       </div>
 
       {/* Low Stock Alerts + Quick Inventory Grid */}
@@ -303,7 +342,23 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
 
-        {stats && stats.lowStockItems && stats.lowStockItems.length > 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="p-3 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center gap-3 animate-pulse"
+              >
+                <div className="w-11 h-11 rounded-md bg-zinc-200 shrink-0" />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="h-3 w-3/4 bg-zinc-200 rounded" />
+                  <div className="h-2.5 w-1/2 bg-zinc-200 rounded" />
+                  <div className="h-3 w-1/3 bg-zinc-200 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : stats && stats.lowStockItems && stats.lowStockItems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {stats.lowStockItems.map((item) => (
               <div
@@ -376,7 +431,34 @@ export default function AdminDashboardPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {stats && stats.recentOrders && stats.recentOrders.length > 0 ? (
+              {loading ? (
+                [1, 2, 3, 4, 5].map((i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="p-3 pl-5">
+                      <div className="h-3.5 w-20 bg-zinc-200/80 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-28 bg-zinc-200/80 rounded mb-1" />
+                      <div className="h-2.5 w-16 bg-zinc-200/60 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-4 w-20 bg-zinc-200/80 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-24 bg-zinc-200/80 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-5 w-20 bg-zinc-200/80 rounded-full" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3 w-16 bg-zinc-200/60 rounded" />
+                    </td>
+                    <td className="p-3 pr-5 text-right">
+                      <div className="h-6 w-12 bg-zinc-200/80 rounded ml-auto" />
+                    </td>
+                  </tr>
+                ))
+              ) : stats && stats.recentOrders && stats.recentOrders.length > 0 ? (
                 stats.recentOrders.map((order) => (
                   <tr key={order.id} className="hover:bg-zinc-50/80 transition-colors">
                     <td className="p-3 pl-5 font-mono font-semibold text-zinc-900">

@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 
-interface Product {
+export interface ProductSliderItem {
   id: number;
   name: string;
   price: string;
@@ -12,90 +12,14 @@ interface Product {
   outOfStock?: boolean;
 }
 
-const PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: "ZUNI BAG | BLACK",
-    price: "2.450.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/thumb-1-b6c013de.png",
-    href: "/san-pham/zuni-bag-black",
-  },
-  {
-    id: 2,
-    name: "YACHT TOTE | CAMO",
-    price: "950.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/yacht-tote-camo-187b8f33.webp",
-    href: "/san-pham/yacht-tote-camo",
-  },
-  {
-    id: 3,
-    name: "SPORTY TRAVEL BAG | CAMO",
-    price: "1.170.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/sporty-travel-bag-camo-399bafcd.webp",
-    href: "/san-pham/sporty-travel-bag-camo",
-  },
-  {
-    id: 4,
-    name: "ZUNI BAG | GRAY",
-    price: "2.450.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/swatch-gray-1810aa75.png",
-    href: "/san-pham/zuni-bag-gray",
-  },
-  {
-    id: 5,
-    name: "LEAGUE V2 TOTE BAG | SAND",
-    price: "790.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-sand-323c1b4a.webp",
-    href: "/san-pham/league-v2-tote-sand",
-  },
-  {
-    id: 6,
-    name: "LEAGUE V2 TOTE BAG | DEEP BLUE",
-    price: "790.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-deep-blue-7b2f0594.webp",
-    href: "/san-pham/league-v2-tote-deep-blue",
-  },
-  {
-    id: 7,
-    name: "ZUNI BAG STUD | OLIVE",
-    price: "2.550.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/swatch-olive-57acebdc.png",
-    href: "/san-pham/zuni-bag-olive",
-  },
-  {
-    id: 8,
-    name: "GOOD BYE MY WORK TOTE BAG | RED",
-    price: "200.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/good-bye-my-work-tote-red-698465a8.webp",
-    href: "/san-pham/good-bye-my-work-tote-red",
-  },
-  {
-    id: 9,
-    name: "GOOD BYE MY WORK TOTE BAG | BLUE",
-    price: "200.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/good-bye-my-work-tote-blue-4aa03f3e.webp",
-    href: "/san-pham/good-bye-my-work-tote-blue",
-  },
-  {
-    id: 10,
-    name: "LEAGUE V2 TOTE BAG | DUST BLACK",
-    price: "790.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-dust-black-e174e6e3.webp",
-    href: "/san-pham/league-v2-tote-dust-black",
-    outOfStock: true,
-  },
-  {
-    id: 11,
-    name: "LEAGUE V2 TOTE BAG | STONE BLUE",
-    price: "790.000 ₫",
-    image: "https://pub-f3a573691f48412ebbb07d135eeee4cb.r2.dev/products/league-v2-tote-stone-blue-2889bc1e.webp",
-    href: "/san-pham/league-v2-tote-stone-blue",
-  },
-];
+interface ProductSliderProps {
+  initialProducts?: ProductSliderItem[];
+}
 
-export const ProductSlider: React.FC = () => {
+export const ProductSlider: React.FC<ProductSliderProps> = ({ initialProducts }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [sliderProducts, setSliderProducts] = useState<Product[]>(PRODUCTS);
+  const [sliderProducts, setSliderProducts] = useState<ProductSliderItem[]>(initialProducts || []);
+  const [loading, setLoading] = useState<boolean>(!initialProducts || initialProducts.length === 0);
   const [activeDot, setActiveDot] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -118,7 +42,7 @@ export const ProductSlider: React.FC = () => {
             cover_image: string;
             total_stock?: number;
           }
-          const mapped: Product[] = (json.data as SliderApiItem[]).map((p) => ({
+          const mapped: ProductSliderItem[] = (json.data as SliderApiItem[]).map((p) => ({
             id: p.id,
             name: p.name.toUpperCase(),
             price: new Intl.NumberFormat("vi-VN", {
@@ -133,6 +57,10 @@ export const ProductSlider: React.FC = () => {
         }
       } catch (err) {
         console.warn("Backend not available for slider:", err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
     fetchHomeProducts();
@@ -249,47 +177,62 @@ export const ProductSlider: React.FC = () => {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {sliderProducts.map((product, index) => (
-              <div
-                key={product.id}
-                className="shrink-0 snap-start w-[calc(50%-6px)] sm:w-[calc(33.333%-10px)] md:w-[calc(25%-12px)] lg:w-[calc(14.285%-14px)] group cursor-pointer"
-              >
-                <Link href={product.href} className="block text-inherit no-underline">
-                  {/* Product Image Container */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-[#fafafa] rounded-sm flex items-center justify-center">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      width={600}
-                      height={600}
-                      loading={index < 4 ? "eager" : "lazy"}
-                      decoding="async"
-                      fetchPriority={index < 2 ? "high" : "auto"}
-                      className="w-full h-full object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105"
-                    />
-
-                    {/* Out of Stock Overlay */}
-                    {product.outOfStock && (
-                      <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] flex items-center justify-center">
-                        <span className="text-[12px] font-semibold text-[#111111] uppercase tracking-wider bg-white/95 px-3 py-1 rounded shadow-sm border border-neutral-200">
-                          Hết hàng
-                        </span>
-                      </div>
-                    )}
+            {loading && sliderProducts.length === 0 ? (
+              Array.from({ length: 6 }).map((_, idx) => (
+                <div
+                  key={`slider-skel-${idx}`}
+                  className="shrink-0 snap-start w-[calc(50%-6px)] sm:w-[calc(33.333%-10px)] md:w-[calc(25%-12px)] lg:w-[calc(14.285%-14px)] animate-pulse"
+                >
+                  <div className="aspect-square w-full bg-neutral-100 rounded-sm" />
+                  <div className="pt-2 space-y-1.5">
+                    <div className="h-3 w-4/5 bg-neutral-100 rounded" />
+                    <div className="h-3.5 w-1/2 bg-neutral-100 rounded" />
                   </div>
+                </div>
+              ))
+            ) : (
+              sliderProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className="shrink-0 snap-start w-[calc(50%-6px)] sm:w-[calc(33.333%-10px)] md:w-[calc(25%-12px)] lg:w-[calc(14.285%-14px)] group cursor-pointer"
+                >
+                  <Link href={product.href} className="block text-inherit no-underline">
+                    {/* Product Image Container */}
+                    <div className="relative aspect-square w-full overflow-hidden bg-[#fafafa] rounded-sm flex items-center justify-center">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        width={600}
+                        height={600}
+                        loading={index < 4 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchPriority={index < 2 ? "high" : "auto"}
+                        className="w-full h-full object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105"
+                      />
 
-                  {/* Product Text Info */}
-                  <div className="pt-2 text-left">
-                    <p className="text-[11.5px] md:text-[12px] font-normal text-[#212529] tracking-tight uppercase line-clamp-2 min-h-[32px] m-0 leading-snug group-hover:text-black">
-                      {product.name}
-                    </p>
-                    <div className="text-[12px] md:text-[13px] font-bold text-[#111111] mt-1">
-                      {product.price}
+                      {/* Out of Stock Overlay */}
+                      {product.outOfStock && (
+                        <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] flex items-center justify-center">
+                          <span className="text-[12px] font-semibold text-[#111111] uppercase tracking-wider bg-white/95 px-3 py-1 rounded shadow-sm border border-neutral-200">
+                            Hết hàng
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+
+                    {/* Product Text Info */}
+                    <div className="pt-2 text-left">
+                      <p className="text-[11.5px] md:text-[12px] font-normal text-[#212529] tracking-tight uppercase line-clamp-2 min-h-[32px] m-0 leading-snug group-hover:text-black">
+                        {product.name}
+                      </p>
+                      <div className="text-[12px] md:text-[13px] font-bold text-[#111111] mt-1">
+                        {product.price}
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/sites/wwyn-vn/root/Navbar";
 import { Hero } from "@/components/sites/wwyn-vn/root/Hero";
-import { ProductSlider } from "@/components/sites/wwyn-vn/root/ProductSlider";
+import { ProductSlider, ProductSliderItem } from "@/components/sites/wwyn-vn/root/ProductSlider";
 import { Footer } from "@/components/sites/wwyn-vn/root/Footer";
 import "@/components/sites/wwyn-vn/root/wwyn.css";
 
@@ -18,7 +18,43 @@ export const metadata = {
   },
 };
 
-export default function Home() {
+async function getLiveHomeProducts(): Promise<ProductSliderItem[]> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const res = await fetch(`${apiUrl}/products?limit=12`, { next: { revalidate: 10 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      interface LiveProductApi {
+        id: number;
+        name: string;
+        slug: string;
+        min_price?: number | string;
+        base_price?: number | string;
+        cover_image: string;
+        total_stock?: number;
+      }
+      return (json.data as LiveProductApi[]).map((p) => ({
+        id: p.id,
+        name: p.name.toUpperCase(),
+        price: new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(Number(p.min_price || p.base_price || 0)),
+        image: p.cover_image,
+        href: `/san-pham/${p.slug}`,
+        outOfStock: Number(p.total_stock) <= 0,
+      }));
+    }
+  } catch (err) {
+    console.warn("Server failed to pre-fetch home products:", err);
+  }
+  return [];
+}
+
+export default async function Home() {
+  const initialProducts = await getLiveHomeProducts();
+
   return (
     <main className="min-h-screen flex flex-col bg-white">
       {/* Hidden SEO & h-card semantic data matching original site */}
@@ -43,7 +79,7 @@ export default function Home() {
       <Hero />
 
       {/* All Products Slider Section */}
-      <ProductSlider />
+      <ProductSlider initialProducts={initialProducts} />
 
       {/* Footer Section */}
       <Footer />

@@ -194,12 +194,38 @@ export default function AdminUsersPage() {
             </thead>
             <tbody className="divide-y divide-zinc-100">
               {loading ? (
-                <tr>
-                  <td colSpan={7} className="p-10 text-center text-zinc-400">
-                    <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-zinc-700" />
-                    <span>Đang tải danh sách người dùng...</span>
-                  </td>
-                </tr>
+                [1, 2, 3, 4, 5].map((i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="p-3 pl-5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-zinc-200 shrink-0" />
+                        <div>
+                          <div className="h-3.5 w-24 bg-zinc-200/80 rounded mb-1" />
+                          <div className="h-2.5 w-12 bg-zinc-200/60 rounded" />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-32 bg-zinc-200/80 rounded mb-1" />
+                      <div className="h-2.5 w-20 bg-zinc-200/60 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-5 w-16 bg-zinc-200/80 rounded-full" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-8 bg-zinc-200/80 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-3.5 w-20 bg-zinc-200/80 rounded" />
+                    </td>
+                    <td className="p-3">
+                      <div className="h-5 w-20 bg-zinc-200/80 rounded-full" />
+                    </td>
+                    <td className="p-3 pr-5 text-right">
+                      <div className="h-6 w-14 bg-zinc-200/80 rounded ml-auto" />
+                    </td>
+                  </tr>
+                ))
               ) : users.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="p-10 text-center text-zinc-400">

@@ -2,12 +2,13 @@
 
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { SHOP_PRODUCTS, ShopProduct } from "@/data/shopProducts";
+import { ShopProduct } from "@/data/shopProducts";
 import { ShopProductCard } from "./ShopProductCard";
 import { useCart } from "@/context/CartContext";
 
 interface ShopProductGridProps {
   initialPage?: number;
+  initialProducts?: ShopProduct[];
 }
 
 const CATEGORIES = [
@@ -20,6 +21,7 @@ const CATEGORIES = [
 
 export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
   initialPage = 1,
+  initialProducts,
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -44,7 +46,8 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const selectedCategory = activeCategory ?? derivedCategory;
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
-  const [productsList, setProductsList] = useState<ShopProduct[]>(SHOP_PRODUCTS);
+  const [productsList, setProductsList] = useState<ShopProduct[]>(initialProducts || []);
+  const [isLoading, setIsLoading] = useState<boolean>(!initialProducts || initialProducts.length === 0);
 
   const ITEMS_PER_PAGE = 8;
 
@@ -111,7 +114,11 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
           setProductsList(mapped);
         }
       } catch (e) {
-        console.warn("Backend not reachable, displaying local catalog:", e);
+        console.warn("Backend not reachable:", e);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
     loadLiveProducts();
@@ -259,8 +266,21 @@ export const ShopProductGrid: React.FC<ShopProductGridProps> = ({
         })}
       </div>
 
-      {/* Empty State */}
-      {filteredProducts.length === 0 ? (
+      {/* Product Content / Skeleton / Empty State */}
+      {isLoading && productsList.length === 0 ? (
+        <div className="shop-product-grid">
+          {Array.from({ length: 8 }).map((_, idx) => (
+            <div key={`shop-skel-${idx}`} className="animate-pulse space-y-3">
+              <div className="aspect-square w-full bg-neutral-100 rounded-sm" />
+              <div className="space-y-1.5 pt-1">
+                <div className="h-3 w-1/3 bg-neutral-100 rounded" />
+                <div className="h-4 w-3/4 bg-neutral-100 rounded" />
+                <div className="h-3.5 w-1/4 bg-neutral-100 rounded" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : filteredProducts.length === 0 ? (
         <div className="py-16 text-center">
           <div className="w-16 h-16 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center mx-auto mb-4">
             <svg
