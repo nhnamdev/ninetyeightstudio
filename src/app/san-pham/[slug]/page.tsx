@@ -12,6 +12,7 @@ import { ShopBreadcrumbs } from "@/components/sites/wwyn-vn/shop/ShopBreadcrumbs
 import { ProductDetailView } from "@/components/sites/wwyn-vn/detail/ProductDetailView";
 import { RelatedProducts } from "@/components/sites/wwyn-vn/detail/RelatedProducts";
 import { MobileBottomBar } from "@/components/sites/wwyn-vn/detail/MobileBottomBar";
+import { getCleanExcerpt } from "@/lib/utils";
 
 import "@/components/sites/wwyn-vn/root/wwyn.css";
 import "@/app/cua-hang/shop.css";
@@ -222,12 +223,16 @@ export async function generateMetadata({ params }: PageProps) {
     };
   }
 
+  const excerpt =
+    getCleanExcerpt(product.description, 160) ||
+    `${product.name} chính hãng từ Ninety Eight Studio`;
+
   return {
     title: `${product.name} | Ninety Eight Studio`,
-    description: product.description.slice(0, 160),
+    description: excerpt,
     openGraph: {
       title: `${product.name} | Ninety Eight Studio`,
-      description: product.description.slice(0, 160),
+      description: excerpt,
       images: product.gallery && product.gallery.length > 0 ? [product.gallery[0]] : [],
     },
   };

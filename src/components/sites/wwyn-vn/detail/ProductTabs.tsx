@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ShopProduct } from "@/data/shopProducts";
+import { formatProductDescription } from "@/lib/utils";
 
 interface ProductTabsProps {
   product: ShopProduct;
@@ -54,8 +55,15 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product }) => {
       {/* Tabs Content */}
       <div className="py-5 text-sm text-neutral-700 leading-relaxed font-normal">
         {activeTab === "info" && (
-          <div className="space-y-3 whitespace-pre-line animate-fade-in">
-            {product.description}
+          <div className="space-y-3 animate-fade-in text-[13px] leading-relaxed text-neutral-700">
+            {product.description && (
+              <div
+                className="space-y-2 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-md [&_img]:my-3 [&_img]:mx-auto [&_img]:block [&_p]:my-1.5 [&_p]:leading-relaxed overflow-hidden"
+                dangerouslySetInnerHTML={{
+                  __html: formatProductDescription(product.description),
+                }}
+              />
+            )}
           </div>
         )}
 

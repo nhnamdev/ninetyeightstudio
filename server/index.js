@@ -9,6 +9,8 @@ const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const userRoutes = require("./routes/userRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const kiotvietRoutes = require("./routes/kiotvietRoutes");
+const webhookRoutes = require("./routes/webhookRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +48,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/kiotviet", kiotvietRoutes);
+app.use("/api/webhooks", webhookRoutes);
 
 // 404 handler
 app.use((req, res) => {

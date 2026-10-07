@@ -53,6 +53,8 @@ interface Order {
   paid_at?: string;
   cancelled_at?: string;
   cancel_reason?: string;
+  kiotviet_order_id?: number | null;
+  kiotviet_order_code?: string | null;
   items?: OrderItem[];
   item_count?: number;
 }
@@ -279,8 +281,13 @@ function OrdersContent() {
                 orders.map((order) => (
                   <tr key={order.id} className="hover:bg-zinc-50/80 transition-colors">
                     <td className="p-3 pl-5">
-                      <div className="font-mono font-semibold text-zinc-900">
-                        {order.order_code}
+                      <div className="font-mono font-semibold text-zinc-900 flex items-center gap-1.5 flex-wrap">
+                        <span>{order.order_code}</span>
+                        {order.kiotviet_order_code && (
+                          <span className="text-[9px] font-mono px-1 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            KV: {order.kiotviet_order_code}
+                          </span>
+                        )}
                       </div>
                       <div className="text-[10px] text-zinc-500 mt-0.5 flex items-center gap-1">
                         <Calendar className="w-3 h-3 text-zinc-400" />

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ShopProduct } from "@/data/shopProducts";
+import { formatProductDescription } from "@/lib/utils";
 
 interface ProductAccordionsProps {
   product: ShopProduct;
@@ -88,6 +89,18 @@ export const ProductAccordions: React.FC<ProductAccordionsProps> = ({
                 • Toàn bộ sản phẩm được kiểm tra tỉ mỉ và đóng gói chỉn chu trong hộp chống sốc trước khi gửi đến bạn.
               </p>
             </div>
+
+            {/* Rich HTML / Plain Text Description from KiotViet */}
+            {product.description && (
+              <div className="pt-3 border-t border-neutral-100">
+                <div
+                  className="text-neutral-700 leading-relaxed text-[13px] space-y-2.5 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-md [&_img]:my-3 [&_img]:mx-auto [&_img]:block [&_img]:shadow-xs [&_p]:my-1.5 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 overflow-hidden"
+                  dangerouslySetInnerHTML={{
+                    __html: formatProductDescription(product.description),
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

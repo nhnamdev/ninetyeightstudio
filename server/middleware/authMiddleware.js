@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const pool = require("../config/db");
 
-const JWT_SECRET = process.env.JWT_SECRET || "98studio_jwt_super_secret_2026_key";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.warn("[Security] CẢNH BÁO: JWT_SECRET chưa được cấu hình trong .env!");
+}
 
 const verifyToken = async (req, res, next) => {
   try {

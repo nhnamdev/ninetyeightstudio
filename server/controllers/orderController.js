@@ -304,6 +304,66 @@ const createOrder = async (req, res) => {
 
     await connection.commit();
 
+    // Tự động đẩy đơn hàng sang KiotViet (xử lý ngầm không block phản hồi của khách)
+    (async () => {
+      try {
+        const kiotvietService = require("../services/kiotvietService");
+        const variantIds = items.map((i) => i.variant_id).filter(Boolean);
+        
+        if (variantIds.length > 0) {
+          const [variantRows] = await pool.query(
+            "SELECT id, kiotviet_id, kiotviet_code, price FROM product_variants WHERE id IN (?)",
+            [variantIds]
+          );
+          const variantMap = new Map(variantRows.map((r) => [r.id, r]));
+
+          const kvOrderDetails = [];
+          for (const item of items) {
+            const v = variantMap.get(item.variant_id);
+            if (v && v.kiotviet_id) {
+              kvOrderDetails.push({
+                productId: v.kiotviet_id,
+                productCode: v.kiotviet_code,
+                productName: item.name || item.product_name,
+                quantity: item.quantity,
+                price: item.price,
+                note: item.color_name || "",
+              });
+            }
+          }
+
+          if (kvOrderDetails.length > 0) {
+            const fullAddress = [shipping_address, shipping_ward, shipping_district, shipping_province]
+              .filter(Boolean)
+              .join(", ");
+
+            const kvRes = await kiotvietService.createOrder({
+              customerName: customer_name,
+              customerPhone: customer_phone,
+              customerEmail: customer_email,
+              customerAddress: fullAddress,
+              orderNotes: order_notes ? `[${order_code}] ${order_notes}` : `Đơn từ Web ${order_code}`,
+              description: `Đơn hàng tự động từ Website ninetyeightstudio (${order_code})`,
+              method: payment_method === "cod" ? "COD" : "TRANSFER",
+              totalAmount: total_amount,
+              shippingFee: shipping_fee,
+              orderDetails: kvOrderDetails,
+            });
+
+            if (kvRes && (kvRes.id || kvRes.code)) {
+              await pool.query(
+                "UPDATE orders SET kiotviet_order_id = ?, kiotviet_order_code = ? WHERE id = ?",
+                [kvRes.id, kvRes.code, orderId]
+              );
+              console.log(`[OrderSync] Đã đẩy đơn ${order_code} sang KiotViet thành công. Mã KV: ${kvRes.code}`);
+            }
+          }
+        }
+      } catch (kvError) {
+        console.error(`[OrderSync] Lỗi đẩy đơn ${order_code} sang KiotViet:`, kvError.message);
+      }
+    })();
+
     return res.status(201).json({
       success: true,
       message: "Đặt hàng thành công",

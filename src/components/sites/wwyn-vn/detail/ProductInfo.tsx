@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ShopProduct } from "@/data/shopProducts";
 import { ProductAccordions } from "./ProductAccordions";
 import { useCart } from "@/context/CartContext";
+import { getCleanExcerpt } from "@/lib/utils";
 
 interface ProductInfoProps {
   product: ShopProduct;
@@ -115,9 +116,13 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
       <p className="text-[12px] text-neutral-400 mb-6">Đã bao gồm thuế GTGT.</p>
 
-      {/* Description & Highlight Bullets */}
-      <div className="text-[13.5px] leading-relaxed text-neutral-700 space-y-3 mb-6">
-        <p className="font-medium text-neutral-900">{product.description}</p>
+      {/* Description Summary & Highlight Bullets */}
+      <div className="text-[13.5px] leading-relaxed text-neutral-600 space-y-3 mb-6">
+        {product.description && (
+          <p className="line-clamp-3 text-neutral-700 leading-normal font-normal">
+            {getCleanExcerpt(product.description, 160)}
+          </p>
+        )}
 
         {product.highlights && product.highlights.length > 0 && (
           <ul className="space-y-1.5 pt-1 text-neutral-600">

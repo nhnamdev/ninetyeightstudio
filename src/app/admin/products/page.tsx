@@ -124,6 +124,23 @@ export default function AdminProductsPage() {
   const [uploadingHover, setUploadingHover] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
 
+  const [isSyncingKiotViet, setIsSyncingKiotViet] = useState(false);
+
+  const handleSyncKiotViet = async () => {
+    if (!confirm("Bạn có muốn đồng bộ lại toàn bộ sản phẩm và tồn kho từ KiotViet (98stu) về website không?")) return;
+    setIsSyncingKiotViet(true);
+    try {
+      const res = await api.post<{ success: boolean; message: string }>("/kiotviet/sync", { wipe: false });
+      alert(res.message || "Đồng bộ thành công!");
+      fetchProducts();
+    } catch (err: unknown) {
+      const error = err as Error;
+      alert("Lỗi đồng bộ KiotViet: " + error.message);
+    } finally {
+      setIsSyncingKiotViet(false);
+    }
+  };
+
   const handleGalleryUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setUploadingGallery(true);
@@ -444,13 +461,24 @@ export default function AdminProductsPage() {
             Quản lý kho hàng theo từng phân loại màu sắc, giá bán và SKU ma trận
           </p>
         </div>
-        <button
-          onClick={handleOpenAddModal}
-          className="px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer self-start sm:self-auto"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Thêm sản phẩm mới</span>
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <button
+            onClick={handleSyncKiotViet}
+            disabled={isSyncingKiotViet}
+            className="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            title="Đồng bộ danh sách sản phẩm và tồn kho từ KiotViet (98stu)"
+          >
+            <RefreshCw className={`w-4 h-4 ${isSyncingKiotViet ? "animate-spin" : ""}`} />
+            <span>{isSyncingKiotViet ? "Đang đồng bộ..." : "Đồng bộ KiotViet"}</span>
+          </button>
+          <button
+            onClick={handleOpenAddModal}
+            className="px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Thêm sản phẩm mới</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Toolbar */}

