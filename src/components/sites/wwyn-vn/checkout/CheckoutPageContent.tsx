@@ -988,8 +988,10 @@ export const CheckoutPageContent: React.FC = () => {
                         <h3 className="text-xs font-semibold text-neutral-900 line-clamp-1">
                           {item.name}
                         </h3>
-                        {item.color && (
-                          <p className="text-[11px] text-neutral-500">Màu: {item.color}</p>
+                        {(item.color || item.size) && (
+                          <p className="text-[11px] text-neutral-500">
+                            {[item.color ? `Màu: ${item.color}` : "", item.size ? `Size: ${item.size}` : ""].filter(Boolean).join(" • ")}
+                          </p>
                         )}
                         <p className="text-[11px] text-neutral-400">
                           {item.quantity} x {item.priceFormatted}

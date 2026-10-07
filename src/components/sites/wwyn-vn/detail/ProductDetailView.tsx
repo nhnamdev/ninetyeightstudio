@@ -14,14 +14,16 @@ interface ProductDetailViewProps {
 export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product }) => {
   const variants = useMemo(() => product.variants || [], [product.variants]);
 
-  // Initial variant & color
+  // Initial variant, color & size
   const initialVariant: ProductVariantItem | null = variants.length > 0 ? variants[0] : null;
   const initialColorName = initialVariant
     ? initialVariant.color_name
     : product.colors?.[0]?.name || "Mặc định";
+  const initialSizeName = initialVariant?.size_name || null;
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariantItem | null>(initialVariant);
   const [selectedColor, setSelectedColor] = useState<string>(initialColorName);
+  const [selectedSize, setSelectedSize] = useState<string | null>(initialSizeName);
   const [activeImage, setActiveImage] = useState<string>(
     initialVariant?.image || product.image
   );
@@ -48,27 +50,98 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
     return list.length > 0 ? list : [product.image];
   }, [product, variants]);
 
-  // Color selection: updates active color, highlights button, and sets the main large photo
+  // Unique color items: deduplicated by color_name
+  const uniqueColors = useMemo(() => {
+    if (variants.length > 0) {
+      const map = new Map<string, ProductVariantItem>();
+      for (const v of variants) {
+        if (v.color_name && !map.has(v.color_name)) {
+          map.set(v.color_name, v);
+        }
+      }
+      return Array.from(map.values());
+    }
+    if (product.colors && product.colors.length > 0) {
+      const map = new Map<string, { name: string; thumbnail?: string }>();
+      for (const c of product.colors) {
+        if (c.name && !map.has(c.name)) {
+          map.set(c.name, c);
+        }
+      }
+      return Array.from(map.values());
+    }
+    return [];
+  }, [variants, product.colors]);
+
+  // Check if all variants of a color are out of stock
+  const isColorOutOfStock = (colorName: string) => {
+    const matching = variants.filter((v) => v.color_name === colorName);
+    if (matching.length === 0) return false;
+    return matching.every((v) => Number(v.stock) <= 0);
+  };
+
+  // Available sizes for currently selected color
+  const availableSizes = useMemo(() => {
+    if (variants.length === 0) return [];
+    const matchingVariants = variants.filter((v) => v.color_name === selectedColor);
+    const result: { sizeName: string; isOutOfStock: boolean; variant: ProductVariantItem }[] = [];
+    const seen = new Set<string>();
+
+    for (const v of matchingVariants) {
+      if (v.size_name && !seen.has(v.size_name)) {
+        seen.add(v.size_name);
+        result.push({
+          sizeName: v.size_name,
+          isOutOfStock: Number(v.stock) <= 0,
+          variant: v,
+        });
+      }
+    }
+    return result;
+  }, [variants, selectedColor]);
+
+  // Color selection: updates active color, highlights button, syncs available sizes & main photo
   const handleSelectColor = (colorName: string, colorImg?: string) => {
     setSelectedColor(colorName);
-    const matched = variants.find((v) => v.color_name === colorName);
-    if (matched) {
-      setSelectedVariant(matched);
-      if (matched.image) {
-        setActiveImage(matched.image);
+    const matching = variants.filter((v) => v.color_name === colorName);
+    if (matching.length > 0) {
+      // Retain selected size if available in the new color, otherwise pick first available/in-stock
+      let target = matching.find((v) => v.size_name === selectedSize);
+      if (!target) {
+        target = matching.find((v) => Number(v.stock) > 0) || matching[0];
+      }
+      setSelectedVariant(target);
+      setSelectedSize(target.size_name || null);
+      if (target.image) {
+        setActiveImage(target.image);
       }
     } else if (colorImg) {
       setActiveImage(colorImg);
     }
   };
 
-  // Thumbnail click: updates the main large photo, and syncs color if matched
+  // Size selection: updates active size and selected variant
+  const handleSelectSize = (sizeName: string) => {
+    setSelectedSize(sizeName);
+    const matched = variants.find(
+      (v) => v.color_name === selectedColor && v.size_name === sizeName
+    );
+    if (matched) {
+      setSelectedVariant(matched);
+      if (matched.image) {
+        setActiveImage(matched.image);
+      }
+    }
+  };
+
+  // Thumbnail click: updates the main large photo, and syncs color & size if matched
   const handleSelectThumbnail = (img: string) => {
     setActiveImage(img);
     const matched = variants.find((v) => v.image === img);
     if (matched) {
       setSelectedVariant(matched);
       setSelectedColor(matched.color_name);
+      setSelectedSize(matched.size_name || null);
     }
   };
 
@@ -121,6 +194,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
         originalPrice: currentOriginalPriceFormatted,
         image: activeImage || product.image,
         color: selectedColor,
+        size: selectedSize || undefined,
+        variantId: selectedVariant?.id,
+        sku: selectedVariant?.sku,
         quantity: quantity,
       },
       true
@@ -138,6 +214,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
         originalPrice: currentOriginalPriceFormatted,
         image: activeImage || product.image,
         color: selectedColor,
+        size: selectedSize || undefined,
+        variantId: selectedVariant?.id,
+        sku: selectedVariant?.sku,
         quantity: quantity,
       },
       false
@@ -321,23 +400,35 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
             </div>
 
             {/* Color Selector */}
-            {(variants.length > 0 || (product.colors && product.colors.length > 0)) && (
-              <div className="mb-6">
-                <div className="text-[12px] font-semibold text-neutral-800 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                  <span>Màu sắc:</span>
-                  <span className="font-bold text-neutral-900 normal-case">{selectedColor}</span>
+            {uniqueColors.length > 0 && (
+              <div className="mb-5">
+                <div className="text-[12px] font-semibold text-neutral-800 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span>Màu sắc:</span>
+                    <span className="font-bold text-neutral-900 normal-case">{selectedColor}</span>
+                  </div>
+                  {uniqueColors.length > 1 && (
+                    <span className="text-[11px] text-neutral-400 font-normal">
+                      {uniqueColors.length} màu
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3">
-                  {(variants.length > 0 ? variants : product.colors || []).map((item, idx) => {
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {uniqueColors.map((item, idx) => {
                     const colorName = "color_name" in item ? item.color_name : item.name;
-                    const colorImg = "image" in item ? (item.image || product.image) : ("thumbnail" in item ? (item as { thumbnail: string }).thumbnail : product.image);
+                    const colorImg =
+                      "image" in item
+                        ? item.image || product.image
+                        : "thumbnail" in item
+                        ? (item as { thumbnail?: string }).thumbnail || product.image
+                        : product.image;
                     const isSelected = selectedColor === colorName;
-                    const isVariantOutOfStock = "stock" in item ? Number(item.stock) <= 0 : false;
+                    const isOutOfStock = "color_name" in item ? isColorOutOfStock(colorName) : false;
 
                     return (
                       <button
-                        key={idx}
+                        key={`${colorName}-${idx}`}
                         type="button"
                         onClick={() => handleSelectColor(colorName, colorImg)}
                         className={`group relative rounded border-2 transition-all p-0.5 cursor-pointer bg-white ${
@@ -345,7 +436,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
                             ? "border-black ring-2 ring-black/15 scale-105"
                             : "border-neutral-200 hover:border-neutral-400 opacity-80 hover:opacity-100"
                         }`}
-                        title={`${colorName}${isVariantOutOfStock ? " (Hết hàng)" : ""}`}
+                        title={`${colorName}${isOutOfStock ? " (Hết hàng)" : ""}`}
                       >
                         <img
                           src={colorImg}
@@ -353,7 +444,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
                           className="w-11 h-14 object-cover rounded-xs bg-neutral-100"
                           loading="lazy"
                         />
-                        {isVariantOutOfStock && (
+                        {isOutOfStock && (
                           <div className="absolute inset-0 bg-white/75 backdrop-blur-[1px] flex items-center justify-center rounded-xs">
                             <span className="text-[9px] font-bold text-red-600 uppercase">Hết</span>
                           </div>
@@ -362,25 +453,72 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
                     );
                   })}
                 </div>
+              </div>
+            )}
 
-                {/* Stock Status text */}
-                <div className="mt-2 text-xs">
-                  {selectedVariant ? (
-                    Number(selectedVariant.stock) > 0 ? (
-                      <span className="text-emerald-700 font-medium flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                        Còn hàng ({selectedVariant.stock} sản phẩm)
-                      </span>
-                    ) : (
-                      <span className="text-red-600 font-medium flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
-                        Màu này hiện đang tạm hết hàng
-                      </span>
-                    )
-                  ) : null}
+            {/* Size Selector */}
+            {availableSizes.length > 0 && (
+              <div className="mb-5">
+                <div className="text-[12px] font-semibold text-neutral-800 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span>Kích thước:</span>
+                    <span className="font-bold text-neutral-900 normal-case">{selectedSize || "Chọn kích thước"}</span>
+                  </div>
+                  {availableSizes.length > 1 && (
+                    <span className="text-[11px] text-neutral-400 font-normal">
+                      {availableSizes.length} kích cỡ
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {availableSizes.map((s) => {
+                    const isSelected = selectedSize === s.sizeName;
+                    const isOutOfStock = s.isOutOfStock;
+
+                    return (
+                      <button
+                        key={s.sizeName}
+                        type="button"
+                        onClick={() => handleSelectSize(s.sizeName)}
+                        className={`relative px-3.5 py-2 rounded-xs text-xs font-medium transition-all cursor-pointer border ${
+                          isSelected
+                            ? "border-black bg-black text-white shadow-xs"
+                            : isOutOfStock
+                            ? "border-neutral-200 bg-neutral-50 text-neutral-400 hover:border-neutral-300"
+                            : "border-neutral-300 bg-white text-neutral-800 hover:border-neutral-500 hover:bg-neutral-50"
+                        }`}
+                        title={`${s.sizeName}${isOutOfStock ? " (Hết hàng)" : ""}`}
+                      >
+                        <span>{s.sizeName}</span>
+                        {isOutOfStock && (
+                          <span className="ml-1.5 text-[10px] text-red-500 font-semibold uppercase">
+                            (Hết)
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
+
+            {/* Stock Status text */}
+            <div className="mb-6 text-xs">
+              {selectedVariant ? (
+                Number(selectedVariant.stock) > 0 ? (
+                  <span className="text-emerald-700 font-medium flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                    Còn hàng ({selectedVariant.stock} sản phẩm)
+                  </span>
+                ) : (
+                  <span className="text-red-600 font-medium flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+                    Phân loại này hiện đang tạm hết hàng
+                  </span>
+                )
+              ) : null}
+            </div>
 
             {/* Quantity & Actions Bar */}
             <div className="flex flex-col gap-3 pt-2">

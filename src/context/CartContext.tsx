@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 
 export interface CartItem {
-  id: string; // unique item id: slug or slug-color
+  id: string; // unique item id: slug or slug-color-size
   productId: number;
   name: string;
   slug: string;
@@ -12,6 +12,9 @@ export interface CartItem {
   originalPrice?: string;
   image: string;
   color?: string;
+  size?: string;
+  variantId?: number;
+  sku?: string;
   quantity: number;
 }
 
@@ -23,6 +26,9 @@ export interface AddToCartInput {
   originalPrice?: string;
   image: string;
   color?: string;
+  size?: string;
+  variantId?: number;
+  sku?: string;
   quantity?: number;
 }
 
@@ -95,7 +101,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       typeof input.price === "string" ? input.price : formatPrice(input.price);
     const qtyToAdd = input.quantity && input.quantity > 0 ? input.quantity : 1;
     const cleanColor = input.color?.trim();
-    const itemId = cleanColor ? `${input.slug}-${cleanColor}` : input.slug;
+    const cleanSize = input.size?.trim();
+
+    let itemId = input.slug;
+    if (cleanColor) itemId += `-${cleanColor}`;
+    if (cleanSize) itemId += `-${cleanSize}`;
 
     setItems((prevItems) => {
       const existingIndex = prevItems.findIndex((it) => it.id === itemId);
@@ -117,6 +127,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           originalPrice: input.originalPrice,
           image: input.image,
           color: cleanColor,
+          size: cleanSize,
+          variantId: input.variantId,
+          sku: input.sku,
           quantity: qtyToAdd,
         };
         return [...prevItems, newItem];

@@ -106,11 +106,20 @@ async function fetchLiveRelatedProducts(currentId: number): Promise<ShopProduct[
             image: p.cover_image,
             hoverImage: p.hover_image || p.cover_image,
             gallery: Array.isArray(p.gallery_images) && p.gallery_images.length > 0 ? p.gallery_images : [p.cover_image],
-            colors: (p.variants || []).map((v) => ({
-              name: v.color_name,
-              thumbnail: v.image || p.cover_image,
-              slug: p.slug,
-            })),
+            colors: (() => {
+              const seen = new Set<string>();
+              return (p.variants || [])
+                .filter((v) => {
+                  if (!v.color_name || seen.has(v.color_name)) return false;
+                  seen.add(v.color_name);
+                  return true;
+                })
+                .map((v) => ({
+                  name: v.color_name,
+                  thumbnail: v.image || p.cover_image,
+                  slug: p.slug,
+                }));
+            })(),
             description: p.description || "",
             highlights: p.highlights || [],
             dimensions: p.dimensions ? { size: p.dimensions, strapDrop: "", weight: "" } : undefined,
@@ -139,6 +148,7 @@ async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> 
       interface ProductVariantApiRow {
         id: number;
         color_name: string;
+        size_name?: string | null;
         color_code?: string;
         sku?: string;
         price?: number;
@@ -181,14 +191,24 @@ async function fetchLiveProduct(slug: string): Promise<ShopProduct | undefined> 
         image: p.cover_image,
         hoverImage: p.hover_image || p.cover_image,
         gallery: Array.isArray(p.gallery_images) && p.gallery_images.length > 0 ? p.gallery_images : [p.cover_image],
-        colors: (p.variants || []).map((v) => ({
-          name: v.color_name,
-          thumbnail: v.image || p.cover_image,
-          slug: p.slug,
-        })),
+        colors: (() => {
+          const seen = new Set<string>();
+          return (p.variants || [])
+            .filter((v) => {
+              if (!v.color_name || seen.has(v.color_name)) return false;
+              seen.add(v.color_name);
+              return true;
+            })
+            .map((v) => ({
+              name: v.color_name,
+              thumbnail: v.image || p.cover_image,
+              slug: p.slug,
+            }));
+        })(),
         variants: (p.variants || []).map((v) => ({
           id: v.id,
           color_name: v.color_name,
+          size_name: v.size_name || null,
           color_code: v.color_code || "#000000",
           sku: v.sku || "",
           price: Number(v.price || priceNum),

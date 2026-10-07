@@ -14,6 +14,7 @@ export interface ProductDimensions {
 export interface ProductVariantItem {
   id: number;
   color_name: string;
+  size_name?: string | null;
   color_code?: string;
   sku?: string;
   price: number;

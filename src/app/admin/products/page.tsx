@@ -24,6 +24,7 @@ interface ProductVariant {
   id?: number;
   product_id?: number;
   color_name: string;
+  size_name?: string | null;
   color_code: string;
   sku: string;
   barcode?: string;
@@ -627,7 +628,10 @@ export default function AdminProductsPage() {
                                 className="w-2.5 h-2.5 rounded-full border border-black/20"
                                 style={{ backgroundColor: v.color_code || "#000" }}
                               />
-                              <span className="text-zinc-700">{v.color_name}:</span>
+                              <span className="text-zinc-700">
+                                {v.color_name}
+                                {v.size_name ? ` (${v.size_name})` : ""}:
+                              </span>
                               <span
                                 className={`font-mono font-bold ${
                                   v.stock <= 5 ? "text-amber-700" : "text-zinc-900"

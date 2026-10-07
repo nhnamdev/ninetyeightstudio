@@ -46,24 +46,43 @@ function detectCategoryId(productName, existingCategories) {
 }
 
 /**
- * Trích xuất tên phân loại / màu sắc từ KiotViet
+ * Trích xuất tên phân loại Màu sắc & Kích cỡ (Size) từ KiotViet
  */
-function extractVariantColor(item, masterName) {
-  if (item.attributes && item.attributes.length > 0) {
-    const attr = item.attributes[0];
-    if (attr.attributeValue && attr.attributeValue.trim()) {
-      return attr.attributeValue.trim();
+function extractVariantAttributes(item, masterName) {
+  let colorName = "";
+  let sizeName = "";
+
+  if (item.attributes && Array.isArray(item.attributes)) {
+    for (const attr of item.attributes) {
+      const aName = (attr.attributeName || "").toLowerCase().trim();
+      const aVal = (attr.attributeValue || "").trim();
+      if (!aVal) continue;
+
+      if (aName.includes("màu") || aName.includes("color")) {
+        colorName = aVal;
+      } else if (aName.includes("size") || aName.includes("kích cỡ") || aName.includes("kích thước")) {
+        sizeName = aVal;
+      }
     }
   }
 
-  // Nếu không có attributes, thử tách từ fullName
-  if (item.fullName && item.fullName.includes(" - ")) {
+  // Nếu không tìm thấy qua attributes, fallback tách từ fullName: "Tên SP - Biến thể"
+  if (!colorName && !sizeName && item.fullName && item.fullName.includes(" - ")) {
     const parts = item.fullName.split(" - ");
     const candidate = parts[parts.length - 1].trim();
-    if (candidate) return candidate;
+    if (candidate) {
+      colorName = candidate;
+    }
   }
 
-  return "Tiêu chuẩn";
+  // Fallback mặc định
+  if (!colorName && !sizeName) {
+    colorName = "Tiêu chuẩn";
+  } else if (!colorName && sizeName) {
+    colorName = "Tiêu chuẩn";
+  }
+
+  return { colorName, sizeName: sizeName || null };
 }
 
 /**
@@ -194,7 +213,7 @@ async function syncProductsFromKiotViet({ wipeOldProducts = true } = {}) {
 
       // Thêm các biến thể (variants) vào bảng product_variants
       for (const v of variants) {
-        const colorName = extractVariantColor(v, prodName);
+        const { colorName, sizeName } = extractVariantAttributes(v, prodName);
         const sku = v.code || `SKU-${v.id}`;
         const vPrice = Number(v.basePrice) || minPrice;
         const vImage = v.images && v.images[0] ? v.images[0] : coverImage;
@@ -212,11 +231,12 @@ async function syncProductsFromKiotViet({ wipeOldProducts = true } = {}) {
 
         await connection.query(
           `INSERT INTO product_variants 
-           (product_id, color_name, sku, barcode, image, price, original_price, stock, reserved_stock, weight_gram, is_active, kiotviet_id, kiotviet_code) 
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           (product_id, color_name, size_name, sku, barcode, image, price, original_price, stock, reserved_stock, weight_gram, is_active, kiotviet_id, kiotviet_code) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             productId,
             colorName,
+            sizeName,
             sku,
             v.barcode || null,
             vImage,
@@ -278,4 +298,5 @@ async function updateStockFromWebhook(sku, onHand, reserved = 0) {
 module.exports = {
   syncProductsFromKiotViet,
   updateStockFromWebhook,
+  extractVariantAttributes,
 };

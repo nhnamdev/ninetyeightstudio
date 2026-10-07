@@ -233,9 +233,9 @@ export const CartModal: React.FC = () => {
                       </button>
                     </div>
 
-                    {item.color && (
+                    {(item.color || item.size) && (
                       <p className="text-[11px] text-neutral-500 mt-0.5">
-                        Màu sắc: {item.color}
+                        {[item.color ? `Màu: ${item.color}` : "", item.size ? `Size: ${item.size}` : ""].filter(Boolean).join(" • ")}
                       </p>
                     )}
 
